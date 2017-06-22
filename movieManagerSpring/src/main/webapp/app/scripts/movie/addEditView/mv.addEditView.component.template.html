@@ -1,0 +1,40 @@
+<div class="movie-add-edit-view">
+  <div layout="column" ng-cloak layout-padding>
+    <md-content>
+      <form>
+        <md-input-container class="md-block">
+          <label>Title</label>
+          <input type="text" ng-model="vm.form.field.title">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Description</label>
+          <input type="text" ng-model="vm.form.field.description">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Price</label>
+          <input type="text" ng-model="vm.form.field.price">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <div ng-if="vm.isShowImage(vm.form.field.imageFilename)">
+            <img style="max-width: 500px;" ng-src="{{ vm.form.field.imageUrl }}" alt="">
+          </div>
+          <div>
+            <lf-ng-md-file-input lf-files="vm.form.field.imageFile" lf-placeholder="Choose File To Upload Image" preview></lf-ng-md-file-input>
+          </div>
+        </md-input-container>
+
+
+        <div layout="row">
+          <div flex></div>
+          <md-button ng-click="vm.applyEventHandler()">Apply</md-button>
+          <md-button ng-click="vm.cancelEventHandler()">Cancel</md-button>
+        </div>
+      </form>
+
+    </md-content>
+
+  </div>
+</div>

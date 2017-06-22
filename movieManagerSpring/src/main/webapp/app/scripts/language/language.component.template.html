@@ -1,0 +1,14 @@
+<div class="language-container">
+  <h2>Language App</h2>
+
+  <div ng-switch="vm.currentView">
+    <div ng-switch-when="list">
+      <language-list-view config="vm.listView.config"></language-list-view>
+    </div>
+
+    <div ng-switch-when="addEdit">
+      <language-add-edit-view config="vm.addEditView.config"></language-add-edit-view>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="language-add-edit-view">
+  <div layout="column" ng-cloak layout-padding>
+    <md-content>
+      <form>
+        <md-input-container class="md-block">
+          <label>Name</label>
+          <input type="text" ng-model="vm.form.field.name">
+        </md-input-container>
+
+        <md-input-container class="md-block">
+          <label>Alias</label>
+          <input type="text" ng-model="vm.form.field.alias">
+        </md-input-container>
+
+        <div layout="row">
+          <div flex></div>
+          <md-button ng-click="vm.applyEventHandler()">Apply</md-button>
+          <md-button ng-click="vm.cancelEventHandler()">Cancel</md-button>
+        </div>
+      </form>
+
+    </md-content>
+
+  </div>
+</div>

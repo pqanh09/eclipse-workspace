@@ -1,0 +1,19 @@
+<div class="m-list-view-container">
+  <table class="table table-striped">
+    <thead>
+      <th ng-if="vm.config.isAllowedSelect"><input type="checkbox" ng-model="vm.isSelectedAll" ng-click="vm.selectAllRows(vm.data, vm.isSelectedAll)"></th>
+      <th ng-repeat="headerItem in vm.columnList track by headerItem.key">
+        {{ headerItem.name }}
+      </th>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="bodyItem in vm.data track by bodyItem[vm.config.primaryKey]">
+        <td ng-if="vm.config.isAllowedSelect"><input type="checkbox" ng-model="bodyItem.isSelected" ng-click="vm.selectRow(bodyItem, bodyItem.isSelected)"></td>
+        <td ng-repeat="column in vm.columnList track by column.key">
+          {{ bodyItem[column.key] }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

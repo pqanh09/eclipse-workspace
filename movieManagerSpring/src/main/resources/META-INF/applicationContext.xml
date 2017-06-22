@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/data/mongo
+        http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<bean id="languageRepositoryImpl" class="com.tuanOv.repositories.LanguageRepositoryImpl">
+		<constructor-arg ref="mongoTemplate">
+ 		</constructor-arg>
+	</bean>
+
+
+	<mongo:mongo host="localhost" port="27017" />
+	<mongo:db-factory dbname="movieManager" />
+	<mongo:repositories base-package="com.tuanOv.repositories" />
+	
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory" />
+	</bean>	
+	
+	<bean id="multipartResolver"
+	    class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</bean>
+		
+	<bean id="languageService" class="com.tuanOv.services.LanguageService">
+		<constructor-arg ref="languageRepository">
+		</constructor-arg>
+	</bean>
+
+	<bean id="movieService" class="com.tuanOv.services.MovieService">
+		<constructor-arg ref="movieRepository">
+		</constructor-arg>
+		<constructor-arg ref="servletContext">
+		</constructor-arg>
+	</bean>
+
+<!-- 	<bean id="movieRepository" class="com.tuanOv.repositories.MovieRepositoryImpl"> -->
+<!-- 	</bean> -->
+	
+	<bean id="movieRepositoryImpl" class="com.tuanOv.repositories.MovieRepositoryImpl">
+		<constructor-arg ref="mongoTemplate">
+		</constructor-arg>
+	</bean>
+
+</beans>

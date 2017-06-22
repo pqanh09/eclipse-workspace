@@ -1,0 +1,15 @@
+<div class="movie-container">
+  <h2>Movie App</h2>
+
+  <div ng-switch="vm.currentView">
+    <div ng-switch-when="list">
+      <movie-list-view config="vm.listView.config"></movie-list-view>
+    </div>
+
+    <div ng-switch-when="addEdit">
+      <movie-add-edit-view config="vm.addEditView.config"></movie-add-edit-view>
+    </div>
+
+  </div>
+</div>
+

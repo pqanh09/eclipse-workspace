@@ -1,0 +1,42 @@
+<div class="lg-list-view-component-container">
+  <md-toolbar class="md-hue-2">
+    <div class="md-toolbar-tools">
+      <span flex></span>
+
+      <md-button ng-click="vm.addEventHandler()">
+        Add
+      </md-button>
+
+      <md-button ng-click="vm.editEventHandler()">
+        Edit
+      </md-button>
+
+      <md-button ng-click="vm.deleteEventHandler()">
+        Delete
+      </md-button>
+
+      <md-button ng-click="vm.refreshEventHandler()">
+        Refresh
+      </md-button>
+    </div>
+  </md-toolbar>
+
+  <md-table-container>
+    <table md-table md-row-select multiple md-progress="vm.dataPromise" ng-model="vm.selectedItemList">
+      <thead md-head>
+        <tr md-row>
+          <th md-column>Name</th>
+          <th md-column>Alias</th>
+        </tr>
+      </thead>
+
+      <tbody md-body>
+        <tr md-row md-select="item" md-select-id="id" md-auto-select ng-repeat="item in vm.data">
+          <td md-cell>{{item.name}}</td>
+          <td md-cell>{{item.alias}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </md-table-container>
+</div>

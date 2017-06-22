@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="e9503382-ed27-4cb9-abcf-6d1209faa7df" name="movieManagerspringDeploy" url="http://localhost:8080">
+        <fileTransfer port="0" mountedRoot="g:\TUAN\project\java\ovResearchWorkspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\movieManagerSpring" accessType="MOUNT" />
+      </webServer>
+    </option>
+  </component>
+</project>
