@@ -1,0 +1,30 @@
+<div>
+    <div class="container">
+        <h2>Add Song</h2>
+        <p ng-show="vmAddSong.errorMessage !== ''">{{vmAddSong.errorMessage}}</p>
+        <form>
+            <div class="form-group">
+                <label for="name">Song name</label>
+                <input type="text" class="form-control" id="name" ng-model="vmAddSong.name">
+            </div>
+            <div class="form-group">
+                <label for="type">Type</label>
+                <select name="type" id="type" class="form-control" ng-model="vmAddSong.type">
+                    <option value="0">Nhac tre</option>
+                    <option value="1">Nhac vang</option>
+                    <option value="2">Nhac trinh</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="author">Author</label>
+                <input type="text" class="form-control" id="author" ng-model="vmAddSong.author">
+            </div>
+            <div class="form-group">
+                <label for="file">File</label>
+                <input class="form-control" id="file" type = "file" file-model = "myFile">
+            </div>
+            <button ng-disabled="!vmAddSong.name || vmAddSong.name == ''" type="submit" class="btn btn-primary" ng-click="vmAddSong.addSong()">Add Song</button>
+            <button class="btn btn-default" ng-click="vmAddSong.cancel()">Cancel</button>
+        </form>
+    </div>
+</div>

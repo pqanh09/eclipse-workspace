@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>Music manager</title>
+
+    <!-- CSS template -->
+    <link rel="stylesheet" href="source/bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="source/bower_components/components-font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="source/bower_components/roboto-fontface/css/roboto-fontface.css">
+
+    <!-- Angularjs library-->
+    <script src="source/bower_components/angular/angular.js"></script>
+    <script src="source/bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="source/bower_components/angular-route/angular-route.js"></script>
+    <script src="source/bower_components/angular-aria/angular-aria.min.js"></script>
+    <script src="source/bower_components/angular-messages/angular-messages.min.js"></script>
+    <script src="source/bower_components/angular-material/angular-material.js"></script>
+    <script src="source/bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="source/bower_components/i18next/i18next.js"></script>
+    <script src="source/bower_components/ng-i18next/dist/ng-i18next.js"></script>
+</head>
+
+<body>
+    <div ng-app="MusicApp" class="container">
+        <ng-view></ng-view>
+    </div>
+</body>
+<script src="source/public/musicConst/musicConst.js"></script>
+<script src="source/public/main.js"></script>
+<script src="source/public/song/song.js"></script>
+<script src="source/public/song/addSong/addSong.js"></script>
+</html>

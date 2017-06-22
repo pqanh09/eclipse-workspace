@@ -1,0 +1,31 @@
+{
+  "name": "music manager",
+  "description": "bower for music manager",
+  "main": "",
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.5.5",
+    "angular-route": "^1.5.5",
+    "angular-messages": "^1.5.5",
+    "angular-material": "master",
+    "angular-animate": "^1.5.5",
+    "angular-aria": "^1.5.5",
+    "components-font-awesome": "^4.5.0",
+    "roboto-fontface": "^0.4.5",
+    "bootstrap": "^3.3.6",
+    "angular-sanitize": "^1.5.5",
+    "i18next": "^1.10.0",
+    "ng-i18next": "^0.5.2"
+  },
+  "authors": [
+    "cao quang duy"
+  ]
+}

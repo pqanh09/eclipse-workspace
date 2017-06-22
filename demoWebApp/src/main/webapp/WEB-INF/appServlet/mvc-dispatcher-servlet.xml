@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:context="http://www.springframework.org/schema/context" 
+xmlns:mvc="http://www.springframework.org/schema/mvc" 
+xmlns:mongo="http://www.springframework.org/schema/data/mongo" 
+xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd 
+	http://www.springframework.org/schema/context 
+	http://www.springframework.org/schema/context/spring-context-3.0.xsd 
+	http://www.springframework.org/schema/mvc 
+	http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+	http://www.springframework.org/schema/data/mongo 
+	http://www.springframework.org/schema/data/mongo/spring-mongo-1.0.xsd">
+ 
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location" value="classpath:application.properties"></property>
+	</bean>
+	
+	<bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<property name="host" value="${mongo.host}" />
+	</bean>
+	
+	<!-- MongoTemplate for connecting and quering the documents in the database -->
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg ref="mongo" />
+		<constructor-arg value="${mongo.dbname}" />
+	</bean>
+	
+	<!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	
+    <mongo:repositories base-package="com.ov.repository" mongo-template-ref="mongoTemplate"/>
+    
+    <bean id="songRepo" class="com.ov.repositoryImpl.SongRepositoryImpl">
+    	<property name="mongotpl" ref="mongoTemplate"/>
+    </bean>
+    
+    <bean id="playlistRepo" class="com.ov.repositoryImpl.PlaylistRepositoryImpl">
+    	<property name="mongotpl" ref="mongoTemplate"/>
+    </bean>
+    
+  	<bean id="songSrv" class="com.ov.serviceImplement.SongServiceImplement">
+    	<constructor-arg ref="playlistRepository" />
+    	<constructor-arg ref="songRepository" />
+    </bean>
+    
+    <bean id="playlistSrv" class="com.ov.serviceImplement.PlaylistServiceImplement">
+    	<constructor-arg ref="playlistRepository" />
+    	<constructor-arg ref="songRepository" />
+    </bean>
+    
+<!--     <mvc:view-controller path="/" view-name="index.html" /> -->
+    <mvc:resources mapping="/source/**" location="/UI/" cache-period="0"/>
+    <mvc:annotation-driven />
+    <context:component-scan base-package="com.ov"/>
+</beans>

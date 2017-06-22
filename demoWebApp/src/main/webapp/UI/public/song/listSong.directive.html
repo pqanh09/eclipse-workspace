@@ -1,0 +1,27 @@
+<div>
+    <a ng-click="vmListSong.goAdd()">Add Song</a>
+
+    <div class="container">
+        <h2>List Song</h2>
+        <!--<p>The .table-condensed class makes a table more compact by cutting cell padding in half:</p>-->
+        <table class="table table-condensed">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Author</th>
+                <th>File</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="song in vmListSong.songs">
+                <td>{{song.name}}</td>
+                <td>{{song.type}}</td>
+                <td>{{song.author}}</td>
+                <td>{{song.path}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
