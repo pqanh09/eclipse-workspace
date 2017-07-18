@@ -21,9 +21,7 @@
     'ngRoute',
     'movieManagerApp.apps.module',
     'mComponents.module',
-    'ngMaterial',
-    'md.data.table',
-    'lfNgMdFileInput'
+    'ngMaterial'
   ]);
 
 })();
