@@ -17,7 +17,7 @@ import com.mongodb.MongoClient;
 @ComponentScan({ "com.websystique.springmvc.configuration" })
 @PropertySource(value = { "classpath:application.properties" })
 public class MongodbConfiguration {
-
+	//http://www.technicalkeeda.com/spring-tutorials/spring-4-mongodb-example
     @Bean
     public MongoDbFactory mongoDbFactory() throws Exception {
         MongoClient mongoClient = new MongoClient("localhost", 27017);
