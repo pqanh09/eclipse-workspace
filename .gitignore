@@ -5,3 +5,4 @@ target
 .idea
 .metadata
 *.class
+*.log
