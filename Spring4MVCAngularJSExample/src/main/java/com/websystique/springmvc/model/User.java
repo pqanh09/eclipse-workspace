@@ -1,32 +1,35 @@
 package com.websystique.springmvc.model;
 
-public class User {
+import java.util.Date;
 
-	private long id;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "User")
+public class User extends GenericModel<ObjectId>{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1486157648065779580L;
 	
+	public static final String COLLECTION_NAME = "User";
+	
+	@NotNull
+	@Size(max=250)	
+	@Indexed(unique = true)
 	private String username;
 	
 	private String address;
 	
+	@NotNull
+	@Size(max=250)	
 	private String email;
 	
 	public User(){
-		id=0;
-	}
-	
-	public User(long id, String username, String address, String email){
-		this.id = id;
-		this.username = username;
-		this.address = address;
-		this.email = email;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
 	}
 
 	public String getUsername() {
@@ -54,31 +57,19 @@ public class User {
 	}
 
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof User))
-			return false;
-		User other = (User) obj;
-		if (id != other.id)
-			return false;
-		return true;
-	}
-
-	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", address=" + address
-				+ ", email=" + email + "]";
+		return "User [username=" + username + ", address=" + address + ", email=" + email + "]";
+	}
+
+	public User(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy) {
+		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
+		// TODO Auto-generated constructor stub
+	}
+
+	public User(String username, String address, String email) {
+		this.username = username;
+		this.address = address;
+		this.email = email;
 	}
 	
 

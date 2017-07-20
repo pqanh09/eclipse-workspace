@@ -8,15 +8,14 @@ import com.websystique.springmvc.model.User;
 
 public interface UserService {
 	
-	User findById(long id);
 	
-	User findByName(String name);
+	User findByUsername(String username);
 	
 	void saveUser(User user);
 	
 	void updateUser(User user);
 	
-	void deleteUserById(long id);
+	void deleteUser(User user);
 
 	List<User> findAllUsers(); 
 	
