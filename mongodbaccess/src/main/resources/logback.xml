@@ -14,13 +14,13 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>logs/logfile.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>logs/accessguardian20.%i.log.zip</fileNamePattern>
-			<minIndex>1</minIndex>
-			<maxIndex>${logging.maxfilecopies}</maxIndex>
+			<fileNamePattern>logs/logfile.%i.log.zip</fileNamePattern>
+			<!-- <minIndex>1</minIndex>
+			<maxIndex>${logging.maxfilecopies}</maxIndex> -->
 		</rollingPolicy>
 		<triggeringPolicy
 			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<maxFileSize>${logging.maxfilesize}</maxFileSize>
+			<!-- <maxFileSize>${logging.maxfilesize}</maxFileSize> -->
 		</triggeringPolicy>
 		<encoder>
 			<pattern>%date{MMM dd yyyy HH:mm:ss.SSS}| [%thread] [%-5level]

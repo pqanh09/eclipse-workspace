@@ -2,7 +2,6 @@ package com.taurus.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -13,9 +12,10 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.MongoClient;
+import com.taurus.db.repositories.UserRepository;
 
 @Configuration
-@ComponentScan({ "com.taurus" })
+//@ComponentScan({ "com.taurus" })
 @PropertySource(value = { "classpath:application.properties" })
 @EnableMongoRepositories(basePackages="com.taurus.db.repositories" )
 public class MongodbConfiguration {
@@ -23,6 +23,9 @@ public class MongodbConfiguration {
 
 	@Autowired
 	private Environment environment;
+	
+	//@Autowired
+   // UserRepository userRepository;  
 
 	@Bean
 	public MongoDbFactory mongoDbFactory() throws Exception {

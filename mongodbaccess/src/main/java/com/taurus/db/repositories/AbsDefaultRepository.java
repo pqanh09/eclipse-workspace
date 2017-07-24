@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 
 import com.taurus.db.model.GenericModel;
 
-public abstract class AbsDefaultRepository <T extends GenericModel<ID>, ID extends Serializable> implements IDefaultRepository<T, ID>{
+public abstract class AbsDefaultRepository <T extends GenericModel<ID>, ID extends Serializable> implements DefaultRepository<T, ID>{
 	
 //	@Autowired
 //	@Qualifier(value="mongoTemplate")
