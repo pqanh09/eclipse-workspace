@@ -21,4 +21,5 @@ public class UserRepositoryImpl extends GenericRepositoryCustomImpl<User, Object
 		return 0;
 	}
 
+
 }

@@ -16,10 +16,6 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private UserRepository userRepository;
 	
-	//public UserServiceImpl(){
-		//userRepository.safeSave(populateDummyUsers());
-	//}
-
 	public List<User> findAllUsers() {
 		return userRepository.findAll();
 	}
@@ -55,6 +51,15 @@ public class UserServiceImpl implements UserService{
 		users.add(new User("Tomy", "ALBAMA", "tomy@abc.com"));
 		users.add(new User("Kelly", "NEBRASKA", "kelly@abc.com"));
 		return users;
+	}
+
+	@Override
+	public void initUsers() {
+		// TODO Auto-generated method stub
+//		if(userRepository.findByUsername("Sam") != null){
+//			return;
+//		};
+		userRepository.safeSave(populateDummyUsers());
 	}
 
 

@@ -19,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.service.UserService;
 
-//@RestController
+@RestController
 public class HelloWorldRestController {
 
 	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(HelloWorldRestController.class);
@@ -35,12 +35,14 @@ public class HelloWorldRestController {
 	public ResponseEntity<List<User>> listAllUsers() {
 		List<User> users = userService.findAllUsers();
 		if (users.isEmpty()) {
-			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);// You
-																			// many
-																			// decide
-																			// to
-																			// return
-																			// HttpStatus.NOT_FOUND
+//			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);// You
+//																			// many
+//																			// decide
+//																			// to
+//																			// return
+//																			// HttpStatus.NOT_FOUND
+			userService.initUsers();
+			users = userService.findAllUsers();
 		}
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}

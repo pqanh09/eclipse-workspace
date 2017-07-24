@@ -8,3 +8,4 @@ target
 *.log
 Servers
 *.MF
+.recommenders

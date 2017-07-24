@@ -34,8 +34,10 @@ public abstract class GenericRepositoryCustomImpl <T extends GenericModel<ID>, I
 		mongoTemplate.save(item);
 	}
 	
-	public void safeSave(Iterable<T> iterables) {
-		mongoTemplate.save(iterables);
+	public void safeSave(List<T> list) {
+		for (T t : list) {
+			mongoTemplate.save(t);
+		}
 	}
 	
 	 /**

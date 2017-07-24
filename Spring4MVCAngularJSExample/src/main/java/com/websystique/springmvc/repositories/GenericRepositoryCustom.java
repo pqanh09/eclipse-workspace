@@ -17,5 +17,5 @@ public interface GenericRepositoryCustom<T extends GenericModel<ID>, ID extends 
 	
 	public void safeSave(T item);
 	
-	public void safeSave(Iterable<T> iterables);
+	public void safeSave(List<T> iterables);
 }
