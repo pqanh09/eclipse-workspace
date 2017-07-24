@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.websystique.springmvc.model.User;
 import com.websystique.springmvc.repositories.UserRepository;
 
-//@Service("userService")
+@Service("userService")
 public class UserServiceImpl implements UserService{
 	
 	

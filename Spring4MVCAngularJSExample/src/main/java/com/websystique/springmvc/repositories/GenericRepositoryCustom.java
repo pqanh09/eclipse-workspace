@@ -7,8 +7,10 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import com.websystique.springmvc.model.GenericModel;
-//@NoRepositoryBean
-public interface IDefaultRepository<T extends GenericModel<ID>, ID extends Serializable> {
+
+@NoRepositoryBean
+public interface GenericRepositoryCustom<T extends GenericModel<ID>, ID extends Serializable> {
+	
 	public List<T> searchByCriteria(Criteria criteria,Class<T> clazz, String... includedFields);
 
 	public void removeByCriteria(Criteria criteria,Class<T> clazz);

@@ -7,7 +7,8 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import com.websystique.springmvc.model.GenericModel;
 
-//@NoRepositoryBean
-public interface IGenericRepository <T extends GenericModel<ID>, ID extends Serializable> extends MongoRepository<T, ID>, IDefaultRepository<T, ID> {
+//No need implementation, just one interface, and you have CRUD, thanks Spring Data
+@NoRepositoryBean
+public interface GenericRepository <T extends GenericModel<ID>, ID extends Serializable> extends MongoRepository<T, ID>, GenericRepositoryCustom<T, ID> {
 
 }

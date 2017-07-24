@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -12,11 +11,12 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import com.websystique.springmvc.model.GenericModel;
 
-public abstract class AbsDefaultRepository <T extends GenericModel<ID>, ID extends Serializable> implements IDefaultRepository<T, ID>{
+@NoRepositoryBean
+public abstract class GenericRepositoryCustomImpl <T extends GenericModel<ID>, ID extends Serializable> implements GenericRepositoryCustom<T, ID>{
 	
-//	@Autowired
+	@Autowired
 //	@Qualifier(value="mongoTemplate")
-	private MongoTemplate mongoTemplate;
+	protected MongoTemplate mongoTemplate;
 	
 	public List<T> searchByCriteria(Criteria criteria,Class<T> clazz, String... includedFields) {
 		Query query = newQuery(criteria, includedFields);

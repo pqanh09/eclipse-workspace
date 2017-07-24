@@ -10,13 +10,13 @@ import org.springframework.data.authentication.UserCredentials;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 import com.mongodb.MongoClient;
-import com.websystique.springmvc.model.User;
 
 @Configuration
-@ComponentScan({ "com.websystique" })
+@ComponentScan({ "com.websystique.springmvc.service" })
+@EnableMongoRepositories(basePackages="com.websystique.springmvc.repositories" )
 @PropertySource(value = { "classpath:application.properties" })
 
 public class MongodbConfiguration {
