@@ -83,14 +83,15 @@ public class HelloWorldRestController {
 	// ------------------- Update a User
 	// --------------------------------------------------------
 
-	@RequestMapping(value = "/user/{username}", method = RequestMethod.PUT)
-	public ResponseEntity<User> updateUser(@PathVariable("username") String username, @RequestBody User user) {
-		LOGGER.info("Updating User: " + username);
+	@RequestMapping(value = "/user", method = RequestMethod.PUT)
+	public ResponseEntity<User> updateUser(@RequestBody User user) {
+		String userName = user.getUsername();
+		LOGGER.info("Updating User: " + userName);
 
-		User currentUser = userService.findByUsername(username);
+		User currentUser = userService.findByUsername(userName);
 
 		if (currentUser == null) {
-			LOGGER.error("User with Username " + username + " not found");
+			LOGGER.error("User with Username " + userName + " not found");
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 
