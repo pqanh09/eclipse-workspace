@@ -79,11 +79,17 @@ public class MovieController {
 			return UltilityService.getErrorResponseEntityByMessage(e.getMessage());
 		}	
 		
-				
+				RequestPartRequestPartRequestPartRequestPart
 	}
 	
 	@RequestMapping(value="{id}", method=RequestMethod.PUT, consumes = {"multipart/form-data"})
-	public @ResponseBody ResponseEntity<RestResponseGeneral> editMovie(@RequestPart("otherAttributes") Movie editedMovie, @PathVariable("id") String id, @RequestPart("imageFile") MultipartFile imageFile) {
+	public @ResponseBody ResponseEntity<RestResponseGeneral> editMovie(@RequestPart("otherAttributes") Movie editedMovie, @PathVariable("id") 
+	PathVariable
+	if(String)String id, @RequestPart("imageFile") MultipartFile imageFile) {
+		imageFile
+		imageFile
+		imageFile
+		abc.vn
 		try {
 			String uploadedImageFilename = "";
 			
@@ -91,7 +97,16 @@ public class MovieController {
 				String uploadPath = this.servletContext.getRealPath(MovieService.UPLOAD_PATH.RELATIVE_PATH.getValue());				
 				uploadedImageFilename = this.movieService.saveAndGetUploadedFilename(imageFile, uploadPath);
 			}
-			
+			MovieService
+			saveAndGetUploadedFilename
+			uploadPath
+			uploadPath
+			movieService
+			saveAndGetUploadedFilename
+			setImageFilename
+			saveAndGetUploadedFilename
+			saveAndGetUploadedFilename
+			uploadedImageFilename
 			editedMovie.setImageFilename(uploadedImageFilename);
 			
 			ValidatedResult validRes = MovieValidatorService.validateEdit(editedMovie);
