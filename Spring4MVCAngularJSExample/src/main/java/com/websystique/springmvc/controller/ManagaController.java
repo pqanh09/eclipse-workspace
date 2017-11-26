@@ -17,24 +17,26 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.websystique.springmvc.model.User;
+import com.websystique.springmvc.service.MangaService;
 import com.websystique.springmvc.service.UserService;
 
 @RestController
 @RequestMapping("/api")
-public class HelloWorldRestController {
+public class ManagaController {
 
-	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(HelloWorldRestController.class);
+	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(ManagaController.class);
 	
 	@Autowired
-	UserService userService; // Service which will do all data
+	MangaService mangaService; // Service which will do all data
 								// retrieval/manipulation work
 
 	// -------------------Retrieve All
 	// Users--------------------------------------------------------
 
-	@RequestMapping(value = "/user/", method = RequestMethod.GET)
+	@RequestMapping(value = "/manga", method = RequestMethod.GET)
 	public ResponseEntity<List<User>> listAllUsers() {
-		List<User> users = userService.findAllUsers();
+		
+		List<User> users = userService.findAllLinks();
 		if (users.isEmpty()) {
 //			return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);// You
 //																			// many
@@ -43,7 +45,7 @@ public class HelloWorldRestController {
 //																			// return
 //																			// HttpStatus.NOT_FOUND
 			userService.initUsers();
-			users = userService.findAllUsers();
+			users = userService.findAllLinks();
 		}
 		return new ResponseEntity<List<User>>(users, HttpStatus.OK);
 	}
@@ -54,7 +56,7 @@ public class HelloWorldRestController {
 	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<User> getUser(@PathVariable("username") String username) {
 		LOGGER.info("Fetching User with Username " + username);
-		User user = userService.findByUsername(username);
+		User user = userService.findByName(username);
 		if (user == null) {
 			LOGGER.error("User with Username " + username + " not found");
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
@@ -74,7 +76,7 @@ public class HelloWorldRestController {
 			return new ResponseEntity<Void>(HttpStatus.CONFLICT);
 		}
 
-		userService.saveUser(user);
+		userService.saveLink(user);
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getUsername()).toUri());
@@ -89,7 +91,7 @@ public class HelloWorldRestController {
 		String userName = user.getUsername();
 		LOGGER.info("Updating User: " + userName);
 
-		User currentUser = userService.findByUsername(userName);
+		User currentUser = userService.findByName(userName);
 
 		if (currentUser == null) {
 			LOGGER.error("User with Username " + userName + " not found");
@@ -100,7 +102,7 @@ public class HelloWorldRestController {
 		currentUser.setAddress(user.getAddress());
 		currentUser.setEmail(user.getEmail());
 
-		userService.updateUser(currentUser);
+		userService.updateLink(currentUser);
 		return new ResponseEntity<User>(currentUser, HttpStatus.OK);
 	}
 
@@ -111,13 +113,13 @@ public class HelloWorldRestController {
 	public ResponseEntity<User> deleteUser(@PathVariable("userName") String userName) {
 		LOGGER.info("Fetching & Deleting User with UserName " + userName);
 
-		User user = userService.findByUsername(userName);
+		User user = userService.findByName(userName);
 		if (user == null) {
 			LOGGER.error("Unable to delete. User with UserName " + userName + " not found");
 			return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
 		}
 
-		userService.deleteUser(user);
+		userService.deleteLink(user);
 		return new ResponseEntity<User>(HttpStatus.NO_CONTENT);
 	}
 
