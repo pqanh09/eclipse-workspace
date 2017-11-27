@@ -28,13 +28,14 @@ public class MangaServiceImpl implements MangaService{
 	private LinkRepository linkRepository;
 
 	@Override
-	public Manga findByManganame(String Manganame) {
+	public Manga findByManganame(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void saveManga(Manga Manga) {
+	public void saveManga(Manga manga) {
+		mangaRepository.safeSave(manga);
 		// TODO Auto-generated method stub
 		
 	}
@@ -57,17 +58,6 @@ public class MangaServiceImpl implements MangaService{
 		return null;
 	}
 
-	@Override
-	public void deleteAllMangas() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean isMangaExist(Manga Manga) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	
 

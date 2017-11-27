@@ -22,18 +22,18 @@ import com.websystique.springmvc.service.UserService;
 
 @RestController
 @RequestMapping("/api")
-public class ManagaController {
+public class WebController {
 
-	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(ManagaController.class);
+	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(WebController.class);
 	
 	@Autowired
 	MangaService mangaService; // Service which will do all data
 								// retrieval/manipulation work
 
-//	// -------------------Retrieve All
-//	// Manga--------------------------------------------------------
-//
-//	@RequestMapping(value = "/manga", method = RequestMethod.GET)
+	// -------------------Retrieve All
+	// Web--------------------------------------------------------
+
+//	@RequestMapping(value = "/web", method = RequestMethod.GET)
 //	public ResponseEntity<List<User>> listAllUsers() {
 //		
 //		List<User> users = userService.findAllLinks();

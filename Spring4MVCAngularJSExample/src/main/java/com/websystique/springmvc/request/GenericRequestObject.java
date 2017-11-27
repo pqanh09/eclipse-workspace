@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonTypeInfo(  
@@ -11,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.WRAPPER_OBJECT,  
         property = "type")  
 @JsonSubTypes({     
-//    @Type(value=AGGenericRequestObject.class, name="AGGenericRequestObject"),
-//    @Type(value=AGViewRequestObject.class, name="AGViewRequestObject"),
+    @Type(value=ModelRequestObject.class, name="ManagaRequestObject"),
+    @Type(value=WebRequestObject.class, name="WebRequestObject")
 }) 
 public class GenericRequestObject {
 	private RequestType operation;

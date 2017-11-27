@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.WRAPPER_OBJECT,  
         property = "type")  
 @JsonSubTypes({     
-    @Type(value=MangaVO.class, name="MangaVO")
-//    @Type(value=AAAServerVO.class, name="AAAServerVO"),
+    @Type(value=MangaVO.class, name="MangaVO"),
+    @Type(value=WebVO.class, name="WebVO"),
 }) 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class GenericVO{	

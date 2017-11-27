@@ -8,18 +8,15 @@ import com.websystique.springmvc.model.Manga;
 
 public interface MangaService {
 	
-	Manga findByManganame(String Manganame);
+	Manga findByManganame(String name);
 	
-	void saveManga(Manga Manga);
+	void saveManga(Manga manga);
 	
-	void updateManga(Manga Manga);
+	void updateManga(Manga manga);
 	
-	void deleteManga(Manga Manga);
+	void deleteManga(Manga manga);
 
 	List<Manga> findAllMangas(); 
 	
-	void deleteAllMangas();
-	
-	public boolean isMangaExist(Manga Manga);
 	
 }

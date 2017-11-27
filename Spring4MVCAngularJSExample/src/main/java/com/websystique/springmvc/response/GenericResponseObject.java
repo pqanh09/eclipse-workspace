@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.request.RequestType;
@@ -12,7 +13,7 @@ import com.websystique.springmvc.request.RequestType;
         include = JsonTypeInfo.As.WRAPPER_OBJECT,  
         property = "type")  
 @JsonSubTypes({     
-//    @Type(value=AGDeviceResponseStatus.class, name="AGDeviceResponseStatus"),
+    @Type(value=WebResponseObject.class, name="WebResponseObject")
 //    @Type(value=CPCustomizationResponseStatus.class, name="CPCustomizationResponseStatus")
 }) 
 @JsonIgnoreProperties(ignoreUnknown = true)
