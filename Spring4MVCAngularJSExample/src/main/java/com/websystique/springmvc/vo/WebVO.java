@@ -1,52 +1,58 @@
 package com.websystique.springmvc.vo;
 
-import com.websystique.springmvc.model.Web;
-import com.websystique.springmvc.request.ObjectType;
+import org.bson.types.ObjectId;
 
-public class WebVO extends AbstractDelegationObjectIdVO<Web>{
+public class WebVO {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7847737761798581330L;
-
-	public WebVO(Web web){
-		super(web);
-	}
-	@Override
-	protected Web newInstance() {
-		// TODO Auto-generated method stub
-		return new Web();
-	}
-
-	@Override
-	public String retrieveNGObjectType() {
-		// TODO Auto-generated method stub
-		return ObjectType.Web.toString();
-	}
+	private ObjectId instanceid;
 	
+	
+	private String name;
+
+	private String url;
+
+	private boolean isFrom = false;
+
 	public String getName() {
-		return delegate.getName();
+		return name;
 	}
 
 	public void setName(String name) {
-		delegate.setName(name);
+		this.name = name;
 	}
-	
+
 	public String getUrl() {
-		return delegate.getUrl();
+		return url;
 	}
 
 	public void setUrl(String url) {
-		delegate.setUrl(url);
+		this.url = url;
 	}
 
 	public boolean isFrom() {
-		return delegate.isFrom();
+		return isFrom;
 	}
 
 	public void setFrom(boolean isFrom) {
-		delegate.setFrom(isFrom);
+		this.isFrom = isFrom;
 	}
 
+
+	public ObjectId getInstanceid() {
+		return instanceid;
+	}
+
+	public void setInstanceid(ObjectId instanceid) {
+		this.instanceid = instanceid;
+	}
+
+	@Override
+	public String toString() {
+		return "WebVO [id=" + instanceid.toString() + ", name=" + name + ", url=" + url + ", isFrom=" + isFrom + "]";
+	}
+
+	public WebVO() {
+		super();
+	}
+	
 }

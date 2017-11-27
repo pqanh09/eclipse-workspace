@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.request.RequestType;
 @JsonTypeInfo(  
@@ -59,6 +60,21 @@ public class GenericResponseObject implements Serializable{
 	public void setMessage(String message) {
 		this.message = message;
 	}
-    
-    
+	public GenericResponseObject(RequestType operation, ObjectType objectType, String uniqueName, Boolean success,
+			String message) {
+		super();
+		this.operation = operation;
+		this.objectType = objectType;
+		this.uniqueName = uniqueName;
+		this.success = success;
+		this.message = message;
+	}
+	public GenericResponseObject(GenericRequestObject request){
+		this.operation = request.getOperation();
+		this.objectType = request.getObjectType();
+	}
+	public GenericResponseObject() {
+		super();
+	}
+	
 }

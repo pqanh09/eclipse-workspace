@@ -3,6 +3,7 @@ package com.websystique.springmvc.request;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -12,9 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.WRAPPER_OBJECT,  
         property = "type")  
 @JsonSubTypes({     
-    @Type(value=ModelRequestObject.class, name="ManagaRequestObject"),
+    @Type(value=MangaRequestObject.class, name="ManagaRequestObject"),
     @Type(value=WebRequestObject.class, name="WebRequestObject")
 }) 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericRequestObject {
 	private RequestType operation;
 	private ObjectType objectType;
@@ -36,6 +38,15 @@ public class GenericRequestObject {
 	}
 	public void setOthers(Map<String, Object> others) {
 		this.others = others;
+	}
+	public GenericRequestObject(RequestType operation, ObjectType objectType, Map<String, Object> others) {
+		super();
+		this.operation = operation;
+		this.objectType = objectType;
+		this.others = others;
+	}
+	public GenericRequestObject() {
+		super();
 	}
 	
 	

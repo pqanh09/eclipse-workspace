@@ -11,7 +11,7 @@ import com.websystique.springmvc.repositories.LinkRepository;
 import com.websystique.springmvc.repositories.MangaRepository;
 import com.websystique.springmvc.repositories.WebRepository;
 
-@Service("userService")
+@Service("mangaService")
 public class MangaServiceImpl implements MangaService{
 	
 	
