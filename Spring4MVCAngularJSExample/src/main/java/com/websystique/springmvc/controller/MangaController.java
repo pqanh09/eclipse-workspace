@@ -12,62 +12,62 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websystique.springmvc.request.GenericRequestObject;
+import com.websystique.springmvc.request.MangaRequestObject;
 import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.request.RequestType;
-import com.websystique.springmvc.request.WebRequestObject;
 import com.websystique.springmvc.response.GenericResponseObject;
-import com.websystique.springmvc.service.WebService;
+import com.websystique.springmvc.service.MangaService;
 
 @RestController
 @RequestMapping("/api")
-public class WebController {
+public class MangaController {
 
-	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(WebController.class);
+	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(MangaController.class);
 	
 	@Autowired
-	WebService webService; // Service which will do all data
+	MangaService mangaService; // Service which will do all data
 								// retrieval/manipulation work
 
 	// -------------------Retrieve All
-	// Web--------------------------------------------------------
+	// Manga--------------------------------------------------------
 
-	@RequestMapping(value = "/web", method = RequestMethod.GET)
+	@RequestMapping(value = "/manga", method = RequestMethod.GET)
 	public ResponseEntity<GenericResponseObject> listAllUsers() {
-		GenericResponseObject responseObject = webService.findAll(new GenericRequestObject(RequestType.read, ObjectType.Web, null));
+		GenericResponseObject responseObject = mangaService.findAll(new GenericRequestObject(RequestType.read, ObjectType.Manga, null));
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
 
-	// -------------------Create a Web
+	// -------------------Create a Manga
 
-	@RequestMapping(value = "/web", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponseObject> createUser(@RequestBody WebRequestObject requestObject) {
+	@RequestMapping(value = "/manga", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponseObject> createUser(@RequestBody MangaRequestObject requestObject) {
 		//LOGGER.info(requestObject.toString());
-		requestObject.setObjectType(ObjectType.Web);
+		requestObject.setObjectType(ObjectType.Manga);
 		requestObject.setOperation(RequestType.create);
-		GenericResponseObject responseObject = webService.create(requestObject);
+		GenericResponseObject responseObject = mangaService.create(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
-	// ------------------- Update a Web
+	// ------------------- Update a Manga
 	// --------------------------------------------------------
 
-	@RequestMapping(value = "/web", method = RequestMethod.PUT)
-	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody WebRequestObject requestObject) {
-		requestObject.setObjectType(ObjectType.Web);
+	@RequestMapping(value = "/manga", method = RequestMethod.PUT)
+	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody MangaRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Manga);
 		requestObject.setOperation(RequestType.update);
-		GenericResponseObject responseObject = webService.create(requestObject);
+		GenericResponseObject responseObject = mangaService.create(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
-	// ------------------- Delete Web(s)
+	// ------------------- Delete Manga(s)
 	// --------------------------------------------------------
 
-	@RequestMapping(value = "/web", method = RequestMethod.DELETE)
-	public ResponseEntity<GenericResponseObject> deleteUser(@RequestBody WebRequestObject requestObject) {
-		requestObject.setObjectType(ObjectType.Web);
+	@RequestMapping(value = "/manga", method = RequestMethod.DELETE)
+	public ResponseEntity<GenericResponseObject> deleteUser(@RequestBody MangaRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Manga);
 		requestObject.setOperation(RequestType.delete);
-		GenericResponseObject responseObject = webService.create(requestObject);
+		GenericResponseObject responseObject = mangaService.create(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	

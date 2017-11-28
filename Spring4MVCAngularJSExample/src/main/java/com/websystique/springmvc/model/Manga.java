@@ -35,7 +35,9 @@ public class Manga extends GenericModel<ObjectId>{
 	private String latestChapterId;
 	
 	//link use to collect data by default
-	private String mainLink;
+	private String mainLinkName;
+	
+	private String mainLinkId;
 	
 	private List<String> links = new ArrayList<> ();
 
@@ -70,13 +72,21 @@ public class Manga extends GenericModel<ObjectId>{
 	public void setLatestChapterId(String latestChapterId) {
 		this.latestChapterId = latestChapterId;
 	}
-	
-	public String getMainLink() {
-		return mainLink;
+
+	public String getMainLinkName() {
+		return mainLinkName;
 	}
 
-	public void setMainLink(String mainLink) {
-		this.mainLink = mainLink;
+	public void setMainLinkName(String mainLinkName) {
+		this.mainLinkName = mainLinkName;
+	}
+
+	public String getMainLinkId() {
+		return mainLinkId;
+	}
+
+	public void setMainLinkId(String mainLinkId) {
+		this.mainLinkId = mainLinkId;
 	}
 
 	public List<String> getLinks() {
@@ -97,12 +107,10 @@ public class Manga extends GenericModel<ObjectId>{
 
 	public Manga() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Manga(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy) {
 		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
-		// TODO Auto-generated constructor stub
 	}
 
 	

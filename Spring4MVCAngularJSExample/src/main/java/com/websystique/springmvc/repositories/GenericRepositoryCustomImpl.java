@@ -18,13 +18,13 @@ public abstract class GenericRepositoryCustomImpl <T extends GenericModel<ID>, I
 //	@Qualifier(value="mongoTemplate")
 	protected MongoTemplate mongoTemplate;
 	
-	public List<T> searchByCriteria(Criteria criteria,Class<T> clazz, String... includedFields) {
+	public List<T> searchByCriteria(Criteria criteria, Class<T> clazz, String... includedFields) {
 		Query query = newQuery(criteria, includedFields);
 		List<T> list = mongoTemplate.find(query, clazz);
 		return list;
 	}
 
-	public void removeByCriteria(Criteria criteria,Class<T> clazz) {
+	public void removeByCriteria(Criteria criteria, Class<T> clazz) {
 		Query query = new Query();
 		query.addCriteria(criteria);
 		mongoTemplate.remove(query, clazz);

@@ -29,7 +29,7 @@ public class WebServiceImpl implements WebService{
 	
 
 	@Override
-	public GenericResponseObject save(GenericRequestObject gRequest) {
+	public GenericResponseObject create(GenericRequestObject gRequest) {
 		WebResponseObject response = new WebResponseObject(gRequest);
 		response.setMessage(Messages.COMMON_SUCCESS);
 		response.setSuccess(true);
@@ -38,7 +38,7 @@ public class WebServiceImpl implements WebService{
 			WebVO webVO = request.getWeb();
 			response.setUniqueName(webVO.getName());
 			// check exist
-			if(webRepository.findByName(webVO.getName()) != null) {
+			if(webRepository.findByName(webVO.getName()) == null) {
 				Web web = ModelUtilProvider.getModelUtil().convertTo(webVO, Web.class);
 				webRepository.safeSave(web);
 			} else {
@@ -47,6 +47,7 @@ public class WebServiceImpl implements WebService{
 				response.setSuccess(false);
 			}
 		}catch (Exception e) {
+			LOGGER.info("RequestObject: {}", gRequest.toString());
 			LOGGER.error("An error when creating Web", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
 			response.setSuccess(false);
@@ -75,6 +76,7 @@ public class WebServiceImpl implements WebService{
 			web.setInstanceid(new ObjectId(webVO.getObjectId()));
 			webRepository.safeSave(web);
 		}catch (Exception e) {
+			LOGGER.info("RequestObject: {}", gRequest.toString());
 			LOGGER.error("An error when udpating Web", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
 			response.setSuccess(false);

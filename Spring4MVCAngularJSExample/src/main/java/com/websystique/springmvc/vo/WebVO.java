@@ -1,7 +1,5 @@
 package com.websystique.springmvc.vo;
 
-import org.bson.types.ObjectId;
-
 public class WebVO {
 
 	private String objectId;

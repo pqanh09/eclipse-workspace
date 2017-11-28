@@ -19,6 +19,8 @@ public class Link extends GenericModel<ObjectId>{
 
 
 	public static final String COLLECTION_NAME = "Link";
+	public static final String ATTR_NAME = "name";
+	public static final String ATTR_MANGA_ID = "mangaId";
 	
 	@NotNull
 	@Size(max=250)	

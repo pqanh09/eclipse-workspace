@@ -3,7 +3,6 @@ package com.websystique.springmvc.repositories;
 import java.util.List;
 
 import org.bson.types.ObjectId;
-import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
 
 import com.websystique.springmvc.model.User;

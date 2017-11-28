@@ -3,13 +3,11 @@ package com.websystique.springmvc.vo;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bson.types.ObjectId;
-
 public class MangaVO {
 
 	private String name;
 	
-	private ObjectId instanceid;
+	private String objectId;
 	
 	private String author;
 	
@@ -20,7 +18,9 @@ public class MangaVO {
 	private String latestChapterId;
 	
 	//link use to collect data by default
-	private String mainLink;
+	private String mainLinkName;
+	
+	private String mainLinkId;
 	
 	private List<String> links = new ArrayList<> ();
 
@@ -56,12 +56,20 @@ public class MangaVO {
 		this.latestChapterId = latestChapterId;
 	}
 	
-	public String getMainLink() {
-		return mainLink;
+	public String getMainLinkName() {
+		return mainLinkName;
 	}
 
-	public void setMainLink(String mainLink) {
-		this.mainLink = mainLink;
+	public void setMainLinkName(String mainLinkName) {
+		this.mainLinkName = mainLinkName;
+	}
+
+	public String getMainLinkId() {
+		return mainLinkId;
+	}
+
+	public void setMainLinkId(String mainLinkId) {
+		this.mainLinkId = mainLinkId;
 	}
 
 	public List<String> getLinks() {
@@ -80,24 +88,16 @@ public class MangaVO {
 		this.latestChapterOrdinalNumber = latestChapterOrdinalNumber;
 	}
 
-	public ObjectId getInstanceid() {
-		return instanceid;
+	public String getObjectId() {
+		return objectId;
 	}
 
-	public void setInstanceid(ObjectId instanceid) {
-		this.instanceid = instanceid;
-	}
-
-	@Override
-	public String toString() {
-		return "MangaVO [name=" + name + ", id=" + instanceid.toString() + ", author=" + author + ", latestChapterName="
-				+ latestChapterName + ", latestChapterOrdinalNumber=" + latestChapterOrdinalNumber
-				+ ", latestChapterId=" + latestChapterId + ", mainLink=" + mainLink + ", links=" + links + "]";
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
 	}
 
 	public MangaVO() {
 		super();
 	}
-
 	
 }
