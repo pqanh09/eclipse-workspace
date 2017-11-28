@@ -1,0 +1,238 @@
+{
+	"id": "b85e4158-f6bb-599a-3641-7590d749ed62",
+	"name": "Commic",
+	"description": "",
+	"order": [
+		"c657c782-3202-1763-78ac-fa8cc8259a82",
+		"23a6e92d-90c0-4893-3541-ba43ac81ce4c",
+		"c219f7ba-f2d6-fd50-0090-e7e46ec5179d",
+		"8ddf47cc-9771-44c0-642e-81169554f41b",
+		"26ce1af6-f3c5-bd7f-9510-abdc7c2d8fa0",
+		"6be6b018-0cf4-e355-9ee4-b305b944def7",
+		"af5c823a-44da-290e-c1ba-736a6ef07ff8",
+		"1b891913-fe10-1578-48d3-1551133cee8b"
+	],
+	"folders": [],
+	"folders_order": [],
+	"timestamp": 0,
+	"owner": "3233183",
+	"public": false,
+	"requests": [
+		{
+			"id": "1b891913-fe10-1578-48d3-1551133cee8b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/manga",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511881873190,
+			"name": "Manga - Delete",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"ids\":[\"5a1d796a5744c137c77012fb\"]\r\n  }\r\n}"
+		},
+		{
+			"id": "23a6e92d-90c0-4893-3541-ba43ac81ce4c",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/web",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511878069711,
+			"name": "Web - Create",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"web\": {\r\n      \"name\": \"nettruyen\",\r\n      \"url\": \"http://www.nettruyen.com\",\r\n      \"isFrom\": false\r\n    }\r\n  }\r\n}"
+		},
+		{
+			"id": "26ce1af6-f3c5-bd7f-9510-abdc7c2d8fa0",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/manga",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511878644099,
+			"name": "Manga - Get All",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62"
+		},
+		{
+			"id": "6be6b018-0cf4-e355-9ee4-b305b944def7",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/manga",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511881692277,
+			"name": "Manga - Create",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"maga\": {\r\n      \"name\": \"Hiep khach giang ho\",\r\n      \"author\": \"JEON Geuk Jin\",\r\n      \"mainLinkName\": \"nettruyen-hkgh\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1a593a\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho\",\r\n          \"xpathChapterName\": \"page-chapter\",\r\n          \"xpathChapters\": \"page-chapter\",\r\n          \"xpahtImgs\": \"page-chapter\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+		},
+		{
+			"id": "8ddf47cc-9771-44c0-642e-81169554f41b",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/web",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511879894108,
+			"name": "Web - Delete",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"ids\":[\"5a1d698f5744bf476cdb0153\"]\r\n  }\r\n}"
+		},
+		{
+			"id": "af5c823a-44da-290e-c1ba-736a6ef07ff8",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/manga",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511881870595,
+			"name": "Manga - Update",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"maga\": {\r\n      \"objectId\": \"5a1d7bdd57442dc93493e2c9\",\r\n      \"name\": \"Hiep khach giang ho\",\r\n      \"author\": \"JEON Geuk Jin111\",\r\n      \"mainLinkName\": \"nettruyen-hkgh\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1a593a\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho\",\r\n          \"xpathChapterName\": \"page-chapter1\",\r\n          \"xpathChapters\": \"page-chapter1\",\r\n          \"xpahtImgs\": \"page-chapter1\"\r\n        },\r\n        {\r\n          \"name\": \"truyentranhtuan-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1aaaaa\",\r\n          \"mangaUrl\": \"http://truyentranhtuan.com/hiep-khach-giang-ho/\",\r\n          \"xpathChapterName\": \"page-chapter12\",\r\n          \"xpathChapters\": \"page-chapter12\",\r\n          \"xpahtImgs\": \"page-chapter12\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+		},
+		{
+			"id": "c219f7ba-f2d6-fd50-0090-e7e46ec5179d",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/web",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511878547239,
+			"name": "Web - Update",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"web\": {\r\n      \"objectId\": \"5a1d6f83574469d9dd1a593a\",\r\n      \"name\": \"nettruyen\",\r\n      \"url\": \"http://www.nettruyen.com\",\r\n      \"isFrom\": false\r\n    }\r\n  }\r\n}"
+		},
+		{
+			"id": "c657c782-3202-1763-78ac-fa8cc8259a82",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/web",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511876715436,
+			"name": "Web - Get All",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62"
+		}
+	]
+}
