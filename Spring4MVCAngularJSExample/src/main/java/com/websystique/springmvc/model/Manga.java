@@ -39,7 +39,7 @@ public class Manga extends GenericModel<ObjectId>{
 	
 	private String mainLinkId;
 	
-	private List<String> links = new ArrayList<> ();
+	private List<Link> links = new ArrayList<> ();
 
 	public String getName() {
 		return name;
@@ -89,11 +89,11 @@ public class Manga extends GenericModel<ObjectId>{
 		this.mainLinkId = mainLinkId;
 	}
 
-	public List<String> getLinks() {
+	public List<Link> getLinks() {
 		return links;
 	}
 
-	public void setLinks(List<String> links) {
+	public void setLinks(List<Link> links) {
 		this.links = links;
 	}
 

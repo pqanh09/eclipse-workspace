@@ -9,25 +9,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = Link.COLLECTION_NAME)
-public class Link extends GenericModel<ObjectId>{
+public class Link{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5334169273541720185L;
-
-
-	public static final String COLLECTION_NAME = "Link";
-	public static final String ATTR_NAME = "name";
-	public static final String ATTR_MANGA_ID = "mangaId";
-	
-	@NotNull
-	@Size(max=250)	
-	@Indexed(unique = true)
 	private String name;
 	
-	private String mangaId;
 	//from web????
 	private String webId;
 	
@@ -92,22 +77,8 @@ public class Link extends GenericModel<ObjectId>{
 		this.name = name;
 	}
 
-	public String getMangaId() {
-		return mangaId;
-	}
-
-	public void setMangaId(String mangaId) {
-		this.mangaId = mangaId;
-	}
-
-	public Link(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy) {
-		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
-		// TODO Auto-generated constructor stub
-	}
-
 	public Link() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	

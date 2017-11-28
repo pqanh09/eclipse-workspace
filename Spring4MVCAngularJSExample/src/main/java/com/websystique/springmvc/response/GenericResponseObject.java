@@ -26,9 +26,9 @@ public class GenericResponseObject implements Serializable{
 	private RequestType operation;
 	private ObjectType objectType;
     private String uniqueName;
-    private Boolean success;
+    private boolean success;
     private String message;
-    private Boolean multiPart;
+    private boolean multiPart;
     
     
 	public ObjectType getObjectType() {
@@ -49,12 +49,6 @@ public class GenericResponseObject implements Serializable{
 	public void setUniqueName(String uniqueName) {
 		this.uniqueName = uniqueName;
 	}
-	public Boolean getSuccess() {
-		return success;
-	}
-	public void setSuccess(Boolean success) {
-		this.success = success;
-	}
 	public String getMessage() {
 		return message;
 	}
@@ -62,10 +56,16 @@ public class GenericResponseObject implements Serializable{
 		this.message = message;
 	}
 	
-	public Boolean getMultiPart() {
+	public boolean isSuccess() {
+		return success;
+	}
+	public void setSuccess(boolean success) {
+		this.success = success;
+	}
+	public boolean isMultiPart() {
 		return multiPart;
 	}
-	public void setMultiPart(Boolean multiPart) {
+	public void setMultiPart(boolean multiPart) {
 		this.multiPart = multiPart;
 	}
 	public GenericResponseObject(RequestType operation, ObjectType objectType, String uniqueName, Boolean success,

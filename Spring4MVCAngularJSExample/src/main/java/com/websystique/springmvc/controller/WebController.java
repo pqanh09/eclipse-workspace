@@ -56,7 +56,7 @@ public class WebController {
 	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody WebRequestObject requestObject) {
 		requestObject.setObjectType(ObjectType.Web);
 		requestObject.setOperation(RequestType.update);
-		GenericResponseObject responseObject = webService.create(requestObject);
+		GenericResponseObject responseObject = webService.update(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
@@ -67,7 +67,7 @@ public class WebController {
 	public ResponseEntity<GenericResponseObject> deleteUser(@RequestBody WebRequestObject requestObject) {
 		requestObject.setObjectType(ObjectType.Web);
 		requestObject.setOperation(RequestType.delete);
-		GenericResponseObject responseObject = webService.create(requestObject);
+		GenericResponseObject responseObject = webService.delete(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	

@@ -56,7 +56,7 @@ public class MangaController {
 	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody MangaRequestObject requestObject) {
 		requestObject.setObjectType(ObjectType.Manga);
 		requestObject.setOperation(RequestType.update);
-		GenericResponseObject responseObject = mangaService.create(requestObject);
+		GenericResponseObject responseObject = mangaService.update(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
@@ -67,7 +67,7 @@ public class MangaController {
 	public ResponseEntity<GenericResponseObject> deleteUser(@RequestBody MangaRequestObject requestObject) {
 		requestObject.setObjectType(ObjectType.Manga);
 		requestObject.setOperation(RequestType.delete);
-		GenericResponseObject responseObject = mangaService.create(requestObject);
+		GenericResponseObject responseObject = mangaService.delete(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	

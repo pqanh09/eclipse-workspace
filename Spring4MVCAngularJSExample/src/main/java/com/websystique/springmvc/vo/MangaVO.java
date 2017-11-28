@@ -3,6 +3,8 @@ package com.websystique.springmvc.vo;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.websystique.springmvc.model.Link;
+
 public class MangaVO {
 
 	private String name;
@@ -20,9 +22,7 @@ public class MangaVO {
 	//link use to collect data by default
 	private String mainLinkName;
 	
-	private String mainLinkId;
-	
-	private List<String> links = new ArrayList<> ();
+	private List<Link> links = new ArrayList<> ();
 
 	public String getName() {
 		return name;
@@ -64,19 +64,11 @@ public class MangaVO {
 		this.mainLinkName = mainLinkName;
 	}
 
-	public String getMainLinkId() {
-		return mainLinkId;
-	}
-
-	public void setMainLinkId(String mainLinkId) {
-		this.mainLinkId = mainLinkId;
-	}
-
-	public List<String> getLinks() {
+	public List<Link> getLinks() {
 		return links;
 	}
 
-	public void setLinks(List<String> links) {
+	public void setLinks(List<Link> links) {
 		this.links = links;
 	}
 
