@@ -16,6 +16,7 @@ import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.WebRequestObject;
 import com.websystique.springmvc.response.GenericResponseObject;
 import com.websystique.springmvc.response.Messages;
+import com.websystique.springmvc.response.PartResponseStatus;
 import com.websystique.springmvc.response.WebResponseObject;
 import com.websystique.springmvc.vo.WebVO;
 
@@ -33,11 +34,18 @@ public class WebServiceImpl implements WebService{
 		response.setMessage(Messages.COMMON_SUCCESS);
 		response.setSuccess(true);
 		try {
-			//TODO check exist
 			WebRequestObject request = (WebRequestObject)gRequest;
-			response.setUniqueName(request.getWeb().getName());
-			Web web = ModelUtilProvider.getModelUtil().convertTo(request.getWeb(), Web.class);
-			webRepository.safeSave(web);
+			WebVO webVO = request.getWeb();
+			response.setUniqueName(webVO.getName());
+			// check exist
+			if(webRepository.findByName(webVO.getName()) != null) {
+				Web web = ModelUtilProvider.getModelUtil().convertTo(webVO, Web.class);
+				webRepository.safeSave(web);
+			} else {
+				LOGGER.error("Web is existed");
+				response.setMessage(Messages.COMMON_EXIST);
+				response.setSuccess(false);
+			}
 		}catch (Exception e) {
 			LOGGER.error("An error when creating Web", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
@@ -52,12 +60,19 @@ public class WebServiceImpl implements WebService{
 		response.setMessage(Messages.COMMON_SUCCESS);
 		response.setSuccess(true);
 		try {
-			//TODO check not found
-			//TODO set ObjectId
 			WebRequestObject request = (WebRequestObject)gRequest;
-			response.setUniqueName(request.getWeb().getName());
+			WebVO webVO = request.getWeb();
+			response.setUniqueName(webVO.getName());
+			//check not found
+			if(webRepository.findOne(new ObjectId(webVO.getObjectId())) == null){
+				LOGGER.error("Web not found");
+				response.setMessage(Messages.COMMON_NOT_FOUND);
+				response.setSuccess(false);
+				return response;
+			}
+			//set ObjectId
 			Web web = ModelUtilProvider.getModelUtil().convertTo(request.getWeb(), Web.class);
-//			web.setInstanceid(instanceid);
+			web.setInstanceid(new ObjectId(webVO.getObjectId()));
 			webRepository.safeSave(web);
 		}catch (Exception e) {
 			LOGGER.error("An error when udpating Web", e);
@@ -75,10 +90,21 @@ public class WebServiceImpl implements WebService{
 		try {
 			WebRequestObject request = (WebRequestObject)gRequest;
 			List<String> ids = request.getIds();
+			List<PartResponseStatus> partStatus = new ArrayList<>();
+			
 			for (String id : ids) {
-				webRepository.delete(new ObjectId(id));
+				PartResponseStatus part = new PartResponseStatus(id, true, Messages.COMMON_SUCCESS);
+				try {
+					webRepository.delete(new ObjectId(id));
+				}catch (Exception e) {
+					LOGGER.error("An error when deleting Web {}:", id, e);
+					part.setMessage(Messages.COMMON_FAIL);
+					part.setSuccess(false);
+				}
+				partStatus.add(part);
 			}
-			//response.setUniqueName("");
+			
+			response.setPartStatus(partStatus);
 		}catch (Exception e) {
 			LOGGER.error("An error when delete Web(s)", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
@@ -89,19 +115,19 @@ public class WebServiceImpl implements WebService{
 
 	@Override
 	public GenericResponseObject findAll(GenericRequestObject gRequest) {
-		// TODO Auto-generated method stub
 		WebResponseObject response = new WebResponseObject(gRequest);
 		response.setMessage(Messages.COMMON_SUCCESS);
 		response.setSuccess(true);
 		try {
 			List<WebVO> result = new ArrayList<>();
-			List<Web> temp = webRepository.findAll();
+			List<Web> webList = webRepository.findAll();
 			
-			for (Web web : temp) {
-				result.add(ModelUtilProvider.getModelUtil().convertTo(web, WebVO.class));
+			for (Web web : webList) {
+				WebVO webVO = ModelUtilProvider.getModelUtil().convertTo(web, WebVO.class);
+				webVO.setObjectId(web.getInstanceid().toString());
+				result.add(webVO);
 			}
 			response.setList(result);
-			//response.setUniqueName("");
 		}catch (Exception e) {
 			LOGGER.error("An error when reading Webs", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);

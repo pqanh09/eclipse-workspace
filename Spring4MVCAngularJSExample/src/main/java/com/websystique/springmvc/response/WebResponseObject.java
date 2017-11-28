@@ -4,21 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.websystique.springmvc.request.GenericRequestObject;
-import com.websystique.springmvc.request.ObjectType;
-import com.websystique.springmvc.request.RequestType;
 import com.websystique.springmvc.vo.WebVO;
 
 public class WebResponseObject extends GenericResponseObject{
 
-	public WebResponseObject(RequestType operation, ObjectType objectType, String uniqueName, Boolean success,
-			String message) {
-		super(operation, objectType, uniqueName, success, message);
-	}
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 5320663543270808230L;
 	private List<WebVO> list = new ArrayList<>();
+	private List<PartResponseStatus> partStatus = new ArrayList<>();
 	public List<WebVO> getList() {
 		return list;
 	}
@@ -27,6 +22,12 @@ public class WebResponseObject extends GenericResponseObject{
 	}
 	public WebResponseObject(GenericRequestObject request) {
 		super(request);
+	}
+	public List<PartResponseStatus> getPartStatus() {
+		return partStatus;
+	}
+	public void setPartStatus(List<PartResponseStatus> partStatus) {
+		this.partStatus = partStatus;
 	}
 	
 	

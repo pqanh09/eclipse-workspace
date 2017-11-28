@@ -49,27 +49,27 @@ public class WebController {
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
-//	// ------------------- Update a Web
-//	// --------------------------------------------------------
-//
-//	@RequestMapping(value = "/web", method = RequestMethod.PUT)
-//	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody WebRequestObject requestObject) {
-//		requestObject.setObjectType(ObjectType.Web);
-//		requestObject.setOperation(RequestType.update);
-//		GenericResponseObject responseObject = webService.save(requestObject);
-//		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-//	}
-//
-//	// ------------------- Delete Web(s)
-//	// --------------------------------------------------------
-//
-//	@RequestMapping(value = "/web", method = RequestMethod.DELETE)
-//	public ResponseEntity<GenericResponseObject> deleteUser(@RequestBody WebRequestObject requestObject) {
-//		requestObject.setObjectType(ObjectType.Web);
-//		requestObject.setOperation(RequestType.delete);
-//		GenericResponseObject responseObject = webService.save(requestObject);
-//		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-//	}
+	// ------------------- Update a Web
+	// --------------------------------------------------------
+
+	@RequestMapping(value = "/web", method = RequestMethod.PUT)
+	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody WebRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Web);
+		requestObject.setOperation(RequestType.update);
+		GenericResponseObject responseObject = webService.save(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+
+	// ------------------- Delete Web(s)
+	// --------------------------------------------------------
+
+	@RequestMapping(value = "/web", method = RequestMethod.DELETE)
+	public ResponseEntity<GenericResponseObject> deleteUser(@RequestBody WebRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Web);
+		requestObject.setOperation(RequestType.delete);
+		GenericResponseObject responseObject = webService.save(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
 	
 
 }

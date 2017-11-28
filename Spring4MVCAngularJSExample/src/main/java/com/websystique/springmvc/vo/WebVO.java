@@ -4,8 +4,7 @@ import org.bson.types.ObjectId;
 
 public class WebVO {
 
-	private ObjectId instanceid;
-	
+	private String objectId;
 	
 	private String name;
 
@@ -37,18 +36,18 @@ public class WebVO {
 		this.isFrom = isFrom;
 	}
 
-
-	public ObjectId getInstanceid() {
-		return instanceid;
+	
+	public String getObjectId() {
+		return objectId;
 	}
 
-	public void setInstanceid(ObjectId instanceid) {
-		this.instanceid = instanceid;
+	public void setObjectId(String objectId) {
+		this.objectId = objectId;
 	}
 
 	@Override
 	public String toString() {
-		return "WebVO [id=" + instanceid.toString() + ", name=" + name + ", url=" + url + ", isFrom=" + isFrom + "]";
+		return "WebVO [id=" + objectId + ", name=" + name + ", url=" + url + ", isFrom=" + isFrom + "]";
 	}
 
 	public WebVO() {
