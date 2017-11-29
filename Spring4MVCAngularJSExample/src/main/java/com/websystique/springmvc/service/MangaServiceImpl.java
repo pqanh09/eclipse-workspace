@@ -36,7 +36,7 @@ public class MangaServiceImpl implements MangaService{
 		response.setSuccess(true);
 		try {
 			MangaRequestObject request = (MangaRequestObject)gRequest;
-			MangaVO mangaVO = request.getMaga();
+			MangaVO mangaVO = request.getModel();
 			response.setUniqueName(mangaVO.getName());
 			// check exist
 			if(mangaRepository.findByName(mangaVO.getName()) != null) {
@@ -64,7 +64,7 @@ public class MangaServiceImpl implements MangaService{
 		response.setSuccess(true);
 		try {
 			MangaRequestObject request = (MangaRequestObject)gRequest;
-			MangaVO mangaVO = request.getMaga();
+			MangaVO mangaVO = request.getModel();
 			response.setUniqueName(mangaVO.getName());
 			//check not found
 			if(mangaRepository.findOne(new ObjectId(mangaVO.getObjectId())) == null){

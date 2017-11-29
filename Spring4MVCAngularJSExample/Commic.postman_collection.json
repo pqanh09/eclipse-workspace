@@ -7,6 +7,10 @@
 		"23a6e92d-90c0-4893-3541-ba43ac81ce4c",
 		"c219f7ba-f2d6-fd50-0090-e7e46ec5179d",
 		"8ddf47cc-9771-44c0-642e-81169554f41b",
+		"1bbaf647-9c66-081b-deab-423ce972531f",
+		"1389f5b6-de39-099e-0ab7-35db913b8566",
+		"7c3138ca-3e81-f470-9435-fd9bbd1311ba",
+		"1e740dcb-4cb1-ed80-d26e-689bb358f3ce",
 		"26ce1af6-f3c5-bd7f-9510-abdc7c2d8fa0",
 		"6be6b018-0cf4-e355-9ee4-b305b944def7",
 		"af5c823a-44da-290e-c1ba-736a6ef07ff8",
@@ -18,6 +22,35 @@
 	"owner": "3233183",
 	"public": false,
 	"requests": [
+		{
+			"id": "1389f5b6-de39-099e-0ab7-35db913b8566",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511914005789,
+			"name": "Job - Create",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"job1\",\r\n      \"description\": \"description Job1\",\r\n      \"cronString\": \"* * *\",\r\n      \"mangas\":[\"5a1d7bdd57442dc93493e2c9\", \"5a1d7bdd57442dc93493eeee\"]\r\n    }\r\n  }\r\n}"
+		},
 		{
 			"id": "1b891913-fe10-1578-48d3-1551133cee8b",
 			"headers": "Content-Type: application/json\n",
@@ -41,11 +74,61 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511881873190,
+			"time": 1511914689485,
 			"name": "Manga - Delete",
 			"description": "",
 			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
-			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"ids\":[\"5a1d796a5744c137c77012fb\"]\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"ids\":[\"5a1dfc83574479d76dc473d4\"]\r\n  }\r\n}"
+		},
+		{
+			"id": "1bbaf647-9c66-081b-deab-423ce972531f",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511913777610,
+			"name": "Job - Get All",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62"
+		},
+		{
+			"id": "1e740dcb-4cb1-ed80-d26e-689bb358f3ce",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "DELETE",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511914158740,
+			"name": "Job - Delete",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"ids\": [\"5a1df9d55744818de6f674a3\"]\r\n  }\r\n}"
 		},
 		{
 			"id": "23a6e92d-90c0-4893-3541-ba43ac81ce4c",
@@ -70,11 +153,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511878069711,
+			"time": 1511914561960,
 			"name": "Web - Create",
 			"description": "",
 			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
-			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"web\": {\r\n      \"name\": \"nettruyen\",\r\n      \"url\": \"http://www.nettruyen.com\",\r\n      \"isFrom\": false\r\n    }\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"nettruyen\",\r\n      \"url\": \"http://www.nettruyen.com\",\r\n      \"isFrom\": false\r\n    }\r\n  }\r\n}"
 		},
 		{
 			"id": "26ce1af6-f3c5-bd7f-9510-abdc7c2d8fa0",
@@ -120,11 +203,40 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511881692277,
+			"time": 1511914659316,
 			"name": "Manga - Create",
 			"description": "",
 			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
-			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"maga\": {\r\n      \"name\": \"Hiep khach giang ho\",\r\n      \"author\": \"JEON Geuk Jin\",\r\n      \"mainLinkName\": \"nettruyen-hkgh\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1a593a\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho\",\r\n          \"xpathChapterName\": \"page-chapter\",\r\n          \"xpathChapters\": \"page-chapter\",\r\n          \"xpahtImgs\": \"page-chapter\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"Hiep khach giang ho\",\r\n      \"author\": \"JEON Geuk Jin\",\r\n      \"mainLinkName\": \"nettruyen-hkgh\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1a593a\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho\",\r\n          \"xpathChapterName\": \"page-chapter\",\r\n          \"xpathChapters\": \"page-chapter\",\r\n          \"xpahtImgs\": \"page-chapter\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+		},
+		{
+			"id": "7c3138ca-3e81-f470-9435-fd9bbd1311ba",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "PUT",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1511914060852,
+			"name": "Job - Update",
+			"description": "",
+			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
+			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"model\": {\r\n      \"objectId\": \"5a1df9d55744818de6f674a3\",\r\n      \"name\": \"job1\",\r\n      \"description\": \"description Job1111111111111111\",\r\n      \"cronString\": \"* * * 12\",\r\n      \"mangas\":[\"5a1d7bdd57442dc93493e2c9\", \"5a1d7bdd57442dc93493eeee\"]\r\n    }\r\n  }\r\n}"
 		},
 		{
 			"id": "8ddf47cc-9771-44c0-642e-81169554f41b",
@@ -149,11 +261,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511879894108,
+			"time": 1511914661308,
 			"name": "Web - Delete",
 			"description": "",
 			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
-			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"ids\":[\"5a1d698f5744bf476cdb0153\"]\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"ids\":[\"5a1dfc42574479d76dc473d2\"]\r\n  }\r\n}"
 		},
 		{
 			"id": "af5c823a-44da-290e-c1ba-736a6ef07ff8",
@@ -178,11 +290,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511881870595,
+			"time": 1511914679183,
 			"name": "Manga - Update",
 			"description": "",
 			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
-			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"maga\": {\r\n      \"objectId\": \"5a1d7bdd57442dc93493e2c9\",\r\n      \"name\": \"Hiep khach giang ho\",\r\n      \"author\": \"JEON Geuk Jin111\",\r\n      \"mainLinkName\": \"nettruyen-hkgh\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1a593a\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho\",\r\n          \"xpathChapterName\": \"page-chapter1\",\r\n          \"xpathChapters\": \"page-chapter1\",\r\n          \"xpahtImgs\": \"page-chapter1\"\r\n        },\r\n        {\r\n          \"name\": \"truyentranhtuan-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1aaaaa\",\r\n          \"mangaUrl\": \"http://truyentranhtuan.com/hiep-khach-giang-ho/\",\r\n          \"xpathChapterName\": \"page-chapter12\",\r\n          \"xpathChapters\": \"page-chapter12\",\r\n          \"xpahtImgs\": \"page-chapter12\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"model\": {\r\n      \"objectId\": \"5a1dfc83574479d76dc473d4\",\r\n      \"name\": \"Hiep khach giang ho\",\r\n      \"author\": \"JEON Geuk Jin111\",\r\n      \"mainLinkName\": \"truyentranhtuan-hkgh\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1a593a\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho\",\r\n          \"xpathChapterName\": \"page-chapter1\",\r\n          \"xpathChapters\": \"page-chapter1\",\r\n          \"xpahtImgs\": \"page-chapter1\"\r\n        },\r\n        {\r\n          \"name\": \"truyentranhtuan-hkgh\",\r\n          \"webId\": \"5a1d6f83574469d9dd1aaaaa\",\r\n          \"mangaUrl\": \"http://truyentranhtuan.com/hiep-khach-giang-ho/\",\r\n          \"xpathChapterName\": \"page-chapter123\",\r\n          \"xpathChapters\": \"page-chapter123\",\r\n          \"xpahtImgs\": \"page-chapter123\"\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
 		},
 		{
 			"id": "c219f7ba-f2d6-fd50-0090-e7e46ec5179d",
@@ -207,11 +319,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1511878547239,
+			"time": 1511914663228,
 			"name": "Web - Update",
 			"description": "",
 			"collectionId": "b85e4158-f6bb-599a-3641-7590d749ed62",
-			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"web\": {\r\n      \"objectId\": \"5a1d6f83574469d9dd1a593a\",\r\n      \"name\": \"nettruyen\",\r\n      \"url\": \"http://www.nettruyen.com\",\r\n      \"isFrom\": false\r\n    }\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"WebRequestObject\": {\r\n    \"model\": {\r\n      \"objectId\": \"5a1dfc42574479d76dc473d2\",\r\n      \"name\": \"nettruyen\",\r\n      \"url\": \"http://www.nettruyen.com1\",\r\n      \"isFrom\": false\r\n    }\r\n  }\r\n}"
 		},
 		{
 			"id": "c657c782-3202-1763-78ac-fa8cc8259a82",

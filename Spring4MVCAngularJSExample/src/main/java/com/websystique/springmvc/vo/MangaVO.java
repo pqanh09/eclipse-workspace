@@ -5,12 +5,8 @@ import java.util.List;
 
 import com.websystique.springmvc.model.Link;
 
-public class MangaVO {
+public class MangaVO extends GenericVO{
 
-	private String name;
-	
-	private String objectId;
-	
 	private String author;
 	
 	private String latestChapterName;
@@ -24,13 +20,6 @@ public class MangaVO {
 	
 	private List<Link> links = new ArrayList<> ();
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 	public String getAuthor() {
 		return author;
@@ -78,14 +67,6 @@ public class MangaVO {
 
 	public void setLatestChapterOrdinalNumber(int latestChapterOrdinalNumber) {
 		this.latestChapterOrdinalNumber = latestChapterOrdinalNumber;
-	}
-
-	public String getObjectId() {
-		return objectId;
-	}
-
-	public void setObjectId(String objectId) {
-		this.objectId = objectId;
 	}
 
 	public MangaVO() {
