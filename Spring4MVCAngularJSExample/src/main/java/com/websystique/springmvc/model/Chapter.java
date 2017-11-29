@@ -28,13 +28,13 @@ public class Chapter extends GenericModel<ObjectId> {
 
 	private String mangaId;
 	
-	private int ordinalNumber = 0;
+	private double ordinalNumber = -1.0;
 	
 	private List<String> images = new ArrayList<>();
 	
-	private String linkId;
-
+	private String url;
 	
+	private String linkName;
 
 	public String getName() {
 		return name;
@@ -52,11 +52,11 @@ public class Chapter extends GenericModel<ObjectId> {
 		this.mangaId = mangaId;
 	}
 
-	public int getOrdinalNumber() {
+	public double getOrdinalNumber() {
 		return ordinalNumber;
 	}
 
-	public void setOrdinalNumber(int ordinalNumber) {
+	public void setOrdinalNumber(double ordinalNumber) {
 		this.ordinalNumber = ordinalNumber;
 	}
 
@@ -68,23 +68,30 @@ public class Chapter extends GenericModel<ObjectId> {
 		this.images = images;
 	}
 
-	public String getLinkId() {
-		return linkId;
+	public String getUrl() {
+		return url;
 	}
 
-	public void setLinkId(String linkId) {
-		this.linkId = linkId;
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getLinkName() {
+		return linkName;
+	}
+
+	public void setLinkName(String linkName) {
+		this.linkName = linkName;
 	}
 
 	public Chapter() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	public Chapter(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy) {
-		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
-		// TODO Auto-generated constructor stub
+	@Override
+	public String toString() {
+		return "Chapter [name=" + name + ", mangaId=" + mangaId + ", ordinalNumber=" + ordinalNumber + ", images="
+				+ images + ", url=" + url + ", linkName=" + linkName + "]";
 	}
-
 
 }

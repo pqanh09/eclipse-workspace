@@ -87,12 +87,10 @@ public class Job extends GenericModel<ObjectId> {
 
 	public Job() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Job(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy) {
 		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
-		// TODO Auto-generated constructor stub
 	}
 
 	

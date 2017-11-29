@@ -7,17 +7,16 @@ public class Link{
 	//from web????
 	private String webId;
 	
+	private String webName;
+	
 	// main link to get all Chapters
 	private String mangaUrl;
 	
-	//xpath to get Chapter Name
-	private String xpathChapterName;
+	//xpath to get Chapters
+	private ChapterSelectorSyntax chapterSelector;
 	
-	//xpath to get Chapter
-	private String xpathChapters;
-	
-	//xpath to get image in chapter
-	private String xpahtImgs;
+	//xpath to get images
+	private ImageSelectorSyntax imgSelector;
 
 	public String getWebId() {
 		return webId;
@@ -34,31 +33,23 @@ public class Link{
 	public void setMangaUrl(String mangaUrl) {
 		this.mangaUrl = mangaUrl;
 	}
-
-	public String getXpathChapters() {
-		return xpathChapters;
-	}
-
-	public void setXpathChapters(String xpathChapters) {
-		this.xpathChapters = xpathChapters;
-	}
-
-	public String getXpahtImgs() {
-		return xpahtImgs;
-	}
-
-	public void setXpahtImgs(String xpahtImgs) {
-		this.xpahtImgs = xpahtImgs;
-	}
-
 	
-	public String getXpathChapterName() {
-		return xpathChapterName;
+	public ChapterSelectorSyntax getChapterSelector() {
+		return chapterSelector;
 	}
 
-	public void setXpathChapterName(String xpathChapterName) {
-		this.xpathChapterName = xpathChapterName;
+	public void setChapterSelector(ChapterSelectorSyntax chapterSelector) {
+		this.chapterSelector = chapterSelector;
 	}
+
+	public ImageSelectorSyntax getImgSelector() {
+		return imgSelector;
+	}
+
+	public void setImgSelector(ImageSelectorSyntax imgSelector) {
+		this.imgSelector = imgSelector;
+	}
+
 
 	public String getName() {
 		return name;
@@ -70,6 +61,20 @@ public class Link{
 
 	public Link() {
 		super();
+	}
+	
+	public String getWebName() {
+		return webName;
+	}
+
+	public void setWebName(String webName) {
+		this.webName = webName;
+	}
+
+	@Override
+	public String toString() {
+		return "Link [name=" + name + ", webId=" + webId + ", webName=" + webName + ", mangaUrl=" + mangaUrl
+				+ ", chapterSelector=" + chapterSelector + ", imgSelector=" + imgSelector + "]";
 	}
 
 	

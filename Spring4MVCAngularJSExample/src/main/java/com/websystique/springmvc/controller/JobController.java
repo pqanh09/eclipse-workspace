@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.websystique.springmvc.poller.ComicPoller;
 import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.JobRequestObject;
 import com.websystique.springmvc.request.ObjectType;
@@ -67,6 +68,16 @@ public class JobController {
 		requestObject.setObjectType(ObjectType.Job);
 		requestObject.setOperation(RequestType.delete);
 		GenericResponseObject responseObject = jobService.delete(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+	
+	// ------------------- Delete Job(s)
+	// --------------------------------------------------------
+	@RequestMapping(value = "/job/pollmanga", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponseObject> pollManga(@RequestBody JobRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Job);
+		requestObject.setOperation(RequestType.poll);
+		GenericResponseObject responseObject = jobService.pollManga(requestObject);
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	

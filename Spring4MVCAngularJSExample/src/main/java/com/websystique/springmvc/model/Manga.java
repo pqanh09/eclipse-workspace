@@ -30,16 +30,17 @@ public class Manga extends GenericModel<ObjectId>{
 	
 	private String latestChapterName;
 	
-	private int latestChapterOrdinalNumber;
+	private double latestChapterOrdinalNumber = -1.0;
 	
 	private String latestChapterId;
 	
 	//link use to collect data by default
 	private String mainLinkName;
 	
-	private String mainLinkId;
-	
 	private List<Link> links = new ArrayList<> ();
+	
+	//Main image for Manga
+	private String imageUrl;
 
 	public String getName() {
 		return name;
@@ -81,14 +82,6 @@ public class Manga extends GenericModel<ObjectId>{
 		this.mainLinkName = mainLinkName;
 	}
 
-	public String getMainLinkId() {
-		return mainLinkId;
-	}
-
-	public void setMainLinkId(String mainLinkId) {
-		this.mainLinkId = mainLinkId;
-	}
-
 	public List<Link> getLinks() {
 		return links;
 	}
@@ -97,12 +90,20 @@ public class Manga extends GenericModel<ObjectId>{
 		this.links = links;
 	}
 
-	public int getLatestChapterOrdinalNumber() {
+	public double getLatestChapterOrdinalNumber() {
 		return latestChapterOrdinalNumber;
 	}
 
-	public void setLatestChapterOrdinalNumber(int latestChapterOrdinalNumber) {
+	public void setLatestChapterOrdinalNumber(double latestChapterOrdinalNumber) {
 		this.latestChapterOrdinalNumber = latestChapterOrdinalNumber;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 
 	public Manga() {

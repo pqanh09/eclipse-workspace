@@ -59,20 +59,10 @@ public class Web extends GenericModel<ObjectId> {
 
 	public Web() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Web(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy) {
 		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
-		// TODO Auto-generated constructor stub
-	}
-
-	public Web(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy, String name, String url,
-			boolean isFrom) {
-		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
-		this.name = name;
-		this.url = url;
-		this.isFrom = isFrom;
 	}
 
 }

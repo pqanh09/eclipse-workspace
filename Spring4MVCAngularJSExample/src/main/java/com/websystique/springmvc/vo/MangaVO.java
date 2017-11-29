@@ -7,6 +7,8 @@ import com.websystique.springmvc.model.Link;
 
 public class MangaVO extends GenericVO{
 
+	private String imageUrl;
+	
 	private String author;
 	
 	private String latestChapterName;
@@ -69,6 +71,13 @@ public class MangaVO extends GenericVO{
 		this.latestChapterOrdinalNumber = latestChapterOrdinalNumber;
 	}
 
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
 	public MangaVO() {
 		super();
 	}

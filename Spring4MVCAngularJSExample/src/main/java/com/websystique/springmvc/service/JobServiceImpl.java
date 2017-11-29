@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.ModelUtilProvider;
+import com.websystique.springmvc.poller.ComicPoller;
 import com.websystique.springmvc.repositories.JobRepository;
 import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.JobRequestObject;
@@ -27,6 +28,8 @@ public class JobServiceImpl implements JobService{
 	@Autowired
 	private JobRepository jobRepository;
 	
+	@Autowired
+	ComicPoller comicPoller;
 
 	@Override
 	public GenericResponseObject create(GenericRequestObject gRequest) {
@@ -132,6 +135,40 @@ public class JobServiceImpl implements JobService{
 			response.setList(result);
 		}catch (Exception e) {
 			LOGGER.error("An error when reading Jobs", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+	@Override
+	public GenericResponseObject pollManga(GenericRequestObject gRequest) {
+		JobResponseObject response = new JobResponseObject(gRequest);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			JobRequestObject request = (JobRequestObject)gRequest;
+			if(!request.getIds().isEmpty()){
+				comicPoller.pollManga(request.getIds().get(0));
+			} else {
+				response.setMessage("No Manga to poll");
+				response.setSuccess(false);
+			}
+			
+			JobVO jobVO = request.getModel();
+			response.setUniqueName(jobVO.getName());
+			// check exist
+			if(jobRepository.findByName(jobVO.getName()) == null) {
+				Job job = ModelUtilProvider.getModelUtil().convertTo(jobVO, Job.class);
+				jobRepository.safeSave(job);
+			} else {
+				LOGGER.error("Job is existed");
+				response.setMessage(Messages.COMMON_EXIST);
+				response.setSuccess(false);
+			}
+		}catch (Exception e) {
+			LOGGER.info("RequestObject: {}", gRequest.toString());
+			LOGGER.error("An error when creating Job", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
 			response.setSuccess(false);
 		}
