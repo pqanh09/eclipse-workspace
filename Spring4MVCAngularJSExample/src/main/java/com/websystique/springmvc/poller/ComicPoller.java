@@ -25,6 +25,8 @@ import com.websystique.springmvc.model.Manga;
 import com.websystique.springmvc.repositories.ChapterRepository;
 import com.websystique.springmvc.repositories.MangaRepository;
 
+import sun.security.krb5.internal.LastReqEntry;
+
 @Service("comicPoller")
 public class ComicPoller {
 	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(ComicPoller.class);
@@ -49,16 +51,28 @@ public class ComicPoller {
 				mainLink = link;
 			}
 		}
-		//get data from main link, if false: get data from other links
-		if(!pollLink(mainLink, manga)){
-			for (Link link : links) {
-				if(!mainLinkName.equals(link.getName())){
-					if(pollLink(mainLink, manga)){
-						break;
+		//poll main link and others
+		//get data from main link, if false: get data from other links 
+		if(mainLink != null){
+			if(!pollLink(mainLink, manga)){
+				for (Link link : links) {
+					if(!mainLinkName.equals(link.getName())){
+						if(pollLink(link, manga)){
+							break;
+						}
 					}
 				}
 			}
+		} 
+		// main link null, poll others
+		else {
+			for (Link link : links) {
+				if(pollLink(link, manga)){
+					break;
+				}
+			}
 		}
+		
 		LOGGER.info("Polling Manga successfully");
 	}
 	private Chapter getChapterFromElement(ChapterSelectorSyntax chapterSS, Element element){
@@ -95,7 +109,7 @@ public class ComicPoller {
 	private boolean pollLink(Link link, Manga manga){
 		
 		try {
-			double latestChapter = manga.getLatestChapterOrdinalNumber();
+			double latestChapterOrdinalNumber = manga.getLatestChapterOrdinalNumber();
 			String mangaUrl = link.getMangaUrl();
 			Document chapterDoc = Jsoup.connect(mangaUrl).get();
 			ChapterSelectorSyntax chapterSS = link.getChapterSelector();
@@ -106,6 +120,8 @@ public class ComicPoller {
 				if(chapter != null){
 					chapter.setMangaId(manga.getInstanceid().toString());
 					chapter.setLinkName(link.getName());
+					chapter.setWebId(link.getWebId());
+					chapter.setFullName(manga.getName() + " - " + chapter.getName());
 					chapters.add(chapter);
 				}
 			}
@@ -115,26 +131,33 @@ public class ComicPoller {
 			Iterator<Chapter> iterator =  chapters.iterator();
 			// find new chapter
 			boolean newChapter = false;
+			Chapter latestChapter = null;
 			while(iterator.hasNext()){
-				Chapter chapter = iterator.next();
+				latestChapter = iterator.next();
 				// get first -> end
-				if(latestChapter < 0 ) {
-					pollChapter(chapter, link.getImgSelector());
+				if(latestChapterOrdinalNumber < 0 ) {
+					pollChapter(latestChapter, link.getImgSelector());
 					newChapter = true;
 				} else {
 					//get latest
-					if(latestChapter < chapter.getOrdinalNumber()){
-						pollChapter(chapter, link.getImgSelector());
+					if(latestChapterOrdinalNumber < latestChapter.getOrdinalNumber()){
+						pollChapter(latestChapter, link.getImgSelector());
 						newChapter = true;
 					} else {
 						continue;
 					}
 				}
-				latestChapter = chapter.getOrdinalNumber();
+				latestChapterOrdinalNumber = latestChapter.getOrdinalNumber();
 			}
-			if(latestChapter <= manga.getLatestChapterOrdinalNumber() && !newChapter) {
+			if(latestChapterOrdinalNumber <= manga.getLatestChapterOrdinalNumber() && !newChapter) {
 				LOGGER.warn("Not have new chapter for this Manga {} at Site {}", manga.getName(), link.getWebName() );
 				return false;
+			}
+			if(latestChapter != null) {
+				manga.setLatestChapterOrdinalNumber(latestChapter.getOrdinalNumber());
+				manga.setLatestChapterName(latestChapter.getName());
+				manga.setLatestChapterId(latestChapter.getInstanceid().toString());
+				mangaRepository.safeSave(manga);
 			}
 		} catch (IOException e) {
 			LOGGER.info("Link: {}", link.toString());

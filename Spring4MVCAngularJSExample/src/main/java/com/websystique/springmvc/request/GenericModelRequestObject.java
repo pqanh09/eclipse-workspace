@@ -21,6 +21,11 @@ public class GenericModelRequestObject<T extends GenericVO> extends GenericReque
 	public void setModel(T model) {
 		this.model = model;
 	}
+	@Override
+	public String toString() {
+		return "GenericModelRequestObject [model=" + model + ", ids=" + ids + ", operation=" + operation
+				+ ", objectType=" + objectType + ", others=" + others + "]";
+	}
 	
 	
 }

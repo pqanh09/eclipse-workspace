@@ -6,5 +6,6 @@ public interface Messages {
 	public final static String COMMON_UNKNOWN_ERROR = "common.unknown.error";
 	public final static String COMMON_FAIL = "common.fail";
 	public final static String COMMON_SUCCESS = "common.success";
+	public final static String COMMON_NOT_SUPPORT = "common.not.support";
 	
 }

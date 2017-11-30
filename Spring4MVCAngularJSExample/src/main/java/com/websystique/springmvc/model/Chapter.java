@@ -1,7 +1,6 @@
 package com.websystique.springmvc.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
@@ -20,12 +19,23 @@ public class Chapter extends GenericModel<ObjectId> {
 	private static final long serialVersionUID = 9152250095558348755L;
 
 	public static final String COLLECTION_NAME = "Chapter";
+	public static final String ATTR_NAME = "name";
+	public static final String ATTR_FULLNAME = "fullName";
+	public static final String ATTR_MANGA_ID = "mangaId";
+	public static final String ATTR_ORDINAL_NUMBER = "ordinalNumber";
+	public static final String ATTR_IMAGES = "images";
+	public static final String ATTR_URL = "url";
+	public static final String ATTR_LINK_NAME = "linkName";
+	public static final String ATTR_WEB_ID = "webId";
+
+
+	private String name;
 
 	@NotNull
 	@Size(max = 250)
 	@Indexed(unique = true)
-	private String name;
-
+	private String fullName;
+	
 	private String mangaId;
 	
 	private double ordinalNumber = -1.0;
@@ -35,6 +45,8 @@ public class Chapter extends GenericModel<ObjectId> {
 	private String url;
 	
 	private String linkName;
+	
+	private String webId;
 
 	public String getName() {
 		return name;
@@ -88,10 +100,29 @@ public class Chapter extends GenericModel<ObjectId> {
 		super();
 	}
 
-	@Override
-	public String toString() {
-		return "Chapter [name=" + name + ", mangaId=" + mangaId + ", ordinalNumber=" + ordinalNumber + ", images="
-				+ images + ", url=" + url + ", linkName=" + linkName + "]";
+	
+	public String getFullName() {
+		return fullName;
 	}
 
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+	
+	public String getWebId() {
+		return webId;
+	}
+
+	public void setWebId(String webId) {
+		this.webId = webId;
+	}
+
+	@Override
+	public String toString() {
+		return "Chapter [name=" + name + ", fullName=" + fullName + ", mangaId=" + mangaId + ", ordinalNumber="
+				+ ordinalNumber + ", images=" + images + ", url=" + url + ", linkName=" + linkName + ", webId=" + webId
+				+ "]";
+	}
+
+	
 }

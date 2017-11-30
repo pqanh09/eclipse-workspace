@@ -154,18 +154,6 @@ public class JobServiceImpl implements JobService{
 				response.setMessage("No Manga to poll");
 				response.setSuccess(false);
 			}
-			
-			JobVO jobVO = request.getModel();
-			response.setUniqueName(jobVO.getName());
-			// check exist
-			if(jobRepository.findByName(jobVO.getName()) == null) {
-				Job job = ModelUtilProvider.getModelUtil().convertTo(jobVO, Job.class);
-				jobRepository.safeSave(job);
-			} else {
-				LOGGER.error("Job is existed");
-				response.setMessage(Messages.COMMON_EXIST);
-				response.setSuccess(false);
-			}
 		}catch (Exception e) {
 			LOGGER.info("RequestObject: {}", gRequest.toString());
 			LOGGER.error("An error when creating Job", e);

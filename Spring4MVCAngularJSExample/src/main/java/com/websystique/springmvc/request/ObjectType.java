@@ -1,5 +1,5 @@
 package com.websystique.springmvc.request;
 
 public enum ObjectType {
-	Manga, Job, Web
+	Manga, Job, Web, Chapter
 }

@@ -18,8 +18,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 }) 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericRequestObject {
-	private RequestType operation;
-	private ObjectType objectType;
+	protected RequestType operation;
+	protected ObjectType objectType;
 	protected Map<String, Object> others = new HashMap<String, Object>();
 	public RequestType getOperation() {
 		return operation;
