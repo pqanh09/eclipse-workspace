@@ -1,4 +1,4 @@
-package com.websystique.main.test1;
+package com.websystique.springmvc.service.test;
 
 import java.security.SecureRandom;
 import java.util.Random;

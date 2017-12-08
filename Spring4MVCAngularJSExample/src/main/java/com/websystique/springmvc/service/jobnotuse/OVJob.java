@@ -1,4 +1,4 @@
-package com.websystique.main.test1;
+package com.websystique.springmvc.service.jobnotuse;
 
 public interface OVJob {
 	
@@ -12,7 +12,7 @@ public interface OVJob {
 
 	String getGroupName();
 	
-    OVJobListener getOVJobListener();
+    MyJobListener getOVJobListener();
     
 }
 

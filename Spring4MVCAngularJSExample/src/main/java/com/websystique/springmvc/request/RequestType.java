@@ -1,5 +1,5 @@
 package com.websystique.springmvc.request;
 
 public enum RequestType {
-	create, read, update, delete, poll
+	create, read, update, delete, poll, stop, start
 }

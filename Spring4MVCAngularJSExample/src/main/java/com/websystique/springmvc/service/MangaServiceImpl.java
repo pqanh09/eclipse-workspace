@@ -47,7 +47,7 @@ public class MangaServiceImpl implements MangaService{
 			}
 			// create Manga
 			Manga manga = ModelUtilProvider.getModelUtil().convertTo(mangaVO, Manga.class);
-			manga = mangaRepository.insert(manga);
+			mangaRepository.safeSave(manga);
 		}catch (Exception e) {
 			LOGGER.info("RequestObject: {}", gRequest.toString());
 			LOGGER.error("An error when creating Manga", e);

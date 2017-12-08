@@ -1,27 +1,34 @@
-package com.websystique.main.test1;
+package com.websystique.springmvc.service.test;
 
-import java.util.Date;
+import org.bson.types.ObjectId;
+
+import com.websystique.springmvc.model.Job;
 
 public class Main {
 	public static void main(String[] args) {
-		OVSchedulerService schedulerService = new OVSchedulerServiceImpl();
+		OVSchedulerService schedulerService = new ComicSchedulerServiceImpl();
 		
 		
-		NewJob job =new NewJob();
-		job.setjobName("myjob");
-		job.setGroupName("myjobgroup");
-		job.setOVJobListener(new MyOVJobListener());
+//		ComicJob job =new ComicJob();
+//		job.setjobName("myjob");
+//		job.setGroupName("myjobgroup");
+//		job.setOVJobListener(new ComicJobListener());
 //		NewJob newJob = new NewJob();
 //		newJob.setGroupName("jobgroupName");
 //		newJob.setjobName("jobName");;
 //		JobID jobs=schedulerService.schedule(newJob, new Date());
 //		MyCronExpression cronTrigger=new MyCronExpression("0/5 * * * * ?");
 		
-		MyCronExpression cronTrigger=new MyCronExpression("0 */1 * ? * *");
+//		MyCronExpression cronTrigger=new MyCronExpression("0 */1 * ? * *");
 //		JobID jobids=schedulerService.scheduleAtFixedRate(job,5000);
 		
+		Job job = new  Job();
+//		job.setCronExpression("0 */1 * ? * *");
+		job.setInstanceid(new ObjectId("5a1f9283d2b9dca6dad59ff2"));
+		job.setDescription("Hellpoafklas;fk;laskf;");
 		
-		JobID jobs = schedulerService.schedule(job, cronTrigger);
+		
+//		JobID jobs = schedulerService.schedule(job);
 		
 //		JobID jobs=schedulerService.scheduleAtFixedRate( job, new Date(), 5000);
 //		Date date=schedulerService.getStartTime(jobs);

@@ -71,7 +71,7 @@ public class JobController {
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	
-	// ------------------- Delete Job(s)
+	// ------------------- poll Job(s)
 	// --------------------------------------------------------
 	@RequestMapping(value = "/job/pollmanga", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<GenericResponseObject> pollManga(@RequestBody JobRequestObject requestObject) {
@@ -81,5 +81,30 @@ public class JobController {
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	
+	// ------------------- stop  Job(s)
+	// --------------------------------------------------------
+	@RequestMapping(value = "/job/stop", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponseObject> cancelJob(@RequestBody JobRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Job);
+		requestObject.setOperation(RequestType.stop);
+		GenericResponseObject responseObject = jobService.stopJob(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+	// ------------------- stop  Job(s)
+	// --------------------------------------------------------
+	@RequestMapping(value = "/job/start", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponseObject> startJob(@RequestBody JobRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Job);
+		requestObject.setOperation(RequestType.start);
+		GenericResponseObject responseObject = jobService.startJob(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+//	// ------------------- get  Job(s) are running
+//	// --------------------------------------------------------
+//	@RequestMapping(value = "/job/inschedule", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//	public ResponseEntity<GenericResponseObject> getJobInSchedule() {
+//		GenericResponseObject responseObject = jobService.getJobInSchedule(new GenericRequestObject(RequestType.read, ObjectType.Job, null));
+//		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+//	}
 
 }

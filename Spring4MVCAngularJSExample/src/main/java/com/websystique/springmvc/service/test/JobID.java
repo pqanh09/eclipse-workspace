@@ -1,4 +1,4 @@
-package com.websystique.main.test1;
+package com.websystique.springmvc.service.test;
 
 public class JobID {
 	
@@ -6,7 +6,7 @@ public class JobID {
 	
 	public void createJobId(String scheduledTime,String JobName,String groupName) {
 		
-		this.jobId=scheduledTime+JobName+groupName; //unique for every job
+		this.jobId = scheduledTime+JobName+groupName; //unique for every job
 	
 	}
 	

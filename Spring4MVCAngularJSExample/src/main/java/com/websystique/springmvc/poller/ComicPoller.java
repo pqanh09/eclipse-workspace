@@ -20,12 +20,13 @@ import org.springframework.stereotype.Service;
 import com.websystique.springmvc.model.Chapter;
 import com.websystique.springmvc.model.ChapterSelectorSyntax;
 import com.websystique.springmvc.model.ImageSelectorSyntax;
+import com.websystique.springmvc.model.JobHistoryDetail;
 import com.websystique.springmvc.model.Link;
 import com.websystique.springmvc.model.Manga;
 import com.websystique.springmvc.repositories.ChapterRepository;
 import com.websystique.springmvc.repositories.MangaRepository;
 
-import sun.security.krb5.internal.LastReqEntry;
+import ch.qos.logback.classic.Level;
 
 @Service("comicPoller")
 public class ComicPoller {
@@ -37,12 +38,18 @@ public class ComicPoller {
 	@Autowired
 	private ChapterRepository chapterRepository;
 	
-	public void pollManga(String mangaId){
+	public JobHistoryDetail pollManga(String mangaId){
+		JobHistoryDetail historyDetail = new JobHistoryDetail();
+		historyDetail.setElementId(mangaId);
+		historyDetail.setSuccess(true);
 		Manga manga = mangaRepository.findOne(new ObjectId(mangaId));
 		if(manga == null){
 			LOGGER.error("Not found any Manga to poll");
-			return;
+			historyDetail.setSuccess(false);
+			historyDetail.addLog(Level.ERROR, "Not found any Manga to poll");
+			return historyDetail;
 		}
+		historyDetail.setName(manga.getName());
 		String mainLinkName = manga.getMainLinkName();
 		List<Link> links = manga.getLinks();
 		Link mainLink = null;
@@ -54,10 +61,10 @@ public class ComicPoller {
 		//poll main link and others
 		//get data from main link, if false: get data from other links 
 		if(mainLink != null){
-			if(!pollLink(mainLink, manga)){
+			if(!pollLink(historyDetail, mainLink, manga)){
 				for (Link link : links) {
 					if(!mainLinkName.equals(link.getName())){
-						if(pollLink(link, manga)){
+						if(pollLink(historyDetail, link, manga)){
 							break;
 						}
 					}
@@ -67,15 +74,16 @@ public class ComicPoller {
 		// main link null, poll others
 		else {
 			for (Link link : links) {
-				if(pollLink(link, manga)){
+				if(pollLink(historyDetail, link, manga)){
 					break;
 				}
 			}
 		}
-		
 		LOGGER.info("Polling Manga successfully");
+		historyDetail.addLog(Level.INFO, "Polling Manga successfully");
+		return historyDetail;
 	}
-	private Chapter getChapterFromElement(ChapterSelectorSyntax chapterSS, Element element){
+	private Chapter getChapterFromElement(JobHistoryDetail historyDetail, ChapterSelectorSyntax chapterSS, Element element){
 		Chapter chapter = new Chapter();
 		try{
 			//parse index
@@ -100,14 +108,18 @@ public class ComicPoller {
 			chapter.setUrl(element.attr(chapterSS.getUrlAttKey()));
 		} catch (Exception e) {
 			LOGGER.info("getChapterFromElement::Element: {}", element.outerHtml());
+			historyDetail.addLog(Level.INFO, String.format("Element: %s", element.outerHtml()));
 			LOGGER.error("getChapterFromElement::An error when parsing Element: ", e);
+			historyDetail.addLog(Level.ERROR, String.format("An error when parsing Element: %s", e.getMessage()));
+			historyDetail.setSuccess(false);
 			return null;
 		}
 		return chapter;
 	}
 	//poll data from Site
-	private boolean pollLink(Link link, Manga manga){
-		
+	private boolean pollLink(JobHistoryDetail historyDetail, Link link, Manga manga){
+		LOGGER.info("Try to get Chapters Manga {} from Site {}",manga.getName(), link.getWebName());
+		historyDetail.addLog(Level.INFO, String.format("Try to get Chapters of Manga %s from Site %s", manga.getName(), link.getWebName()));
 		try {
 			double latestChapterOrdinalNumber = manga.getLatestChapterOrdinalNumber();
 			String mangaUrl = link.getMangaUrl();
@@ -116,7 +128,7 @@ public class ComicPoller {
 			Elements chapterList = chapterDoc.select(chapterSS.getCssQuery());
 			List<Chapter> chapters = new ArrayList<>();
 			for (Element eChapter : chapterList) {
-				Chapter chapter = getChapterFromElement(chapterSS, eChapter);
+				Chapter chapter = getChapterFromElement(historyDetail, chapterSS, eChapter);
 				if(chapter != null){
 					chapter.setMangaId(manga.getInstanceid().toString());
 					chapter.setLinkName(link.getName());
@@ -136,12 +148,12 @@ public class ComicPoller {
 				latestChapter = iterator.next();
 				// get first -> end
 				if(latestChapterOrdinalNumber < 0 ) {
-					pollChapter(latestChapter, link.getImgSelector());
+					pollChapter(historyDetail, latestChapter, link.getImgSelector());
 					newChapter = true;
 				} else {
 					//get latest
 					if(latestChapterOrdinalNumber < latestChapter.getOrdinalNumber()){
-						pollChapter(latestChapter, link.getImgSelector());
+						pollChapter(historyDetail, latestChapter, link.getImgSelector());
 						newChapter = true;
 					} else {
 						continue;
@@ -150,7 +162,9 @@ public class ComicPoller {
 				latestChapterOrdinalNumber = latestChapter.getOrdinalNumber();
 			}
 			if(latestChapterOrdinalNumber <= manga.getLatestChapterOrdinalNumber() && !newChapter) {
-				LOGGER.warn("Not have new chapter for this Manga {} at Site {}", manga.getName(), link.getWebName() );
+				LOGGER.warn("Not have new chapter for this Manga {} at Site {}", manga.getName(), link.getWebName());
+				historyDetail.addLog(Level.WARN, String.format("Not have new chapter for this Manga %s at Site %s", manga.getName(), link.getWebName()));
+//				historyDetail.setSuccess(true);
 				return false;
 			}
 			if(latestChapter != null) {
@@ -161,7 +175,10 @@ public class ComicPoller {
 			}
 		} catch (IOException e) {
 			LOGGER.info("Link: {}", link.toString());
+			historyDetail.addLog(Level.INFO, String.format("Link: %s", link.toString()));
 			LOGGER.error("An error when polling Link: ", e);
+			historyDetail.addLog(Level.ERROR, String.format("An error when polling Link: %s", e.getMessage()));
+			historyDetail.setSuccess(false);
 			return false;
 		}
 		
@@ -182,7 +199,7 @@ public class ComicPoller {
 //		}
 	}
 	//get image list from Chapter
-	private void pollChapter(Chapter chapter, ImageSelectorSyntax imageSelectorSyntax){
+	private void pollChapter(JobHistoryDetail historyDetail, Chapter chapter, ImageSelectorSyntax imageSelectorSyntax){
 		List<String> results = new ArrayList<>();
 		chapter.setImages(results);
 		Element temp = null;
@@ -195,9 +212,14 @@ public class ComicPoller {
 				results.add(eImage.attr(imageSelectorSyntax.getUrlAttKey()));
 			}
 			chapterRepository.save(chapter);
+			historyDetail.addLog(Level.INFO, String.format("Get Chapter %.1f successfully", chapter.getOrdinalNumber()));
+			LOGGER.info(String.format("Get Chapter %.1f successfully", chapter.getOrdinalNumber()));
 		}catch (Exception e){
 			LOGGER.info("pollChapter::Element: {}", (temp != null) ? temp.outerHtml() : "No outer html");
+			historyDetail.addLog(Level.INFO, String.format("Element: %s", (temp != null) ? temp.outerHtml() : "No outer html"));
 			LOGGER.error("pollChapter::An error when parsing Element: ", e);
+			historyDetail.addLog(Level.ERROR, String.format("An error when parsing Element: %s", e.getMessage()));
+			historyDetail.setSuccess(false);
 		}
 	}
 }
