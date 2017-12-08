@@ -97,4 +97,60 @@ public class JobHistory extends GenericModel<ObjectId> {
 		this.completedElemendIds = completedElemendIds;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((completedElemendIds == null) ? 0 : completedElemendIds.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((jobDetails == null) ? 0 : jobDetails.hashCode());
+		result = prime * result + ((jobId == null) ? 0 : jobId.hashCode());
+		result = prime * result + ((jobType == null) ? 0 : jobType.hashCode());
+		result = prime * result + (success ? 1231 : 1237);
+		result = prime * result + ((totalElemendIds == null) ? 0 : totalElemendIds.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JobHistory other = (JobHistory) obj;
+		if (completedElemendIds == null) {
+			if (other.completedElemendIds != null)
+				return false;
+		} else if (!completedElemendIds.equals(other.completedElemendIds))
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (jobDetails == null) {
+			if (other.jobDetails != null)
+				return false;
+		} else if (!jobDetails.equals(other.jobDetails))
+			return false;
+		if (jobId == null) {
+			if (other.jobId != null)
+				return false;
+		} else if (!jobId.equals(other.jobId))
+			return false;
+		if (jobType != other.jobType)
+			return false;
+		if (success != other.success)
+			return false;
+		if (totalElemendIds == null) {
+			if (other.totalElemendIds != null)
+				return false;
+		} else if (!totalElemendIds.equals(other.totalElemendIds))
+			return false;
+		return true;
+	}
+
+	
 }

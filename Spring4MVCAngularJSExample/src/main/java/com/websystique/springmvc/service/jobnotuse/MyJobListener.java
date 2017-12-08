@@ -1,6 +1,9 @@
 package com.websystique.springmvc.service.jobnotuse;
 
 import org.quartz.JobDataMap;
+import org.quartz.JobExecutionException;
+
+import com.websystique.springmvc.model.JobType;
 
 public interface MyJobListener {
     
@@ -8,8 +11,8 @@ public interface MyJobListener {
 
 	   void onJobComplete(JobDataMap jobDataMap);
 
-	   void onJobFailed(JobDataMap jobDataMap);
+	   void onJobFailed(JobDataMap jobDataMap, JobExecutionException jobException);
 	   
-	   String getJobType();
+	   JobType getJobType();
 
 	} 

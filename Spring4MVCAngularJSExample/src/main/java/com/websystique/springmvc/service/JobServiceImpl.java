@@ -218,7 +218,7 @@ public class JobServiceImpl implements JobService{
 					response.setSuccess(false);
 					return response;
 				}
-				if (!comicSchedulerServiceImpl.cancelJob(request.getIds().get(0))){
+				if (!comicSchedulerServiceImpl.stopJob(request.getIds().get(0))){
 					LOGGER.error("Can't stop job");
 					response.setMessage("Can't stop job");
 					response.setSuccess(false);
@@ -252,17 +252,14 @@ public class JobServiceImpl implements JobService{
 					response.setSuccess(false);
 					return response;
 				}
-				//force
-				if(!request.isForce()){
-					//check job is running or scheduled-> fail. Only start when job stopped
-					if(!JobState.stop.equals(dbJob.getStatus())){
-						LOGGER.error("Can't start job. Job state: " + dbJob.getStatus().toString());
-						response.setMessage("Can't start job. Job state: " + dbJob.getStatus().toString());
-						response.setSuccess(false);
-						return response;
-					}
-				} 
-				if (!comicSchedulerServiceImpl.schedule(dbJob)){
+				//check job is running or scheduled-> fail. Only start when job stopped
+				if(!JobState.stop.equals(dbJob.getStatus())){
+					LOGGER.error("Can't start job. Job state: " + dbJob.getStatus().toString());
+					response.setMessage("Can't start job. Job state: " + dbJob.getStatus().toString());
+					response.setSuccess(false);
+					return response;
+				}
+				if (!comicSchedulerServiceImpl.startJob(dbJob)){
 					LOGGER.error("Can't start job");
 					response.setMessage("Can't start job");
 					response.setSuccess(false);

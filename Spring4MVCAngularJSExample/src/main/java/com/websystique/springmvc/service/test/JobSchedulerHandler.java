@@ -2,6 +2,7 @@
 package com.websystique.springmvc.service.test;
 
 import org.quartz.JobDataMap;
+import org.quartz.JobExecutionException;
 
 /**
  * job definition
@@ -14,5 +15,7 @@ public interface JobSchedulerHandler {
      * @param jobParams
      * @throws Exception
      */
-    public void process(JobDataMap jobParams) throws Exception;    
+    public void process(JobDataMap jobParams) throws Exception;  
+    
+    public void processFail(JobDataMap jobParams, JobExecutionException jobException) throws Exception;
 }

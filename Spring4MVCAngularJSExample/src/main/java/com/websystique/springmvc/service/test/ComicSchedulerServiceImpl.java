@@ -1,18 +1,12 @@
 package com.websystique.springmvc.service.test;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Hashtable;
-import java.util.Set;
-import java.util.UUID;
 
-import org.bson.types.ObjectId;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
@@ -26,34 +20,18 @@ import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
-import com.websystique.springmvc.repositories.JobRepository;
+import com.websystique.springmvc.service.jobnotuse.ComicJobListener;
 
 @Service("comicSchedulerServiceImpl")
-public class ComicSchedulerServiceImpl implements OVSchedulerService {
+public class ComicSchedulerServiceImpl extends AbstractSchedulerService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ComicSchedulerServiceImpl.class);
-	private static Hashtable<String, TriggerKey> triggerKeyMap = new Hashtable<String, TriggerKey>();
-	private static Hashtable<String, JobKey> jobKeyMap = new Hashtable<String, JobKey>();
 	
 	@Autowired
 	ComicJobSchedulerHandler comicJobSchedulerHandler;
 	
-	@Autowired
-	private JobRepository jobRepository;
-	
 	@Override
-	public String getTriggerName() {
-		return UUID.randomUUID().toString();
-	}
-
-	
-	@Override
-	public String getTriggerGroupName(String groupName) {
-		return "Trigger-" + groupName;
-	}
-
-	@Override
-	public boolean schedule(Job job) {
+	public boolean startJob(Job job) {
 		try {
 
 			String jobId = job.getInstanceid().toString();
@@ -64,15 +42,15 @@ public class ComicSchedulerServiceImpl implements OVSchedulerService {
 
 			JobKey jobKey = new JobKey(jobId, groupName);
 
-			HandlerRegistryManager manager = HandlerRegistryManager.getManager();
-			manager.register(groupName, comicJobSchedulerHandler);
+			//add Handler for job
+			addHandler(groupName, comicJobSchedulerHandler);
 
 			JobDetail jobDetail = JobBuilder.newJob(QJob.class).withIdentity(jobKey).build();
 			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_JOB_ID, jobId);
+			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new ComicJobListener(jobId, jobName));
 //			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_TOTAL, job.getMangas());
 //			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_COMPLETED, new ArrayList<String>());
 			
-			//jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new ComicJobListener(jobId, jobName));
 
 			// Trigger cronTrigger = TriggerBuilder.newTrigger()
 			// .withIdentity(triggerName, triggerGroupName)
@@ -122,7 +100,7 @@ public class ComicSchedulerServiceImpl implements OVSchedulerService {
 			LOGGER.info("Job: {}", job.toString());
 			LOGGER.error("An error when starting job: ", e);
 			LOGGER.info("Try to stop job");
-			if(cancelJob(job.getInstanceid().toString())){
+			if(stopJob(job.getInstanceid().toString())){
 				LOGGER.info("Stop successfully");
 				job.setStatus(JobState.stop);
 				jobRepository.safeSave(job);
@@ -134,57 +112,6 @@ public class ComicSchedulerServiceImpl implements OVSchedulerService {
 		
 		return true;
 	}
-
-	@Override
-	public boolean cancelJob(String jobId) {
-		try {
-			Scheduler sched = new StdSchedulerFactory().getScheduler();
-			TriggerKey trigKey = triggerKeyMap.get(jobId);
-			if(trigKey == null) {
-				LOGGER.error("Not found Job {} in list schedule", jobId);
-				return false;
-			}
-			sched.unscheduleJob(trigKey);
-			LOGGER.info("Job {} is cancelled", jobId);
-			Job jobdb = jobRepository.findOne(new ObjectId(jobId));
-			jobdb.setStatus(JobState.stop);
-			jobRepository.safeSave(jobdb);
-			LOGGER.info("Job {} is updated state", jobId);
-			triggerKeyMap.remove(jobId);
-			jobKeyMap.remove(jobId);
-			LOGGER.info("Job {} is remove from list schedule", jobId);
-		} catch (SchedulerException e) {
-			LOGGER.error("An error when canceling Job:", e);
-			return false;
-		}
-		return true;
-		
-	}
-
-	@Override
-	public Set<String> getJobList() {
-		Set<String> JobIDs = triggerKeyMap.keySet();
-		return JobIDs;
-	}
-
-	@Override
-	public String getTriggerType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public int getPercent() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	
-
-	
-
-
 	
 
 }

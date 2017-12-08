@@ -39,7 +39,9 @@ public final class HandlerRegistryManager implements RegistryManager<JobSchedule
     
     @Override
     public void register(String handlerName, JobSchedulerHandler handlerScheduler) {
-        handlerMap.put(handlerName, handlerScheduler);
+    	if(handlerMap.get(handlerName) == null){
+    		handlerMap.put(handlerName, handlerScheduler);
+    	}
     }
 
     @Override

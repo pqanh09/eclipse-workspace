@@ -162,8 +162,8 @@ public class ComicPoller {
 				latestChapterOrdinalNumber = latestChapter.getOrdinalNumber();
 			}
 			if(latestChapterOrdinalNumber <= manga.getLatestChapterOrdinalNumber() && !newChapter) {
-				LOGGER.warn("Not have new chapter for this Manga {} at Site {}", manga.getName(), link.getWebName());
-				historyDetail.addLog(Level.WARN, String.format("Not have new chapter for this Manga %s at Site %s", manga.getName(), link.getWebName()));
+				LOGGER.warn("There is no new chapter of Manga {} at Site {} for recording.", manga.getName(), link.getWebName());
+				historyDetail.addLog(Level.WARN, String.format("There is no new chapter of Manga %s at Site %s for recording.", manga.getName(), link.getWebName()));
 //				historyDetail.setSuccess(true);
 				return false;
 			}

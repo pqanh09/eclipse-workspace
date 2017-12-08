@@ -6,4 +6,5 @@ public interface JobConstant {
 	public static final String JOB_DATA_MAP_LISTENER = "OVJobListener";
 	public static final String JOB_DATA_MAP_TOTAL = "Total";
 	public static final String JOB_DATA_MAP_COMPLETED = "Completed";
+	public static final String JOB_DATA_MAP_ERROR_MESSAGE = "ErrorMsg";
 }

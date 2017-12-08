@@ -6,7 +6,7 @@ import com.websystique.springmvc.model.Job;
 
 public class Main {
 	public static void main(String[] args) {
-		OVSchedulerService schedulerService = new ComicSchedulerServiceImpl();
+		SchedulerService schedulerService = new ComicSchedulerServiceImpl();
 		
 		
 //		ComicJob job =new ComicJob();
