@@ -1,0 +1,110 @@
+<h3>{{vmSong.dataStr}}</h3>
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Input</h3>
+                </div>
+                <div class="panel-body">
+                    <input type="text" class="form-control" id="task-table-filter" data-action="filter"
+                           data-filters="#task-table" placeholder="Filter Tasks"/>
+                </div>
+                <table class="table table-hover" id="task-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Value</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>10</td>
+
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>20</td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Developers</h3>
+                </div>
+                <div class="panel-body">
+                    <input type="text" class="form-control" id="dev-table-filter" data-action="filter"
+                           data-filters="#dev-table" placeholder="Filter Developers"/>
+                </div>
+                <table class="table table-hover" id="dev-table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>1</th>
+                        <th>2</th>
+                        <th>3</th>
+                        <th>4</th>
+                        <th>5</th>
+                        <th>6</th>
+                        <th>7</th>
+                        <th>8</th>
+                        <th>9</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>11</td>
+                        <td>22</td>
+                        <td>33</td>
+                        <td>44</td>
+                        <td>55</td>
+                        <td>66</td>
+                        <td>77</td>
+                        <td>88</td>
+                        <td>99</td>
+                    </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--
+
+<div class="panel-view panel-info-view">
+    <div class="panel-heading-view">
+        <table>
+            <tr>
+                <th><h3 class="panel-title-view">Song Manager</h3></th>
+                <th>
+                    <input type="button" ng-click="vm.addSong()" ng-disabled="vm.ctrlButton.add" value="Add">
+                    <input type="button" ng-click="vm.editSong()" ng-disabled="vm.ctrlButton.edit" value="Edit">
+                    <input type="button" ng-click="vm.deleteSong()" ng-disabled="vm.ctrlButton.delete"
+                           value="Delete">
+                    &lt;!&ndash;<button onclick="myFunction()">Try it</button>&ndash;&gt;
+                </th>
+            </tr>
+        </table>
+    </div>
+    <div ng-if="vm.songManagerView">
+        <song-view list-selected="vm.listSelected" list-col="vm.listCol"
+                   list-object="vm.listObject"></song-view>
+    </div>
+    <div ng-if="!vm.songManagerView">
+        <song-modify action="vm.action" song-obj="vm.listSelected.song"
+                     view-all="vm.viewAll()"></song-modify>
+    </div>
+</div>
+
+-->
