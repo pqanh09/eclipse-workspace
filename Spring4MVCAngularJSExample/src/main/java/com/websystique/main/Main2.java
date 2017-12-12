@@ -13,12 +13,14 @@ import org.jsoup.select.Elements;
 public class Main2 {
 
 	public static void main(String[] args) throws IOException {
-		double a = -1;
-		System.out.println(a);
-		
+//		double a = -1;
+//		System.out.println(a);
+//		
 		// main
+		String url = "http://35.225.138.104:8080/Spring4MVCAngularJSExample/";
 //		String url = "http://www.nettruyen.com/truyen-tranh/cuu-vi-ho-ly-phan-2";
-//		Document document = Jsoup.connect(url).get();
+		Document document = Jsoup.connect(url).get();
+		System.out.println(document);
 //
 //		Elements chapterList = document.select("div.col-xs-5.chapter > a");
 //		for (Element chapter : chapterList) {

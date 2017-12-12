@@ -115,5 +115,8 @@
       <script src="<c:url value='/static/js/app.js' />"></script>
       <script src="<c:url value='/static/js/service/user_service.js' />"></script>
       <script src="<c:url value='/static/js/controller/user_controller.js' />"></script>
+      <script src="<c:url value='/static/js/webSocket/sockjs-0.3.4.js' />"></script>
+      <script src="<c:url value='/static/js/webSocket/stomp.js' />"></script>
+      
   </body>
 </html>
