@@ -8,8 +8,10 @@ import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
+import com.websystique.springmvc.caa.MyRunnable;
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
 import com.websystique.springmvc.model.ModelUtilProvider;
@@ -36,6 +38,9 @@ public class JobServiceImpl implements JobService{
 	
 	@Autowired 
 	ComicSchedulerServiceImpl comicSchedulerServiceImpl;
+	
+	@Autowired
+	private SimpMessagingTemplate simpMessagingTemplate;
 
 	@Override
 	public GenericResponseObject create(GenericRequestObject gRequest) {
@@ -276,6 +281,16 @@ public class JobServiceImpl implements JobService{
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
 			response.setSuccess(false);
 		}
+		return response;
+	}
+
+	@Override
+	public GenericResponseObject auto(GenericRequestObject request) {
+		JobResponseObject response = new JobResponseObject(request);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		Thread thread = new Thread(new MyRunnable(simpMessagingTemplate));
+		thread.start();
 		return response;
 	}
 

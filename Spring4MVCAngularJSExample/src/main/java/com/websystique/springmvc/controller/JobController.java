@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.websystique.springmvc.poller.ComicPoller;
 import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.JobRequestObject;
 import com.websystique.springmvc.request.ObjectType;
@@ -106,5 +105,14 @@ public class JobController {
 //		GenericResponseObject responseObject = jobService.getJobInSchedule(new GenericRequestObject(RequestType.read, ObjectType.Job, null));
 //		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 //	}
+
+	// -------------------Retrieve All
+	// Job--------------------------------------------------------
+
+	@RequestMapping(value = "/job/greeting", method = RequestMethod.GET)
+	public ResponseEntity<GenericResponseObject> greeting() {
+		GenericResponseObject responseObject = jobService.auto(new GenericRequestObject(RequestType.read, ObjectType.Job, null));
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
 
 }
