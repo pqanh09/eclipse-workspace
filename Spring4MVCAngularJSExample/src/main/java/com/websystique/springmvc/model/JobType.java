@@ -1,7 +1,7 @@
 package com.websystique.springmvc.model;
 
 public enum JobType {
-	Comic, Music, 
+	Comic, Music, Bittrex,
 	// Special type: Not use
 	Error, Unknown
 }

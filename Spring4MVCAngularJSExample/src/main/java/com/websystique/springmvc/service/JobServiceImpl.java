@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.websystique.springmvc.caa.MyRunnable;
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
+import com.websystique.springmvc.model.JobType;
 import com.websystique.springmvc.model.ModelUtilProvider;
 import com.websystique.springmvc.poller.ComicPoller;
 import com.websystique.springmvc.repositories.JobRepository;
@@ -23,6 +24,7 @@ import com.websystique.springmvc.response.GenericResponseObject;
 import com.websystique.springmvc.response.JobResponseObject;
 import com.websystique.springmvc.response.Messages;
 import com.websystique.springmvc.response.PartResponseStatus;
+import com.websystique.springmvc.service.test.BittrexSchedulerServiceImpl;
 import com.websystique.springmvc.service.test.ComicSchedulerServiceImpl;
 import com.websystique.springmvc.vo.JobVO;
 
@@ -38,6 +40,9 @@ public class JobServiceImpl implements JobService{
 	
 	@Autowired 
 	ComicSchedulerServiceImpl comicSchedulerServiceImpl;
+	
+	@Autowired 
+	BittrexSchedulerServiceImpl bittrexSchedulerServiceImpl;
 	
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -264,12 +269,27 @@ public class JobServiceImpl implements JobService{
 					response.setSuccess(false);
 					return response;
 				}
-				if (!comicSchedulerServiceImpl.startJob(dbJob)){
-					LOGGER.error("Can't start job");
-					response.setMessage("Can't start job");
+				if(JobType.Comic.equals(dbJob.getType())){
+					if (!comicSchedulerServiceImpl.startJob(dbJob)){
+						LOGGER.error("Can't start job");
+						response.setMessage("Can't start job");
+						response.setSuccess(false);
+						return response;
+					}
+				} else if (JobType.Bittrex.equals(dbJob.getType())){
+					if (!bittrexSchedulerServiceImpl.startJob(dbJob)){
+						LOGGER.error("Can't start job");
+						response.setMessage("Can't start job");
+						response.setSuccess(false);
+						return response;
+					}
+				} else {
+					LOGGER.error("Not support poll with this Job Type {}", dbJob.getType());
+					response.setMessage("Not support poll with this Job Type " + dbJob.getType());
 					response.setSuccess(false);
 					return response;
 				}
+				
 				
 			} else {
 				response.setMessage("No job to start");
