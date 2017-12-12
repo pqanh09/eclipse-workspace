@@ -1,10 +1,33 @@
-<!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+    <title>Calculator App Using Spring 4 WebSocket</title>
+<!--     <script src="resources/sockjs-0.3.4.js"></script> -->
+<!--     <script src="resources/stomp.js"></script> -->
+    <script src="http://cdn.sockjs.org/sockjs-0.3.4.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    <script src="static/js/controller/cal.js"></script>
+<!--     <script src="scripts/licensing/licenseAdding/licenseAdding.service.js"></script> -->
+    <script type="text/javascript">
+        
+    </script>
 </head>
 <body>
- Hello
+Hello
+<noscript><h2>Enable Java script and reload this page to run Websocket Demo</h2></noscript>
+<h1>Calculator App Using Spring 4 WebSocket</h1>
+<div>
+    <div>
+        <button id="connect" onclick="connect();">Connect</button>
+        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button><br/><br/>
+    </div>
+    <div id="calculationDiv">
+        <label>Number One:</label><input type="text" id="num1" /><br/>
+        <label>Number Two:</label><input type="text" id="num2" /><br/><br/>
+        <button id="sendNum" onclick="sendNum();">Send to Add</button>
+        <p id="calResponse"></p>
+        <br>
+        <p id="greetingResponse"></p>
+    </div>
+</div>
 </body>
-</html>
+</html> 
