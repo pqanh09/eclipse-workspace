@@ -45,21 +45,26 @@
 
 		function pollDataBittrex(response) {
 			console.log(response);
-//			var url = urlPrefix + new Date().getTime().toString();
-			var url = 'http://localhost:8080/Spring4MVCAngularJSExample/api/manga';
+			var url = urlPrefix + new Date().getTime().toString();
+//			var url = 'http://localhost:8080/Spring4MVCAngularJSExample/api/manga';
 			console.log(url);
-			
-			$http
-			.get(url)
-			.then(function(response) {
-//				console.log(response);
-				var list = _.filter(response.data.MangaResponseObject.list, 'objectId', '5a2a1261d2b918d3cefe26d1');
-				var list2 = _.find(response.data.MangaResponseObject.list, function(chr) {
-					 return chr.objectId === '5a2a1261d2b918d3cefe26d1';
-				});
-//				var list = _.filter(response.result, 'Market.BaseCurrency', 'USDT');
-				console.log(list2);
-			});
+			var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.open( "GET", url, false ); // false for synchronous request
+//		    xmlHttp.setRequestHeader('Access-Control-Allow-Origin: http://localhost:8080', false);
+		    xmlHttp.setRequestHeader( 'Access-Control-Allow-Origin', '*');
+		    xmlHttp.setRequestHeader( 'Content-Type', 'application/json' );
+//		    xmlHttp.withCredentials = false;
+		    xmlHttp.send(null);
+		    console.log(xmlHttp.responseText);
+		    
+//			$http
+//			.get(url)
+//			.then(function(response) {
+//				var list2 =  _.filter(response.data.result, function(chr) { 
+//					    return chr.Market.BaseCurrency === 'USDT';
+//					 });
+//				console.log(list2);
+//			});
 			
 		}
 
