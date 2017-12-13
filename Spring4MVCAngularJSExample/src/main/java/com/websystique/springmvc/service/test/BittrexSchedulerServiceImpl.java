@@ -2,6 +2,7 @@ package com.websystique.springmvc.service.test;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
@@ -21,8 +22,11 @@ import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
+import com.websystique.springmvc.model.UsdtInput;
+import com.websystique.springmvc.repositories.UsdtInputRepository;
 import com.websystique.springmvc.service.jobnotuse.BittrexJobListener;
 import com.websystique.springmvc.service.jobnotuse.ComicJobListener;
+import com.websystique.springmvc.vo.UsdtInputVO;
 
 @Service("bittrexSchedulerServiceImpl")
 public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
@@ -32,10 +36,22 @@ public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
 	@Autowired
 	BittrexJobSchedulerHandler bittrexJobSchedulerHandler;
 	
+
+	@Autowired
+	private UsdtInputRepository usdtInputRepository;
+	
 	@Override
 	public boolean startJob(Job job) {
 		try {
-
+			
+			//check input
+			
+			List<UsdtInput> list = usdtInputRepository.findAll();
+			
+			if(list == null || list.isEmpty()){
+				LOGGER.info("There is no Input to calculate");
+				return false;
+			}
 			String jobId = job.getInstanceid().toString();
 			String jobName = job.getName();
 			String groupName = job.getType().toString();

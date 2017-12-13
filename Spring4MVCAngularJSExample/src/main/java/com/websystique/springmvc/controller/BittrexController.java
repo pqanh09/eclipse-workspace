@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.request.RequestType;
-import com.websystique.springmvc.request.WebRequestObject;
+import com.websystique.springmvc.request.UsdtInputRequestObject;
 import com.websystique.springmvc.response.GenericResponseObject;
 import com.websystique.springmvc.service.BittrexService;
 
@@ -28,24 +27,30 @@ public class BittrexController {
 	BittrexService bittrexService; // Service which will do all data
 								// retrieval/manipulation work
 
-	// -------------------Retrieve All
-	// ittrex--------------------------------------------------------
+	// -------------------Retrieve Input ------------------------
 
 	@RequestMapping(value = "/input", method = RequestMethod.GET)
-	public ResponseEntity<GenericResponseObject> listAllUsers() {
+	public ResponseEntity<GenericResponseObject> getInput() {
 		GenericResponseObject responseObject = bittrexService.getInput(new GenericRequestObject(RequestType.read, ObjectType.BittrexInput, null));
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
 
-	// ------------------- Update a ittrex
+	// ------------------- Update a Input
 	// --------------------------------------------------------
 
 	@RequestMapping(value = "/input", method = RequestMethod.POST)
-	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody WebRequestObject requestObject) {
+	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody UsdtInputRequestObject requestObject) {
 		requestObject.setObjectType(ObjectType.BittrexInput);
 		requestObject.setOperation(RequestType.update);
 		GenericResponseObject responseObject = bittrexService.updateInput(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+	
+	// -------------------Retrieve Total ------------------------
+	@RequestMapping(value = "/averagetotal", method = RequestMethod.GET)
+	public ResponseEntity<GenericResponseObject> getAverageTotal() {
+		GenericResponseObject responseObject = bittrexService.getTotal(new GenericRequestObject(RequestType.read, ObjectType.BittrexAverageTotal, null));
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 
