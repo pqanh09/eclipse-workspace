@@ -10,7 +10,9 @@
 		"96430ae6-9ac4-ad65-b159-ccf84f122088",
 		"59a1e94b-617e-9da3-ed8a-7dd157a878ce",
 		"8ead4222-e5de-6305-c1cc-da69cc98f603",
+		"19f8f12b-d0a7-2ace-fe0c-7a27158daf56",
 		"85d37533-7293-ca06-3efd-2d34df906ca3",
+		"75adee9e-6206-5558-62a8-fd090a72947f",
 		"fac545ad-5ebd-2b17-3187-24b30a0714bf",
 		"eb17b264-2e10-12ce-8280-764cf2e86128",
 		"60842ce1-b5f3-a3ee-ab80-a0ce51a77b5d",
@@ -28,28 +30,24 @@
 	"public": false,
 	"requests": [
 		{
-			"folder": null,
 			"id": "103ccb20-cc7d-42d4-4eca-3cce0aec2c9f",
-			"name": "Web - Get All",
-			"dataMode": "params",
-			"data": null,
-			"auth": null,
-			"events": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": null,
-			"variables": null,
 			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/web",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": null,
-			"helperAttributes": null,
-			"queryParams": [],
 			"headerData": [],
+			"url": "http://35.225.138.104:8080/Spring4MVCAngularJSExample/",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1513099118760,
+			"name": "Web - Get All",
+			"description": null,
 			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f"
 		},
 		{
@@ -84,6 +82,27 @@
 			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"ids\":[\"5a1dfc83574479d76dc473d4\"]\r\n  }\r\n}"
 		},
 		{
+			"id": "19f8f12b-d0a7-2ace-fe0c-7a27158daf56",
+			"headers": "",
+			"headerData": [],
+			"url": "http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/input",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1513160739029,
+			"name": "Input Bittrex - Get All",
+			"description": null,
+			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f"
+		},
+		{
 			"id": "2be2591e-a797-d0b5-1af6-0cf65d0ca0fe",
 			"headers": "Content-Type: application/json\n",
 			"headerData": [
@@ -94,7 +113,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job/stop",
+			"url": "http://localhost:8080/Spring4MVCAngularJSExample/api/job/stop",
 			"folder": null,
 			"queryParams": [],
 			"preRequestScript": null,
@@ -106,11 +125,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1512613070076,
+			"time": 1513151633395,
 			"name": "Job - stop",
 			"description": "",
 			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f",
-			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"ids\": [\"5a28a312d2b96e0b7a781487\"]\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"ids\": [\"5a30d8c4d2b99b5b20e0b3ac\"]\r\n  }\r\n}"
 		},
 		{
 			"id": "45d020cc-380c-5d83-c910-42917ab33d00",
@@ -189,7 +208,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job/start",
+			"url": "http://localhost:8080/Spring4MVCAngularJSExample/api/job/start",
 			"folder": null,
 			"queryParams": [],
 			"preRequestScript": null,
@@ -201,11 +220,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1512721842662,
+			"time": 1513150675757,
 			"name": "Job - Start",
 			"description": "",
 			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f",
-			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"ids\": [\"5a2a12a4d2b918d3cefe26d2\"]\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"ids\": [\"5a30d8c4d2b99b5b20e0b3ac\"]\r\n  }\r\n}"
 		},
 		{
 			"folder": null,
@@ -262,6 +281,35 @@
 			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"LINH VÕ ĐẾ TÔNI\",\r\n      \"author\": \"Đang cập nhật\",\r\n      \"mainLinkName\": \"nettruyen-linh-vo-de-ton\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-linh-vo-de-ton\",\r\n          \"webId\": \"5a1f921cd2b9dca6dad59ff0\",\r\n          \"webName\": \"Net Truyện\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/linh-vo-de-ton\",\r\n          \"chapterSelector\": {\r\n          \t\"cssQuery\":\"div.col-xs-5.chapter > a\",\r\n          \t\"urlAttKey\":\"href\",\r\n          \t\"nameAttKey\":\"\",\r\n          \t\"indexAttKey\":\"\",\r\n          \t\"increasing\": false\r\n          },\r\n          \"imgSelector\": {\r\n          \t\"cssQuery\":\"div.page-chapter > img\",\r\n          \t\"urlAttKey\":\"src\"\r\n          }\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
 		},
 		{
+			"id": "75adee9e-6206-5558-62a8-fd090a72947f",
+			"headers": "Content-Type: application/json\n",
+			"headerData": [
+				{
+					"key": "Content-Type",
+					"value": "application/json",
+					"description": "",
+					"enabled": true
+				}
+			],
+			"url": "http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/input",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
+			"pathVariableData": [],
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1513163456141,
+			"name": "Input Bittrex - Update",
+			"description": null,
+			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f",
+			"rawModeData": "{\r\n  \"UsdtInputRequestObject\": {\r\n  \t\"documentType\": 4,\r\n    \"model\": {\r\n      \"name\": \"123456\",\r\n      \"time\": 123456,\r\n      \"list\": [\r\n        1.0,\r\n        2.0,\r\n        3.0,\r\n        4.0,\r\n        5.0,\r\n        6.0,\r\n        7.0,\r\n        8.0,\r\n        9.0,\r\n        10.0,\r\n        11.11,\r\n        12.13\r\n      ]\r\n    }\r\n  }\r\n}"
+		},
+		{
 			"id": "82b7904f-e073-2f83-6da8-716dbf0f8522",
 			"headers": "Content-Type: application/json\n",
 			"headerData": [
@@ -284,11 +332,11 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1512026015425,
+			"time": 1513099121975,
 			"name": "Manga - Create",
 			"description": null,
 			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f",
-			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"ĐỊA NGỤC CÁO BẠCH THI\",\r\n      \"author\": \"Đang cập nhật\",\r\n      \"mainLinkName\": \"nettruyen-dia-nguc-cao-bach-thi\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-dia-nguc-cao-bach-thi\",\r\n          \"webId\": \"5a1f921cd2b9dca6dad59ff0\",\r\n          \"webName\": \"Net Truyện\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/dia-nguc-cao-bach-thi\",\r\n          \"chapterSelector\": {\r\n          \t\"cssQuery\":\"div.col-xs-5.chapter > a\",\r\n          \t\"urlAttKey\":\"href\",\r\n          \t\"nameAttKey\":\"\",\r\n          \t\"indexAttKey\":\"\",\r\n          \t\"increasing\": false\r\n          },\r\n          \"imgSelector\": {\r\n          \t\"cssQuery\":\"div.page-chapter > img\",\r\n          \t\"urlAttKey\":\"src\"\r\n          }\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"MangaRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"ĐỊA NGỤC CÁO BẠCH THI\",\r\n      \"author\": \"Đang cập nhật\",\r\n      \"mainLinkName\": \"nettruyen-dia-nguc-cao-bach-thi\",\r\n      \"links\": [\r\n        {\r\n          \"name\": \"nettruyen-dia-nguc-cao-bach-thi\",\r\n          \"webId\": \"5a2a123bd2b918d3cefe26d0\",\r\n          \"webName\": \"Net Truyện\",\r\n          \"mangaUrl\": \"http://www.nettruyen.com/truyen-tranh/dia-nguc-cao-bach-thi\",\r\n          \"chapterSelector\": {\r\n          \t\"cssQuery\":\"div.col-xs-5.chapter > a\",\r\n          \t\"urlAttKey\":\"href\",\r\n          \t\"nameAttKey\":\"\",\r\n          \t\"indexAttKey\":\"\",\r\n          \t\"increasing\": false\r\n          },\r\n          \"imgSelector\": {\r\n          \t\"cssQuery\":\"div.page-chapter > img\",\r\n          \t\"urlAttKey\":\"src\"\r\n          }\r\n        }\r\n      ]\r\n    }\r\n  }\r\n}"
 		},
 		{
 			"id": "85d37533-7293-ca06-3efd-2d34df906ca3",
@@ -301,7 +349,7 @@
 					"enabled": true
 				}
 			],
-			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job",
+			"url": "http://localhost:8080/Spring4MVCAngularJSExample/api/job",
 			"folder": null,
 			"queryParams": [],
 			"preRequestScript": null,
@@ -313,35 +361,31 @@
 			"tests": null,
 			"currentHelper": "normal",
 			"helperAttributes": {},
-			"time": 1512706746602,
+			"time": 1513162490616,
 			"name": "Job - Create",
 			"description": null,
 			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f",
-			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"job-Poll-dia-nguc-cao-bach-thi\",\r\n      \"description\": \"job-Poll-dia-nguc-cao-bach-thi\",\r\n      \"mangas\":[\"5a2a1261d2b918d3cefe26d1\"],\r\n      \"type\":\"Comic\",\r\n      \"timeInterval\": 300\r\n    }\r\n  }\r\n}"
+			"rawModeData": "{\r\n  \"JobRequestObject\": {\r\n    \"model\": {\r\n      \"name\": \"Poll data Bittrex11111\",\r\n      \"description\": \"Poll data Bittrex AAAAAAAAAAAAA111111\",\r\n      \"mangas\":[\"https://bittrex.com/api/v2.0/pub/Markets/GetMarketSummaries?_=\"],\r\n      \"type\":\"Bittrex\",\r\n      \"cronExpression\":\"0 * * ? * *\"\r\n    }\r\n  }\r\n}"
 		},
 		{
-			"folder": null,
 			"id": "8ead4222-e5de-6305-c1cc-da69cc98f603",
-			"name": "Job - Get All",
-			"dataMode": "params",
-			"data": null,
-			"auth": null,
-			"events": null,
-			"rawModeData": null,
-			"descriptionFormat": null,
-			"description": null,
-			"variables": null,
 			"headers": "",
-			"method": "GET",
-			"pathVariables": {},
-			"url": "http://localhost:8888/Spring4MVCAngularJSExample/api/job",
-			"preRequestScript": null,
-			"tests": null,
-			"currentHelper": null,
-			"helperAttributes": null,
-			"queryParams": [],
 			"headerData": [],
+			"url": "http://localhost:8080/Spring4MVCAngularJSExample/api/job",
+			"folder": null,
+			"queryParams": [],
+			"preRequestScript": null,
+			"pathVariables": {},
 			"pathVariableData": [],
+			"method": "GET",
+			"data": null,
+			"dataMode": "params",
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1513099098435,
+			"name": "Job - Get All",
+			"description": null,
 			"collectionId": "da5e2a45-3c2a-731d-9353-8989a14cd47f"
 		},
 		{
