@@ -8,20 +8,40 @@
 
 	function controllerFunction($scope, $http, $timeout) {
 		var vm = this;
-		var urlPrefix = 'https://bittrex.com/api/v2.0/pub/Markets/GetMarketSummaries?_=';
-		vm.dataStr = "Hello";
-		vm.data = [];
+		vm.data = [
+			{stt:"1", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"2", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"3", id:"",name:"Mot",last:0,input:10,percent:0},
+		
+			{stt:"4", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"5", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"6", id:"",name:"Mot",last:0,input:10,percent:0},
+			
+			{stt:"7", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"8", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"9", id:"",name:"Mot",last:0,input:10,percent:0},
+			
+			{stt:"10", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"11", id:"",name:"Mot",last:0,input:10,percent:0},
+			{stt:"12", id:"",name:"Mot",last:0,input:10,percent:0}
 
-		function getAll() {
-			$http
+		];
+		vm.time = -1;
+		vm.total = 0;
+	
+		
+		function getInput() {
+			return $http
 					.get(
-							"http://localhost:8080/Spring4MVCAngularJSExample/api/manga")
+							"/Spring4MVCAngularJSExample/api/bittrex/input")
 					.then(function(response) {
-						vm.data = response.data;
-						// console.log(vm.data);
+						var list = response.data.UsdtInputResponseObject.list[0].list;
+						angular.forEach(vm.data, function(obj) {
+							obj.input = list[obj.stt - 1].toFixed(2);
+						});
 					});
 		}
-		getAll();
+		getInput();
 
 		var stompClient = null;
 		function connect() {
@@ -32,10 +52,25 @@
 				stompClient.subscribe('/topic/greetings', function(calResult) {
 					vm.dataStr = calResult.body.toString();
 					console.log(vm.dataStr);
+//					$scope.$digest();
 					$timeout();
 				});
-				stompClient.subscribe('/topic/pollData', function(calResult) {
-					pollDataBittrex(calResult.body);
+			
+				stompClient.subscribe('/topic/usdtMarkets', function(calResult) {
+					console.log(calResult);
+					var result = JSON.parse(calResult.body);
+					console.log(result);
+					getInput().then(function(){
+						vm.time = moment(new Date(result.time)).format('HH:mm:ss YYYY-MM-DD'); 
+						var total = 0;
+						angular.forEach(vm.data, function(obj) {
+							obj.last = result.list[obj.stt - 1].toFixed(2);
+							obj.percent = ((obj.last - obj.input)*100/obj.input).toFixed(1);
+							total = total+ obj.percent/12;
+							
+						});
+						vm.total = total.toFixed(1);
+					});
 					$timeout();
 				});
 
@@ -43,30 +78,6 @@
 		}
 		connect();
 
-		function pollDataBittrex(response) {
-			console.log(response);
-			var url = urlPrefix + new Date().getTime().toString();
-//			var url = 'http://localhost:8080/Spring4MVCAngularJSExample/api/manga';
-			console.log(url);
-			var xmlHttp = new XMLHttpRequest();
-		    xmlHttp.open( "GET", url, false ); // false for synchronous request
-//		    xmlHttp.setRequestHeader('Access-Control-Allow-Origin: http://localhost:8080', false);
-		    xmlHttp.setRequestHeader( 'Access-Control-Allow-Origin', '*');
-		    xmlHttp.setRequestHeader( 'Content-Type', 'application/json' );
-//		    xmlHttp.withCredentials = false;
-		    xmlHttp.send(null);
-		    console.log(xmlHttp.responseText);
-		    
-//			$http
-//			.get(url)
-//			.then(function(response) {
-//				var list2 =  _.filter(response.data.result, function(chr) { 
-//					    return chr.Market.BaseCurrency === 'USDT';
-//					 });
-//				console.log(list2);
-//			});
-			
-		}
 
 		/*
 		 * vm.songManagerView = true;
@@ -115,6 +126,19 @@
 		 *  } else{ vm.ctrlButton.add = false; vm.ctrlButton.edit = true;
 		 * vm.ctrlButton.delete = false; } }
 		 */
+		
+//	    USDT-BTC	Bitcoin
+//	    USDT-BCC	Bitcoin Cash
+//	    USDT-BTG	Bitcoin Gold
+//	    USDT-DASH	Dash
+//	    USDT-ETH	Ethereum
+//	    USDT-ETC	Ethereum Classic
+//	    USDT-LTC	Litecoin
+//	    USDT-XMR	Monero
+//	    USDT-NEO	Neo
+//	    USDT-OMG	OmiseGo
+//	    USDT-XRP	Ripple
+//	    USDT-ZEC	ZCash
 
 	}
 })();

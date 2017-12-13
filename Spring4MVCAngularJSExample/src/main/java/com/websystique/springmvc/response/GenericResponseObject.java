@@ -14,7 +14,7 @@ import com.websystique.springmvc.request.RequestType;
         include = JsonTypeInfo.As.WRAPPER_OBJECT,  
         property = "type")  
 @JsonSubTypes({     
-    @Type(value=WebResponseObject.class, name="WebResponseObject")
+//    @Type(value=WebResponseObject.class, name="WebResponseObject")
 //    @Type(value=CPCustomizationResponseStatus.class, name="CPCustomizationResponseStatus")
 }) 
 @JsonIgnoreProperties(ignoreUnknown = true)

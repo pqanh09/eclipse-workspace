@@ -3,6 +3,7 @@ package com.websystique.springmvc.service.test;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -49,14 +50,6 @@ public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
 			JobDetail jobDetail = JobBuilder.newJob(QJob.class).withIdentity(jobKey).build();
 			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_JOB_ID, jobId);
 			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new BittrexJobListener(jobId, jobName));
-//			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_TOTAL, job.getMangas());
-//			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_COMPLETED, new ArrayList<String>());
-			
-
-			// Trigger cronTrigger = TriggerBuilder.newTrigger()
-			// .withIdentity(triggerName, triggerGroupName)
-			// .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
-			// .build();
 
 			Date startTime = null;
 			if (job.getTimeStart() > 0) {
@@ -71,16 +64,10 @@ public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
 //				startTime.setSeconds(0);
 				startTime.setSeconds(startTime.getSeconds() + 30);
 			}
-			// Date startTime = cronTrigger.getStartTime();
-			// Date endTime = cronTrigger.getEndTime();
-			// Date nextfireTime = cronTrigger.getNextFireTime();
-			// Date previousfireTime = cronTrigger.getPreviousFireTime();
-			// Date finalFireTime = cronTrigger.getFinalFireTime();
 
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroupName)
 					// TODO update time period
-					.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(job.getTimeInterval())
-							.repeatForever())
+					.withSchedule(CronScheduleBuilder.cronSchedule(job.getCronExpression()))
 					.startAt(startTime).build();
 
 

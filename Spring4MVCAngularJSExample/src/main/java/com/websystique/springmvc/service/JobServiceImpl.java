@@ -222,7 +222,7 @@ public class JobServiceImpl implements JobService{
 					return response;
 				}
 				//check job is running or stop or unknown  -> fail. Only start when job scheduled
-				if(!JobState.scheduled.equals(dbJob.getStatus())){
+				if(JobState.stop.equals(dbJob.getStatus()) || JobState.unknown.equals(dbJob.getStatus())){
 					LOGGER.error("Can't stop job. Job state: " + dbJob.getStatus().toString());
 					response.setMessage("Can't stop job. Job state: " + dbJob.getStatus().toString());
 					response.setSuccess(false);

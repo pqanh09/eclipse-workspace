@@ -43,11 +43,11 @@ public class AbstractSchedulerService implements SchedulerService{
 		try {
 			Scheduler sched = new StdSchedulerFactory().getScheduler();
 			TriggerKey trigKey = triggerKeyMap.get(jobId);
-			if(trigKey == null) {
+			if(trigKey != null) {
 				LOGGER.error("Not found Job {} in list schedule", jobId);
-				return false;
+				sched.unscheduleJob(trigKey);
 			}
-			sched.unscheduleJob(trigKey);
+			
 			LOGGER.info("Job {} is cancelled", jobId);
 			Job jobdb = jobRepository.findOne(new ObjectId(jobId));
 			jobdb.setStatus(JobState.stop);
@@ -57,7 +57,7 @@ public class AbstractSchedulerService implements SchedulerService{
 			jobKeyMap.remove(jobId);
 			LOGGER.info("Job {} is remove from list schedule", jobId);
 		} catch (SchedulerException e) {
-			LOGGER.error("An error when canceling Job:", e);
+			LOGGER.error("An error when stopping Job:", e);
 			return false;
 		}
 		return true;

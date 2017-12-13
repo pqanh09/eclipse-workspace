@@ -34,6 +34,7 @@ public class Job extends GenericModel<ObjectId> {
 	
 	
 	private String description;
+	
 	//TODO change name
 	private List<String> mangas = new ArrayList<>();
 	
@@ -42,8 +43,8 @@ public class Job extends GenericModel<ObjectId> {
 	
 	private int intervalType = Calendar.SECOND;
 	
-//	//cron expressions
-//	private String cronExpression;
+	//cron expressions
+	private String cronExpression;
 	
 	private long timeStart = 0;
 	
@@ -78,13 +79,13 @@ public class Job extends GenericModel<ObjectId> {
 		this.mangas = mangas;
 	}
 	
-//	public String getCronExpression() {
-//		return cronExpression;
-//	}
-//
-//	public void setCronExpression(String cronExpression) {
-//		this.cronExpression = cronExpression;
-//	}
+	public String getCronExpression() {
+		return cronExpression;
+	}
+
+	public void setCronExpression(String cronExpression) {
+		this.cronExpression = cronExpression;
+	}
 
 	public int getTimeInterval() {
 		return timeInterval;

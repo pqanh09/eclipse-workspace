@@ -1,25 +1,30 @@
 package com.websystique.springmvc.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class WSBittresResponse {
-	private boolean triggerPoll = false;
-	private boolean isRecord = false;
-	public boolean isTriggerPoll() {
-		return triggerPoll;
+	private List<Double> list = new ArrayList<>();
+	private long time;
+	public List<Double> getList() {
+		return list;
 	}
-	public void setTriggerPoll(boolean triggerPoll) {
-		this.triggerPoll = triggerPoll;
+	public void setList(List<Double> list) {
+		this.list = list;
 	}
-	public boolean isRecord() {
-		return isRecord;
+	public long getTime() {
+		return time;
 	}
-	public void setRecord(boolean isRecord) {
-		this.isRecord = isRecord;
+	public void setTime(long time) {
+		this.time = time;
 	}
-	public WSBittresResponse(boolean triggerPoll, boolean isRecord) {
+	public WSBittresResponse(long time, List<Double> list){
 		super();
-		this.triggerPoll = triggerPoll;
-		this.isRecord = isRecord;
+		this.list = list;
+		this.time = time;
 	}
-	
+	public WSBittresResponse() {
+		super();
+	}
 	
 }

@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         include = JsonTypeInfo.As.WRAPPER_OBJECT,  
         property = "type")  
 @JsonSubTypes({     
-    @Type(value=MangaRequestObject.class, name="MangaRequestObject"),
-    @Type(value=WebRequestObject.class, name="WebRequestObject")
+//    @Type(value=MangaRequestObject.class, name="MangaRequestObject"),
+//    @Type(value=WebRequestObject.class, name="WebRequestObject")
 }) 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericRequestObject {

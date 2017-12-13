@@ -20,8 +20,8 @@ public class JobVO extends GenericVO{
 	
 	private int intervalType = Calendar.SECOND;
 	
-//	//cron expressions
-//	private String cronExpression;
+	//cron expressions
+	private String cronExpression;
 	
 	private long timeStart;
 	
@@ -47,15 +47,13 @@ public class JobVO extends GenericVO{
 		this.mangas = mangas;
 	}
 
-	
+	public String getCronExpression() {
+		return cronExpression;
+	}
 
-//	public String getCronExpression() {
-//		return cronExpression;
-//	}
-//
-//	public void setCronExpression(String cronExpression) {
-//		this.cronExpression = cronExpression;
-//	}
+	public void setCronExpression(String cronExpression) {
+		this.cronExpression = cronExpression;
+	}
 
 	public long getTimeStart() {
 		return timeStart;
