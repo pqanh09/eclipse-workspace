@@ -23,6 +23,8 @@ public class Job extends GenericModel<ObjectId> {
 	private static final long serialVersionUID = -5016057474295657663L;
 
 	public static final String COLLECTION_NAME = "Job";
+	public static final String ATT_JOB_TYPE = "type";
+	public static final String ATT_JOB_STATE = "status";
 	private static final int HISTORY_SIZE = 12;
 
 	@NotNull

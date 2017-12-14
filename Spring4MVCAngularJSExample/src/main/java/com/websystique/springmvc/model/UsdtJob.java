@@ -12,11 +12,28 @@ public class UsdtJob extends Job{
 	
 	private String url;
 	
-	private List<Double> input = new ArrayList<>();
+	private List<Integer> coins = new ArrayList<>();
 	
-	private long time;
+	private List<Double> inputs = new ArrayList<>();
 
 	
+	
+	public List<Double> getInputs() {
+		return inputs;
+	}
+
+	public void setInputs(List<Double> inputs) {
+		this.inputs = inputs;
+	}
+
+	public List<Integer> getCoins() {
+		return coins;
+	}
+
+	public void setCoins(List<Integer> coins) {
+		this.coins = coins;
+	}
+
 	public String getUrl() {
 		return url;
 	}
@@ -25,21 +42,7 @@ public class UsdtJob extends Job{
 		this.url = url;
 	}
 
-	public List<Double> getInput() {
-		return input;
-	}
 
-	public void setInput(List<Double> input) {
-		this.input = input;
-	}
-
-	public long getTime() {
-		return time;
-	}
-
-	public void setTime(long time) {
-		this.time = time;
-	}
 
 	public UsdtJob() {
 		super();
@@ -47,7 +50,8 @@ public class UsdtJob extends Job{
 
 	@Override
 	public String toString() {
-		return "UsdtJob [url=" + url + ", input=" + input + ", time=" + time + "]";
+		return "UsdtJob [url=" + url + ", coins=" + coins + ", inputs=" + inputs + "]";
 	}
+
 
 }

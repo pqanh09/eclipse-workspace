@@ -204,7 +204,7 @@ public class JobServiceImpl extends AbstractServiceImpl implements JobService{
 					response.setSuccess(false);
 					return response;
 				}
-				//check job is running or scheduled-> fail. Only start when job stopped
+				//check job is running or scheduled-> fail. Only start when job stopped or fail
 				if(!JobState.stop.equals(dbJob.getStatus())){
 					LOGGER.error("Can't start job. Job state: " + dbJob.getStatus().toString());
 					response.setMessage("Can't start job. Job state: " + dbJob.getStatus().toString());

@@ -1,7 +1,6 @@
 package com.websystique.springmvc.model;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
@@ -11,15 +10,15 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 //save data by hour: max 60 records in hour
-@Document(collection = UsdtHistory.COLLECTION_NAME)
-public class UsdtHistory extends GenericModel<ObjectId> {
+@Document(collection = UsdtLastPrice.COLLECTION_NAME)
+public class UsdtLastPrice extends GenericModel<ObjectId> {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2329879922793320976L;
 
-	public static final String COLLECTION_NAME = "UsdtHistory";
+	public static final String COLLECTION_NAME = "UsdtLastPrice";
 
 	@NotNull
 	@Indexed(unique = true)
@@ -27,7 +26,7 @@ public class UsdtHistory extends GenericModel<ObjectId> {
 	
 	private Map<Integer, String> logError = new HashMap<>();
 	
-	private Map<Integer, List<Double>> list = new HashMap<>();
+	private Map<Integer, Map<Integer, Double>> list = new HashMap<>();
 
 	public long getTime() {
 		return time;
@@ -38,11 +37,11 @@ public class UsdtHistory extends GenericModel<ObjectId> {
 	}
 	
 
-	public Map<Integer, List<Double>> getList() {
+	public Map<Integer, Map<Integer, Double>> getList() {
 		return list;
 	}
 
-	public void setList(Map<Integer, List<Double>> list) {
+	public void setList(Map<Integer, Map<Integer, Double>> list) {
 		this.list = list;
 	}
 
@@ -54,7 +53,7 @@ public class UsdtHistory extends GenericModel<ObjectId> {
 		this.logError = logError;
 	}
 
-	public UsdtHistory(long time) {
+	public UsdtLastPrice(long time) {
 		super();
 		this.time = time;
 	}

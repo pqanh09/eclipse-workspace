@@ -1,12 +1,11 @@
 package com.websystique.main;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONObject;
 import org.quartz.JobDataMap;
 
 public class Main3 {
@@ -20,12 +19,15 @@ public class Main3 {
 		inputList.add(2.0);
 		inputList.add(3.0);
 		JobDataMap amap = new JobDataMap();
-		amap.put("a", inputList);
-		List<Double> input = (List<Double>) amap.get("a");
+		Map<String, String> map = new HashMap<>();
+		map.put("a", "aaaa");
+		map.put("b", "bbb");
+		JSONObject json = new JSONObject(map);
+		System.out.println(json.toString());
+		amap.put("a", map);
+		Map<String, String> input = (Map<String, String>) amap.get("a");
 		System.out.println(input);
 		
-//		Map<String, List<Double>> map = new HashMap<>();
-//		map.put("a", inputList);
 		
 		// TODO Auto-generated method stub
 //		BlockingQueue drop = new LinkedBlockingQueue(10);

@@ -21,24 +21,24 @@
 //		    USDT-OMG	OmiseGo
 //		    USDT-XRP	Ripple
 //		    USDT-ZEC	ZCash
-			{stt:"1", id:"USDT-BTC",name:"Bitcoin",lastPrice:0,input:10,percent:0},
-			{stt:"2", id:"USDT-BCC",name:"Bitcoin Cash",lastPrice:0,input:10,percent:0},
-			{stt:"3", id:"USDT-BTG",name:"Bitcoin Gold",lastPrice:0,input:10,percent:0},
+			{stt:"0", id:"USDT-BTC",name:"Bitcoin",lastPrice:0,input:10,percent:0},
+			{stt:"1", id:"USDT-BCC",name:"Bitcoin Cash",lastPrice:0,input:10,percent:0},
+			{stt:"2", id:"USDT-BTG",name:"Bitcoin Gold",lastPrice:0,input:10,percent:0},
 		
-			{stt:"4", id:"USDT-DASH",name:"Dash",lastPrice:0,input:10,percent:0},
-			{stt:"5", id:"USDT-ETH",name:"Ethereum",lastPrice:0,input:10,percent:0},
-			{stt:"6", id:"USDT-ETC",name:"Ethereum Classic",lastPrice:0,input:10,percent:0},
+			{stt:"3", id:"USDT-DASH",name:"Dash",lastPrice:0,input:10,percent:0},
+			{stt:"4", id:"USDT-ETH",name:"Ethereum",lastPrice:0,input:10,percent:0},
+			{stt:"5", id:"USDT-ETC",name:"Ethereum Classic",lastPrice:0,input:10,percent:0},
 			
-			{stt:"7", id:"USDT-LTC",name:"Litecoin",lastPrice:0,input:10,percent:0},
-			{stt:"8", id:"USDT-XMR",name:"Monero",lastPrice:0,input:10,percent:0},
-			{stt:"9", id:"USDT-NEO",name:"Neo",lastPrice:0,input:10,percent:0},
+			{stt:"6", id:"USDT-LTC",name:"Litecoin",lastPrice:0,input:10,percent:0},
+			{stt:"7", id:"USDT-XMR",name:"Monero",lastPrice:0,input:10,percent:0},
+			{stt:"8", id:"USDT-NEO",name:"Neo",lastPrice:0,input:10,percent:0},
 			
-			{stt:"10", id:"USDT-OMG",name:"OmiseGo",lastPrice:0,input:10,percent:0},
-			{stt:"11", id:"USDT-XRP",name:"Ripple",lastPrice:0,input:10,percent:0},
-			{stt:"12", id:"USDT-ZEC",name:"ZCasj",lastPrice:0,input:10,percent:0}
+			{stt:"9", id:"USDT-OMG",name:"OmiseGo",lastPrice:0,input:10,percent:0},
+			{stt:"10", id:"USDT-XRP",name:"Ripple",lastPrice:0,input:10,percent:0},
+			{stt:"11", id:"USDT-ZEC",name:"ZCasj",lastPrice:0,input:10,percent:0}
 
 		];
-		vm.time = -1;
+//		vm.time = -1;
 		vm.averageTotal = [];
 		
 		function getInput() {
@@ -47,17 +47,15 @@
 							"/Spring4MVCAngularJSExample/api/bittrex/averagetotal")
 					.then(function(response) {
 						vm.averageTotal.length = 0;
-						if(angular.isDefined(response.data.UsdtTotalResponseObject.list[0].list)){
-							var list = _.get(response, 'data.UsdtTotalResponseObject.list[0].list', []);
-							for(var key in list) {
-								var t = new Date(key);
-								vm.averageTotal.push({
-									time: moment(new Date(Number(key))).format('HH:mm'),
-									value:list[key].toFixed(1) 
-								});
-							}
-							vm.averageTotal.reverse();
+						var list = _.get(response, 'data.UsdtTotalResponseObject.list[0].list', []);
+						for(var key in list) {
+							var t = new Date(key);
+							vm.averageTotal.push({
+								time: moment(new Date(Number(key))).format('HH:mm'),
+								value:list[key].toFixed(1) 
+							});
 						}
+						vm.averageTotal.reverse();
 						
 						$timeout();
 					});
@@ -78,7 +76,7 @@
 					var result = JSON.parse(calResult.body);
 					getInput();
 					
-					vm.time = moment(new Date(result.time)).format('HH:mm:ss YYYY-MM-DD'); 
+//					vm.time = moment(new Date(result.time)).format('HH:mm:ss YYYY-MM-DD'); 
 					angular.forEach(vm.data, function(obj) {
 						obj.lastPrice = result.lastPrice[obj.stt - 1].toFixed(2);
 						obj.percent = result.percent[obj.stt - 1].toFixed(1);

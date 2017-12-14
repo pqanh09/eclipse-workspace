@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.bson.types.ObjectId;
@@ -25,11 +26,11 @@ import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
-import com.websystique.springmvc.model.USDTEnum;
-import com.websystique.springmvc.model.UsdtHistory;
+import com.websystique.springmvc.model.UsdtEnum;
+import com.websystique.springmvc.model.UsdtLastPrice;
 import com.websystique.springmvc.model.UsdtJob;
 import com.websystique.springmvc.model.UsdtTotal;
-import com.websystique.springmvc.repositories.UsdtHistoryRepository;
+import com.websystique.springmvc.repositories.UsdtLastPriceRepository;
 import com.websystique.springmvc.repositories.UsdtTotalRepository;
 import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.response.WSBittresResponse;
@@ -40,7 +41,7 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BittrexJobSchedulerHandler.class);
 
 	@Autowired
-	private UsdtHistoryRepository usdtHistoryRepository;
+	private UsdtLastPriceRepository usdtLastPriceRepository;
 
 	@Autowired
 	private UsdtTotalRepository usdtTotalRepository;
@@ -61,14 +62,20 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			return;
 		}
 		
-		Object objInput = jobParams.get(ObjectType.UsdtInput.toString());
-		// check input null
-		if (objInput == null) {
+		Object objInputs = jobParams.get(JobConstant.JOB_DATA_MAP_BITTREX_INPUTS);
+		// check inputs null
+		if (objInputs == null) {
 			LOGGER.error("No input to process.");
 			return;
 		}
-		List<Double> inputList = (List<Double>) objInput; 
-
+		List<Double> inputs = (List<Double>) objInputs;
+		Object objCoins = jobParams.get(JobConstant.JOB_DATA_MAP_BITTREX_COINS);
+		// check coins null
+		if (objCoins == null) {
+			LOGGER.error("No coins to process.");
+			return;
+		}
+		List<Integer> coins = (List<Integer>) objCoins;
 		String jobId = objId.toString();
 		LOGGER.info("Process Job {}:", jobId);
 		Job job = jobRepository.findOne(new ObjectId(jobId));
@@ -123,41 +130,58 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 
 			//save data to DB
 			Date dt = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), 0, 0);
-			UsdtHistory usdtHistory = usdtHistoryRepository.findByTime(dt.getTime());
+			UsdtLastPrice usdtHistory = usdtLastPriceRepository.findByTime(dt.getTime());
 			if (usdtHistory == null) {
-				usdtHistory = new UsdtHistory(dt.getTime());
+				usdtHistory = new UsdtLastPrice(dt.getTime());
 			}
-			List<Double> lastPrice = new ArrayList<>();
+			List<Double> lPriceTmp = new ArrayList<>();
+			Map<Integer, Double> lastPriceMap = new HashMap<>();
 			
-			lastPrice.add(map.get(USDTEnum.USDT_BTC.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_BCC.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_BTG.toString()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_BTC.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_BCC.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_BTG.toId()));
 
-			lastPrice.add(map.get(USDTEnum.USDT_DASH.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_ETH.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_ETC.toString()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_DASH.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_ETH.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_ETC.toId()));
 
-			lastPrice.add(map.get(USDTEnum.USDT_LTC.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_XMR.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_NEO.toString()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_LTC.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_XMR.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_NEO.toId()));
 
-			lastPrice.add(map.get(USDTEnum.USDT_OMG.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_XRP.toString()));
-			lastPrice.add(map.get(USDTEnum.USDT_ZEC.toString()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_OMG.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_XRP.toId()));
+			lPriceTmp.add(map.get(UsdtEnum.USDT_ZEC.toId()));
 
-			usdtHistory.getList().put(date.getMinutes(), lastPrice);
+			usdtHistory.getList().put(date.getMinutes(), lastPriceMap);
 			
 			//caculate percent
-			List<Double> percent = new ArrayList<>(); 
+			List<Double> percent = new ArrayList<>();
+			List<Double> lastPrices = new ArrayList<>();
 			double total = 0;
-			for (int i = 0; i < 12; i++) {
-				//((obj.last - obj.input)*100/obj.input).toFixed(1);
-				double pc = ((lastPrice.get(i) - inputList.get(i)) / inputList.get(i)) * 100;
+			
+			for(int i = 0; i < coins.size(); i++){
+				int num = coins.get(i);
+				double input = inputs.get(i);
+				double lastPr = lPriceTmp.get(num);
+				double pc = ((lastPr - input) / input) * 100;
 				percent.add(pc);
 				total = total + pc;
+				lastPriceMap.put(num, lastPr);	
+				lastPrices.add(lastPr);
 			}
+//			
+//			for (Entry<Integer, Double> entry : inputMap.entrySet()) {
+//				int key = entry.getKey();
+//				double input = entry.getValue();
+//				double lastPr = lastPrice.get(key);
+//				double pc = ((lastPr - input) / input) * 100;
+//				percent.add(pc);
+//				total = total + pc;
+//
+//			}
 			
-			usdtHistoryRepository.safeSave(usdtHistory);
+			usdtLastPriceRepository.safeSave(usdtHistory);
 			
 			//save total to DB
 			UsdtTotal usdtTotal = usdtTotalRepository.findByTime(dt.getTime());
@@ -176,7 +200,7 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			
 			// triger update UIs
 			if (simpMessagingTemplate != null) {
-				simpMessagingTemplate.convertAndSend("/topic/usdtMarkets", new WSBittresResponse(timeId, lastPrice, inputList, percent));
+				simpMessagingTemplate.convertAndSend("/topic/usdtMarkets", new WSBittresResponse(timeId, lastPrices, inputs, percent));
 			} else {
 				LOGGER.error("SimpMessagingTemplate is null.");
 				return;

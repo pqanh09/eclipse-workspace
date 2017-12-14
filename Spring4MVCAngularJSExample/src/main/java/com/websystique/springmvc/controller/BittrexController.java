@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.request.RequestType;
-import com.websystique.springmvc.request.UsdtInputRequestObject;
 import com.websystique.springmvc.request.UsdtJobRequestObject;
 import com.websystique.springmvc.response.GenericResponseObject;
 import com.websystique.springmvc.service.BittrexService;
@@ -28,25 +27,8 @@ public class BittrexController {
 	BittrexService bittrexService; // Service which will do all data
 								// retrieval/manipulation work
 
-	// -------------------Retrieve Input ------------------------
-
-	@RequestMapping(value = "/input", method = RequestMethod.GET)
-	public ResponseEntity<GenericResponseObject> getInput() {
-		GenericResponseObject responseObject = bittrexService.getInput(new GenericRequestObject(RequestType.read, ObjectType.UsdtInput, null));
-		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-	}
 
 
-	// ------------------- Update a Input
-	// --------------------------------------------------------
-
-	@RequestMapping(value = "/input", method = RequestMethod.POST)
-	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody UsdtInputRequestObject requestObject) {
-		requestObject.setObjectType(ObjectType.UsdtInput);
-		requestObject.setOperation(RequestType.update);
-		GenericResponseObject responseObject = bittrexService.updateInput(requestObject);
-		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-	}
 	
 	// -------------------Retrieve Total ------------------------
 	@RequestMapping(value = "/averagetotal", method = RequestMethod.GET)
@@ -58,12 +40,24 @@ public class BittrexController {
 	// ------------------- Update Bittrex Job
 		// --------------------------------------------------------
 
-		@RequestMapping(value = "/job", method = RequestMethod.POST)
-		public ResponseEntity<GenericResponseObject> updateJob(@RequestBody UsdtJobRequestObject requestObject) {
-			requestObject.setObjectType(ObjectType.Job);
-			requestObject.setOperation(RequestType.update);
-			GenericResponseObject responseObject = bittrexService.createJob(requestObject);
-			return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-		}
+	@RequestMapping(value = "/job", method = RequestMethod.POST)
+	public ResponseEntity<GenericResponseObject> createJob(@RequestBody UsdtJobRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Usdt);
+		requestObject.setOperation(RequestType.create);
+		GenericResponseObject responseObject = bittrexService.createJob(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/start", method = RequestMethod.GET)
+	public ResponseEntity<GenericResponseObject> getJob() {
+		GenericResponseObject responseObject = bittrexService.startJob(new GenericRequestObject(RequestType.start, ObjectType.Usdt, null));
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+	
+//	@RequestMapping(value = "/job", method = RequestMethod.GET)
+//	public ResponseEntity<GenericResponseObject> getJob() {
+//		GenericResponseObject responseObject = bittrexService.getBittrexJob(new GenericRequestObject(RequestType.read, ObjectType.Usdt, null));
+//		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+//	}
 
 }

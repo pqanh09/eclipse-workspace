@@ -5,31 +5,27 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
 import com.websystique.springmvc.model.JobType;
 import com.websystique.springmvc.model.ModelUtilProvider;
-import com.websystique.springmvc.model.UsdtInput;
 import com.websystique.springmvc.model.UsdtJob;
 import com.websystique.springmvc.model.UsdtTotal;
 import com.websystique.springmvc.repositories.JobRepository;
-import com.websystique.springmvc.repositories.UsdtInputRepository;
 import com.websystique.springmvc.repositories.UsdtTotalRepository;
 import com.websystique.springmvc.request.GenericRequestObject;
-import com.websystique.springmvc.request.UsdtInputRequestObject;
 import com.websystique.springmvc.request.UsdtJobRequestObject;
 import com.websystique.springmvc.response.GenericResponseObject;
 import com.websystique.springmvc.response.JobResponseObject;
 import com.websystique.springmvc.response.Messages;
-import com.websystique.springmvc.response.UsdtInputResponseObject;
 import com.websystique.springmvc.response.UsdtTotalResponseObject;
-import com.websystique.springmvc.vo.UsdtInputVO;
+import com.websystique.springmvc.service.test.BittrexSchedulerServiceImpl;
 import com.websystique.springmvc.vo.UsdtJobVO;
 import com.websystique.springmvc.vo.UsdtTotalVO;
 
@@ -41,72 +37,11 @@ public class BittrexServiceImpl extends AbstractServiceImpl implements BittrexSe
 	private JobRepository jobRepository;
 	
 	@Autowired
-	private UsdtInputRepository usdtInputRepository;
-	
-	@Autowired
 	private UsdtTotalRepository usdtTotalRepository;
 
-	@Override
-	public GenericResponseObject getInput(GenericRequestObject gRequest) {
-		UsdtInputResponseObject response = new UsdtInputResponseObject(gRequest);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-		
-			List<UsdtInput> list = usdtInputRepository.findAll();
-			UsdtInputVO result = null;
-			if(list != null && !list.isEmpty()){
-				result = ModelUtilProvider.getModelUtil().convertTo(list.get(0), UsdtInputVO.class);
-			} else {
-				long time  = (new Date()).getTime();
-				UsdtInput input = new UsdtInput(time, Arrays.asList(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0));
-				result = new UsdtInputVO(time, Arrays.asList(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0));
-				usdtInputRepository.save(input);
-			}
-			
-			response.setList(Arrays.asList(result));
-		}catch (Exception e) {
-			LOGGER.error("An error when reading Input", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
-
-	@Override
-	public GenericResponseObject updateInput(GenericRequestObject gRequest) {
-		UsdtInputResponseObject response = new UsdtInputResponseObject(gRequest);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-			Job jobBittrex = jobRepository.findByName(JobType.Bittrex.toString());
-			if(!JobState.stop.equals(jobBittrex.getStatus())){
-				response.setMessage("Current job is NOT yet stopped.");
-				response.setSuccess(false);
-			} else {
-				UsdtInputRequestObject request = (UsdtInputRequestObject)gRequest;
-				UsdtInputVO inputVO = request.getModel();
-				
-				List<UsdtInput> list = usdtInputRepository.findAll();
-				UsdtInput input = ModelUtilProvider.getModelUtil().convertTo(inputVO, UsdtInput.class);
-				
-				input.setTime((new Date()).getTime());
-				
-				ObjectId objectId = null;
-				if(list != null && !list.isEmpty()){
-					objectId = list.get(0).getInstanceid();
-					input.setInstanceid(objectId);
-				} 
-				usdtInputRepository.safeSave(input);
-			}
-		}catch (Exception e) {
-			LOGGER.info("RequestObject: {}", gRequest.toString());
-			LOGGER.error("An error when udpating Input", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
+	@Autowired
+	private BittrexSchedulerServiceImpl bittrexSchedulerServiceImpl; 
+	
 
 	@Override
 	public GenericResponseObject getTotal(GenericRequestObject request) {
@@ -143,20 +78,67 @@ public class BittrexServiceImpl extends AbstractServiceImpl implements BittrexSe
 			UsdtJobRequestObject request = (UsdtJobRequestObject)gRequest;
 			UsdtJobVO jobVO = request.getModel();
 			response.setUniqueName(jobVO.getName());
+			//check running or schedule. Only one job can run
+			Criteria criteriaStatus1 = Criteria.where(Job.ATT_JOB_STATE).in(Arrays.asList(JobState.running, JobState.scheduled));
+			Criteria criteria1 = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.Bittrex).andOperator(criteriaStatus1);
+			
+			List<Job> result = jobRepository.searchByCriteria(criteria1, Job.class);
+			if(result != null && !result.isEmpty()) {
+				LOGGER.error("Please stop current Bittrex Job before creating new Job.");
+				response.setMessage("Please stop current Bittrex Job before creating new Job.");
+				response.setSuccess(false);
+				return response;
+			}
 			// check exist
-			if(jobRepository.findByName(jobVO.getName()) == null) {
+			Criteria criteriaStatus = Criteria.where(Job.ATT_JOB_STATE).is(JobState.stop);
+			Criteria criteria = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.Bittrex).andOperator(criteriaStatus);
+			
+			result = jobRepository.searchByCriteria(criteria, Job.class);
+			if(result == null || result.isEmpty()) {
 				UsdtJob job = ModelUtilProvider.getModelUtil().convertTo(jobVO, UsdtJob.class);
-				job.setTime(new Date().getTime());
 				job.setStatus(JobState.stop);
 				jobRepository.safeSave(job);
 			} else {
-				LOGGER.error("Job is existed");
-				response.setMessage(Messages.COMMON_EXIST);
+				LOGGER.error("Already have Bittrex Job to start");
+				response.setMessage("Already have Bittrex Job to start");
 				response.setSuccess(false);
 			}
 		}catch (Exception e) {
 			LOGGER.info("RequestObject: {}", gRequest.toString());
 			LOGGER.error("An error when creating Job", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+
+	@Override
+	public GenericResponseObject startJob(GenericRequestObject gRequest) {
+		JobResponseObject response = new JobResponseObject(gRequest);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			// check exist
+			Criteria criteriaStatus = Criteria.where(Job.ATT_JOB_STATE).is(JobState.stop);
+			Criteria criteria = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.Bittrex).andOperator(criteriaStatus);
+			
+			List<Job> result = jobRepository.searchByCriteria(criteria, Job.class);
+			if(result == null || result.isEmpty()) {
+				LOGGER.error("No Bittrex Job to start");
+				response.setMessage("No Bittrex Job to start");
+				response.setSuccess(false);
+			} else {
+				if (!bittrexSchedulerServiceImpl.startJob(result.get(0))){
+					LOGGER.error("Can't start job");
+					response.setMessage("Can't start job");
+					response.setSuccess(false);
+					return response;
+				}
+			}
+		}catch (Exception e) {
+			LOGGER.info("RequestObject: {}", gRequest.toString());
+			LOGGER.error("An error when starting job", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
 			response.setSuccess(false);
 		}

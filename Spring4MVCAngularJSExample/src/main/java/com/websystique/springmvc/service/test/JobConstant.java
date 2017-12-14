@@ -7,4 +7,6 @@ public interface JobConstant {
 	public static final String JOB_DATA_MAP_TOTAL = "Total";
 	public static final String JOB_DATA_MAP_COMPLETED = "Completed";
 	public static final String JOB_DATA_MAP_ERROR_MESSAGE = "ErrorMsg";
+	public static final String JOB_DATA_MAP_BITTREX_INPUTS = "BittrexInputs";
+	public static final String JOB_DATA_MAP_BITTREX_COINS = "BittrexCoins";
 }
