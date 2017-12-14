@@ -7,4 +7,6 @@ public interface BittrexService extends GenericService{
 	GenericResponseObject getInput(GenericRequestObject request);
 	GenericResponseObject updateInput(GenericRequestObject request);
 	GenericResponseObject getTotal(GenericRequestObject request);
+	GenericResponseObject createJob(GenericRequestObject request);
+	
 }

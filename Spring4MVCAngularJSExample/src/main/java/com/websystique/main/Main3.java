@@ -3,19 +3,38 @@ package com.websystique.main;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.quartz.JobDataMap;
 
 public class Main3 {
 
 	public static void main(String[] args) throws InterruptedException {
+		
+		
+		
+		List<Double> inputList = new ArrayList<>();
+		inputList.add(1.0);
+		inputList.add(2.0);
+		inputList.add(3.0);
+		JobDataMap amap = new JobDataMap();
+		amap.put("a", inputList);
+		List<Double> input = (List<Double>) amap.get("a");
+		System.out.println(input);
+		
+//		Map<String, List<Double>> map = new HashMap<>();
+//		map.put("a", inputList);
+		
 		// TODO Auto-generated method stub
 //		BlockingQueue drop = new LinkedBlockingQueue(10);
-		List<String> a1 = new ArrayList<>();
-		a1.add("1");
-		a1.add("2");
-		List<String> a2 = new ArrayList<>();
-		a2.add("2");
-		a2.add("1");
+//		List<String> a1 = new ArrayList<>();
+//		a1.add("1");
+//		a1.add("2");
+//		List<String> a2 = new ArrayList<>();
+//		a2.add("2");
+//		a2.add("1");
 		
 //		System.out.println(a2.containsAll(a1));
 //		
@@ -26,25 +45,25 @@ public class Main3 {
 		
 		
 		
-		Calendar cal = Calendar.getInstance();
-		System.out.println(cal.getTimeInMillis());
-		Date date = new Date();
-		System.out.println(date.getTime());
-		System.out.println(date);
-		date.setSeconds(0);
-//		date.set
-		System.out.println(date.getTime());
-		System.out.println(date);
-		System.out.println(date.getMinutes());
+//		Calendar cal = Calendar.getInstance();
+//		System.out.println(cal.getTimeInMillis());
+//		Date date = new Date();
+//		System.out.println(date.getTime());
+//		System.out.println(date);
+//		date.setSeconds(0);
+////		date.set
+//		System.out.println(date.getTime());
+//		System.out.println(date);
+//		System.out.println(date.getMinutes());
 //		Thread.sleep(2000);
 		
 //		System.out.println(cal.getTimeInMillis());
 //		System.out.println(date.getTime());
 
 //		Date date = new Date();
-		Date d = new Date(date.getYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), 0);
-		System.out.println(d.getTime());
-		System.out.println(d);
+//		Date d = new Date(date.getYear(), date.getMonth(), date.getDate(), date.getHours(), date.getMinutes(), 0);
+//		System.out.println(d.getTime());
+//		System.out.println(d);
 		
 		
 		

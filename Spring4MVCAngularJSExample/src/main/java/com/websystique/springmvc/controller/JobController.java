@@ -38,27 +38,6 @@ public class JobController {
 	}
 
 
-	// -------------------Create a Job
-
-	@RequestMapping(value = "/job", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GenericResponseObject> createUser(@RequestBody JobRequestObject requestObject) {
-		requestObject.setObjectType(ObjectType.Job);
-		requestObject.setOperation(RequestType.create);
-		GenericResponseObject responseObject = jobService.create(requestObject);
-		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-	}
-
-	// ------------------- Update a Job
-	// --------------------------------------------------------
-
-	@RequestMapping(value = "/job", method = RequestMethod.PUT)
-	public ResponseEntity<GenericResponseObject> updateUser(@RequestBody JobRequestObject requestObject) {
-		requestObject.setObjectType(ObjectType.Job);
-		requestObject.setOperation(RequestType.update);
-		GenericResponseObject responseObject = jobService.update(requestObject);
-		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-	}
-
 	// ------------------- Delete Job(s)
 	// --------------------------------------------------------
 

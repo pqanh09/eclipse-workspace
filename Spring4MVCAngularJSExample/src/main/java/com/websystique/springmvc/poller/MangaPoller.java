@@ -28,9 +28,9 @@ import com.websystique.springmvc.repositories.MangaRepository;
 
 import ch.qos.logback.classic.Level;
 
-@Service("comicPoller")
-public class ComicPoller {
-	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(ComicPoller.class);
+@Service("mangaPoller")
+public class MangaPoller {
+	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(MangaPoller.class);
 	
 	@Autowired
 	private MangaRepository mangaRepository;

@@ -27,12 +27,11 @@ import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
 import com.websystique.springmvc.model.USDTEnum;
 import com.websystique.springmvc.model.UsdtHistory;
-import com.websystique.springmvc.model.UsdtInput;
+import com.websystique.springmvc.model.UsdtJob;
 import com.websystique.springmvc.model.UsdtTotal;
 import com.websystique.springmvc.repositories.UsdtHistoryRepository;
-import com.websystique.springmvc.repositories.UsdtInputRepository;
 import com.websystique.springmvc.repositories.UsdtTotalRepository;
-import com.websystique.springmvc.request.UsdtInputRequestObject;
+import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.response.WSBittresResponse;
 
 @Service("bittrexJobSchedulerHandler")
@@ -45,10 +44,6 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 
 	@Autowired
 	private UsdtTotalRepository usdtTotalRepository;
-	
-	
-	@Autowired
-	private UsdtInputRepository usdtInputRepository;
 	
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -65,21 +60,25 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			LOGGER.error("No JobID to process.");
 			return;
 		}
+		
+		Object objInput = jobParams.get(ObjectType.UsdtInput.toString());
+		// check input null
+		if (objInput == null) {
+			LOGGER.error("No input to process.");
+			return;
+		}
+		List<Double> inputList = (List<Double>) objInput; 
 
 		String jobId = objId.toString();
 		LOGGER.info("Process Job {}:", jobId);
-		Job jobDb = jobRepository.findOne(new ObjectId(jobId));
+		Job job = jobRepository.findOne(new ObjectId(jobId));
+		UsdtJob jobDb = (UsdtJob) job;
 
-		if (jobDb == null || jobDb.getMangas().isEmpty() || StringUtils.isBlank(jobDb.getMangas().get(0))) {
+		if (jobDb == null || StringUtils.isBlank(jobDb.getUrl())) {
 			LOGGER.error("Not found job in db or No URL to poll");
 			return;
 		}
 		
-		UsdtInput usdtInput = usdtInputRepository.findAll().get(0);
-		if(usdtInput == null){
-			LOGGER.error("There is no Input");
-			return;
-		}
 
 		HttpURLConnection conn = null;
 		try {
@@ -88,7 +87,7 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 					0);
 			long timeId = date.getTime();
 
-			URL url = new URL(jobDb.getMangas().get(0) + String.valueOf(timeId));
+			URL url = new URL(jobDb.getUrl() + String.valueOf(timeId));
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
@@ -147,9 +146,8 @@ public class BittrexJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			lastPrice.add(map.get(USDTEnum.USDT_ZEC.toString()));
 
 			usdtHistory.getList().put(date.getMinutes(), lastPrice);
-			//caculate percent
 			
-			List<Double> inputList = usdtInput.getList(); 
+			//caculate percent
 			List<Double> percent = new ArrayList<>(); 
 			double total = 0;
 			for (int i = 0; i < 12; i++) {

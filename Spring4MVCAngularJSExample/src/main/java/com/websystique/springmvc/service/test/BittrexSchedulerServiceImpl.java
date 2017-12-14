@@ -1,15 +1,10 @@
 package com.websystique.springmvc.service.test;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
 import org.quartz.Scheduler;
-import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
@@ -22,11 +17,8 @@ import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
-import com.websystique.springmvc.model.UsdtInput;
-import com.websystique.springmvc.repositories.UsdtInputRepository;
-import com.websystique.springmvc.service.jobnotuse.BittrexJobListener;
-import com.websystique.springmvc.service.jobnotuse.ComicJobListener;
-import com.websystique.springmvc.vo.UsdtInputVO;
+import com.websystique.springmvc.model.UsdtJob;
+import com.websystique.springmvc.request.ObjectType;
 
 @Service("bittrexSchedulerServiceImpl")
 public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
@@ -37,24 +29,20 @@ public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
 	BittrexJobSchedulerHandler bittrexJobSchedulerHandler;
 	
 
-	@Autowired
-	private UsdtInputRepository usdtInputRepository;
-	
 	@Override
 	public boolean startJob(Job job) {
 		try {
 			
 			//check input
-			
-			List<UsdtInput> list = usdtInputRepository.findAll();
-			
-			if(list == null || list.isEmpty()){
-				LOGGER.info("There is no Input to calculate");
+			if(!(job instanceof UsdtJob)){
+				LOGGER.info("Not support this {} Job", job.getType());
 				return false;
 			}
-			String jobId = job.getInstanceid().toString();
-			String jobName = job.getName();
-			String groupName = job.getType().toString();
+			UsdtJob usdtJob = (UsdtJob) job;
+			
+			String jobId = usdtJob.getInstanceid().toString();
+			String jobName = usdtJob.getName();
+			String groupName = usdtJob.getType().toString();
 			String triggerName = getTriggerName();
 			String triggerGroupName = getTriggerGroupName(groupName);
 
@@ -66,25 +54,12 @@ public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
 			JobDetail jobDetail = JobBuilder.newJob(QJob.class).withIdentity(jobKey).build();
 			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_JOB_ID, jobId);
 			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new BittrexJobListener(jobId, jobName));
-
-			Date startTime = null;
-			if (job.getTimeStart() > 0) {
-				startTime = new Date(job.getTimeStart());
-			} else {
-				startTime = Calendar.getInstance().getTime();
-				//TODO change time start
-//				startTime.setHours(startTime.getHours() + 1);
-				startTime.setHours(startTime.getHours());
-//				startTime.setMinutes(0);
-				startTime.setMinutes(startTime.getMinutes());
-//				startTime.setSeconds(0);
-				startTime.setSeconds(startTime.getSeconds() + 30);
-			}
+			jobDetail.getJobDataMap().put(ObjectType.UsdtInput.toString(), usdtJob.getInput());
 
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroupName)
 					// TODO update time period
-					.withSchedule(CronScheduleBuilder.cronSchedule(job.getCronExpression()))
-					.startAt(startTime).build();
+					.withSchedule(CronScheduleBuilder.cronSchedule(usdtJob.getCronExpression()))
+					.build();
 
 
 			TriggerKey triggerKey = trigger.getKey();
@@ -98,8 +73,8 @@ public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
 			sched.start();
 			triggerKeyMap.put(jobId, triggerKey);
 			jobKeyMap.put(jobId, jobKey);
-			job.setStatus(JobState.running);
-			jobRepository.safeSave(job);
+			usdtJob.setStatus(JobState.running);
+			jobRepository.safeSave(usdtJob);
 		} catch (Exception e) {
 			LOGGER.info("Job: {}", job.toString());
 			LOGGER.error("An error when starting job: ", e);

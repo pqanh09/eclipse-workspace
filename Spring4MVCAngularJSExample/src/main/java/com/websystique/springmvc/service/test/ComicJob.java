@@ -1,4 +1,8 @@
-package com.websystique.springmvc.service.jobnotuse;
+package com.websystique.springmvc.service.test;
+
+import com.websystique.springmvc.service.jobnotuse.MyJobListener;
+import com.websystique.springmvc.service.jobnotuse.OVJob;
+import com.websystique.springmvc.service.jobnotuse.OVJobContext;
 
 public class ComicJob implements OVJob {
 

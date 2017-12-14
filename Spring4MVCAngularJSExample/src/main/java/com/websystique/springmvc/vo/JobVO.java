@@ -90,7 +90,6 @@ public class JobVO extends GenericVO{
 	public int getIntervalType() {
 		return intervalType;
 	}
-
 	public void setIntervalType(int intervalType) {
 		this.intervalType = intervalType;
 	}

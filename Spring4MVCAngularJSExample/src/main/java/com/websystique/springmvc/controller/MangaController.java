@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.websystique.springmvc.request.GenericRequestObject;
+import com.websystique.springmvc.request.MangaJobRequestObject;
 import com.websystique.springmvc.request.MangaRequestObject;
 import com.websystique.springmvc.request.ObjectType;
 import com.websystique.springmvc.request.RequestType;
@@ -71,5 +72,26 @@ public class MangaController {
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	
+	// -------------------Create a Manga Job
+	
+	@RequestMapping(value = "/manga/job", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GenericResponseObject> createMangaJob(@RequestBody MangaJobRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Manga);
+		requestObject.setOperation(RequestType.create);
+		GenericResponseObject responseObject = mangaService.createMangaJob(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+
+	// ------------------- Update a Manga Job
+	// --------------------------------------------------------
+
+	@RequestMapping(value = "/manga/job", method = RequestMethod.PUT)
+	public ResponseEntity<GenericResponseObject> updateMangaJob(@RequestBody MangaJobRequestObject requestObject) {
+		requestObject.setObjectType(ObjectType.Manga);
+		requestObject.setOperation(RequestType.update);
+		GenericResponseObject responseObject = mangaService.updateMangaJob(requestObject);
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+
 
 }

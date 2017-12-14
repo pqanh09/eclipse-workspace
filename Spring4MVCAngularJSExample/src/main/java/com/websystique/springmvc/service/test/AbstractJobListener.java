@@ -1,4 +1,4 @@
-package com.websystique.springmvc.service.jobnotuse;
+package com.websystique.springmvc.service.test;
 
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionException;
@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.websystique.springmvc.model.JobType;
-import com.websystique.springmvc.service.test.HandlerRegistryManager;
-import com.websystique.springmvc.service.test.JobSchedulerHandler;
+import com.websystique.springmvc.service.jobnotuse.MyJobListener;
 
 public class AbstractJobListener implements MyJobListener {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AbstractJobListener.class);

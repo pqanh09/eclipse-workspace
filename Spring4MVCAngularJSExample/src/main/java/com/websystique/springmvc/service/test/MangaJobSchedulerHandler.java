@@ -13,19 +13,20 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.websystique.springmvc.model.MangaJob;
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobHistory;
 import com.websystique.springmvc.model.JobHistoryDetail;
 import com.websystique.springmvc.model.JobState;
-import com.websystique.springmvc.poller.ComicPoller;
+import com.websystique.springmvc.poller.MangaPoller;
 
-@Service("comicJobSchedulerHandler")
-public class ComicJobSchedulerHandler extends AbstractJobSchedulerHandler{
+@Service("mangaJobSchedulerHandler")
+public class MangaJobSchedulerHandler extends AbstractJobSchedulerHandler{
 
 	@Autowired
-	private ComicPoller comicPoller;
+	private MangaPoller mangaPoller;
 	
-    private static final Logger LOGGER = LoggerFactory.getLogger(ComicJobSchedulerHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MangaJobSchedulerHandler.class);
 
     @SuppressWarnings("unchecked")
 	@Override
@@ -39,7 +40,8 @@ public class ComicJobSchedulerHandler extends AbstractJobSchedulerHandler{
     	
     	String jobId = objId.toString() ;
     	LOGGER.info("Process Job {}:", jobId);
-    	Job jobDb = jobRepository.findOne(new ObjectId(jobId));
+    	Job job = jobRepository.findOne(new ObjectId(jobId));
+    	MangaJob jobDb = (MangaJob) job;
     	List<String> totalIds = jobDb.getMangas();
     	List<String> completedIds = new ArrayList<>();
     	List<JobHistoryDetail> jobDetails = new ArrayList<>();
@@ -52,7 +54,7 @@ public class ComicJobSchedulerHandler extends AbstractJobSchedulerHandler{
     	jobHistory.setTotalElemendIds(totalIds);
     	jobHistory.setJobDetails(jobDetails);
     	for (String mangaId : totalIds) {
-    		JobHistoryDetail jobDetail = comicPoller.pollManga(mangaId);
+    		JobHistoryDetail jobDetail = mangaPoller.pollManga(mangaId);
     		jobDetails.add(jobDetail);
     		if(jobDetail.isSuccess()){
     			completedIds.add(mangaId);

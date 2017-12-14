@@ -32,11 +32,7 @@ public class Job extends GenericModel<ObjectId> {
 
 	private JobType type;
 	
-	
 	private String description;
-	
-	//TODO change name
-	private List<String> mangas = new ArrayList<>();
 	
 	//time interval
 	private int timeInterval = 3600;
@@ -71,14 +67,6 @@ public class Job extends GenericModel<ObjectId> {
 		this.description = description;
 	}
 
-	public List<String> getMangas() {
-		return mangas;
-	}
-
-	public void setMangas(List<String> mangas) {
-		this.mangas = mangas;
-	}
-	
 	public String getCronExpression() {
 		return cronExpression;
 	}
@@ -135,14 +123,15 @@ public class Job extends GenericModel<ObjectId> {
 		this.status = status;
 	}
 	
-	public List getJobHistory() {
+	public List<String> getJobHistory() {
 		return jobHistory;
 	}
 
-	public void setJobHistory(List jobHistory) {
+	public void setJobHistory(List<String> jobHistory) {
 		this.jobHistory = jobHistory;
 	}
 	//TODO synchronize
+	
 	public String addHistory(String historyId){
 		String removeId = null;
 		if(HISTORY_SIZE == jobHistory.size()){
@@ -156,18 +145,13 @@ public class Job extends GenericModel<ObjectId> {
 		super();
 	}
 
-	
-	public Job(ObjectId instanceid, Date createDate, Date modifiedDate, String lastUpdatedBy) {
-		super(instanceid, createDate, modifiedDate, lastUpdatedBy);
-	}
-
 	@Override
 	public String toString() {
-		return "Job [name=" + name + ", type=" + type + ", description=" + description + ", mangas=" + mangas
-				+ ", timeInterval=" + timeInterval + ", intervalType=" + intervalType + ", timeStart=" + timeStart
-				+ ", timeFinish=" + timeFinish + ", status=" + status + "]";
+		return "Job [name=" + name + ", type=" + type + ", description=" + description + ", timeInterval="
+				+ timeInterval + ", intervalType=" + intervalType + ", cronExpression=" + cronExpression
+				+ ", timeStart=" + timeStart + ", timeFinish=" + timeFinish + ", status=" + status + ", jobHistory="
+				+ jobHistory + "]";
 	}
 
-	
 
 }

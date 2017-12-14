@@ -20,20 +20,19 @@ import org.springframework.stereotype.Service;
 
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
-import com.websystique.springmvc.service.jobnotuse.ComicJobListener;
+import com.websystique.springmvc.model.UsdtJob;
 
-@Service("comicSchedulerServiceImpl")
-public class ComicSchedulerServiceImpl extends AbstractSchedulerService {
+@Service("mangaSchedulerServiceImpl")
+public class MangaSchedulerServiceImpl extends AbstractSchedulerService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ComicSchedulerServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(MangaSchedulerServiceImpl.class);
 	
 	@Autowired
-	ComicJobSchedulerHandler comicJobSchedulerHandler;
+	MangaJobSchedulerHandler mangaJobSchedulerHandler;
 	
 	@Override
 	public boolean startJob(Job job) {
 		try {
-
 			String jobId = job.getInstanceid().toString();
 			String jobName = job.getName();
 			String groupName = job.getType().toString();
@@ -43,11 +42,11 @@ public class ComicSchedulerServiceImpl extends AbstractSchedulerService {
 			JobKey jobKey = new JobKey(jobId, groupName);
 
 			//add Handler for job
-			addHandler(groupName, comicJobSchedulerHandler);
+			addHandler(groupName, mangaJobSchedulerHandler);
 
 			JobDetail jobDetail = JobBuilder.newJob(QJob.class).withIdentity(jobKey).build();
 			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_JOB_ID, jobId);
-			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new ComicJobListener(jobId, jobName));
+			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new MangaJobListener(jobId, jobName));
 //			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_TOTAL, job.getMangas());
 //			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_COMPLETED, new ArrayList<String>());
 			

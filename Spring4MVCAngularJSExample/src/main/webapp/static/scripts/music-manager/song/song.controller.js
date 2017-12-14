@@ -47,27 +47,19 @@
 							"/Spring4MVCAngularJSExample/api/bittrex/averagetotal")
 					.then(function(response) {
 						vm.averageTotal.length = 0;
-						var list = response.data.UsdtTotalResponseObject.list[0].list;
-						for(var key in list) {
-							var t = new Date(key);
-							console.log('HEllo');
-							console.log(t);
-							vm.averageTotal.push({
-								time: moment(new Date(Number(key))).format('HH:mm'),
-								value:list[key].toFixed(1) 
-							});
+						if(angular.isDefined(response.data.UsdtTotalResponseObject.list[0].list)){
+							var list = _.get(response, 'data.UsdtTotalResponseObject.list[0].list', []);
+							for(var key in list) {
+								var t = new Date(key);
+								vm.averageTotal.push({
+									time: moment(new Date(Number(key))).format('HH:mm'),
+									value:list[key].toFixed(1) 
+								});
+							}
+							vm.averageTotal.reverse();
 						}
-						console.log(vm.averageTotal);
+						
 						$timeout();
-//						vm.time = moment(new Date(result.time)).format('HH:mm:ss YYYY-MM-DD');
-//						Object.keys(list).map(function(key, index) {
-//							console.log(key);
-//							console.log(index);
-//						});
-//						var list = response.data.UsdtInputResponseObject.list[0].list;
-//						angular.forEach(vm.data, function(obj) {
-//							obj.input = list[obj.stt - 1].toFixed(2);
-//						});
 					});
 		}
 		getInput();
@@ -77,18 +69,13 @@
 			var socket = new SockJS('/Spring4MVCAngularJSExample/register');
 			stompClient = Stomp.over(socket);
 			stompClient.connect({}, function(frame) {
-				// console.log(frame);
 				stompClient.subscribe('/topic/greetings', function(calResult) {
 					vm.dataStr = calResult.body.toString();
-					console.log(vm.dataStr);
-//					$scope.$digest();
 					$timeout();
 				});
 			
 				stompClient.subscribe('/topic/usdtMarkets', function(calResult) {
-					console.log(calResult);
 					var result = JSON.parse(calResult.body);
-					console.log(result);
 					getInput();
 					
 					vm.time = moment(new Date(result.time)).format('HH:mm:ss YYYY-MM-DD'); 

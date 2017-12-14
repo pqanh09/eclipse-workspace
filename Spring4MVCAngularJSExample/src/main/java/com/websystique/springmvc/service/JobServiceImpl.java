@@ -1,7 +1,6 @@
 package com.websystique.springmvc.service;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -15,8 +14,10 @@ import com.websystique.springmvc.caa.MyRunnable;
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
 import com.websystique.springmvc.model.JobType;
+import com.websystique.springmvc.model.MangaJob;
 import com.websystique.springmvc.model.ModelUtilProvider;
-import com.websystique.springmvc.poller.ComicPoller;
+import com.websystique.springmvc.model.UsdtJob;
+import com.websystique.springmvc.poller.MangaPoller;
 import com.websystique.springmvc.repositories.JobRepository;
 import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.JobRequestObject;
@@ -25,93 +26,29 @@ import com.websystique.springmvc.response.JobResponseObject;
 import com.websystique.springmvc.response.Messages;
 import com.websystique.springmvc.response.PartResponseStatus;
 import com.websystique.springmvc.service.test.BittrexSchedulerServiceImpl;
-import com.websystique.springmvc.service.test.ComicSchedulerServiceImpl;
+import com.websystique.springmvc.service.test.MangaSchedulerServiceImpl;
 import com.websystique.springmvc.vo.JobVO;
+import com.websystique.springmvc.vo.MangaJobVO;
+import com.websystique.springmvc.vo.UsdtJobVO;
 
 @Service("jobService")
-public class JobServiceImpl implements JobService{
+public class JobServiceImpl extends AbstractServiceImpl implements JobService{
 	
 	static private Logger LOGGER = (Logger) LoggerFactory.getLogger(JobServiceImpl.class);
 	@Autowired
 	private JobRepository jobRepository;
 	
 	@Autowired
-	ComicPoller comicPoller;
+	MangaPoller mangaPoller;
 	
 	@Autowired 
-	ComicSchedulerServiceImpl comicSchedulerServiceImpl;
+	MangaSchedulerServiceImpl mangaSchedulerServiceImpl;
 	
 	@Autowired 
 	BittrexSchedulerServiceImpl bittrexSchedulerServiceImpl;
 	
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
-
-	@Override
-	public GenericResponseObject create(GenericRequestObject gRequest) {
-		JobResponseObject response = new JobResponseObject(gRequest);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-			JobRequestObject request = (JobRequestObject)gRequest;
-			JobVO jobVO = request.getModel();
-			response.setUniqueName(jobVO.getName());
-			// check exist
-			if(jobRepository.findByName(jobVO.getName()) == null) {
-				Job job = ModelUtilProvider.getModelUtil().convertTo(jobVO, Job.class);
-				job.setStatus(JobState.stop);
-				jobRepository.safeSave(job);
-			} else {
-				LOGGER.error("Job is existed");
-				response.setMessage(Messages.COMMON_EXIST);
-				response.setSuccess(false);
-			}
-		}catch (Exception e) {
-			LOGGER.info("RequestObject: {}", gRequest.toString());
-			LOGGER.error("An error when creating Job", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
-
-	@Override
-	public GenericResponseObject update(GenericRequestObject gRequest) {
-		JobResponseObject response = new JobResponseObject(gRequest);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-			JobRequestObject request = (JobRequestObject)gRequest;
-			JobVO jobVO = request.getModel();
-			response.setUniqueName(jobVO.getName());
-			//check not found
-			Job dbJob = jobRepository.findOne(new ObjectId(jobVO.getObjectId()));
-			if(dbJob == null){
-				LOGGER.error("Job not found");
-				response.setMessage(Messages.COMMON_NOT_FOUND);
-				response.setSuccess(false);
-				return response;
-			} 
-			if(!JobState.stop.equals(dbJob.getStatus())){
-				LOGGER.error("Can't update job! Job state: {}", dbJob.getStatus());
-				response.setMessage("Can't update job! Job state: " + dbJob.getStatus().toString());
-				response.setSuccess(false);
-				return response;
-			}
-			//set ObjectId
-			Job job = ModelUtilProvider.getModelUtil().convertTo(jobVO, Job.class);
-			job.setStatus(dbJob.getStatus());
-			job.setInstanceid(new ObjectId(jobVO.getObjectId()));
-			job.addHistory(Calendar.getInstance().getTime().toString());
-			jobRepository.safeSave(job);
-		}catch (Exception e) {
-			LOGGER.info("RequestObject: {}", gRequest.toString());
-			LOGGER.error("An error when udpating Job", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
 
 	@Override
 	public GenericResponseObject delete(GenericRequestObject gRequest) {
@@ -168,13 +105,18 @@ public class JobServiceImpl implements JobService{
 			List<Job> list = jobRepository.findAll();
 			
 			for (Job job : list) {
-				JobVO jobVO = ModelUtilProvider.getModelUtil().convertTo(job, JobVO.class);
+				JobVO jobVO = null;
+				if(job instanceof MangaJob){
+					jobVO = ModelUtilProvider.getModelUtil().convertTo(job, MangaJobVO.class); 
+				} else if(job instanceof UsdtJob){
+					jobVO = ModelUtilProvider.getModelUtil().convertTo(job, UsdtJobVO.class); 
+				} else {
+					continue;
+				}
 				jobVO.setObjectId(job.getInstanceid().toString());
 				result.add(jobVO);
 			}
 			response.setList(result);
-			LOGGER.info("@!@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-			LOGGER.info(comicSchedulerServiceImpl.getJobList().toString());
 		}catch (Exception e) {
 			LOGGER.error("An error when reading Jobs", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
@@ -191,7 +133,7 @@ public class JobServiceImpl implements JobService{
 		try {
 			JobRequestObject request = (JobRequestObject)gRequest;
 			if(!request.getIds().isEmpty()){
-				comicPoller.pollManga(request.getIds().get(0));
+				mangaPoller.pollManga(request.getIds().get(0));
 			} else {
 				response.setMessage("No Manga to poll");
 				response.setSuccess(false);
@@ -228,7 +170,7 @@ public class JobServiceImpl implements JobService{
 					response.setSuccess(false);
 					return response;
 				}
-				if (!comicSchedulerServiceImpl.stopJob(request.getIds().get(0))){
+				if (!mangaSchedulerServiceImpl.stopJob(request.getIds().get(0))){
 					LOGGER.error("Can't stop job");
 					response.setMessage("Can't stop job");
 					response.setSuccess(false);
@@ -269,8 +211,8 @@ public class JobServiceImpl implements JobService{
 					response.setSuccess(false);
 					return response;
 				}
-				if(JobType.Comic.equals(dbJob.getType())){
-					if (!comicSchedulerServiceImpl.startJob(dbJob)){
+				if(JobType.Manga.equals(dbJob.getType())){
+					if (!mangaSchedulerServiceImpl.startJob(dbJob)){
 						LOGGER.error("Can't start job");
 						response.setMessage("Can't start job");
 						response.setSuccess(false);

@@ -16,17 +16,21 @@ import com.websystique.springmvc.model.JobState;
 import com.websystique.springmvc.model.JobType;
 import com.websystique.springmvc.model.ModelUtilProvider;
 import com.websystique.springmvc.model.UsdtInput;
+import com.websystique.springmvc.model.UsdtJob;
 import com.websystique.springmvc.model.UsdtTotal;
 import com.websystique.springmvc.repositories.JobRepository;
 import com.websystique.springmvc.repositories.UsdtInputRepository;
 import com.websystique.springmvc.repositories.UsdtTotalRepository;
 import com.websystique.springmvc.request.GenericRequestObject;
 import com.websystique.springmvc.request.UsdtInputRequestObject;
+import com.websystique.springmvc.request.UsdtJobRequestObject;
 import com.websystique.springmvc.response.GenericResponseObject;
+import com.websystique.springmvc.response.JobResponseObject;
 import com.websystique.springmvc.response.Messages;
 import com.websystique.springmvc.response.UsdtInputResponseObject;
 import com.websystique.springmvc.response.UsdtTotalResponseObject;
 import com.websystique.springmvc.vo.UsdtInputVO;
+import com.websystique.springmvc.vo.UsdtJobVO;
 import com.websystique.springmvc.vo.UsdtTotalVO;
 
 @Service("bittrexService")
@@ -127,7 +131,36 @@ public class BittrexServiceImpl extends AbstractServiceImpl implements BittrexSe
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
 			response.setSuccess(false);
 		}
-		return response;	}
-
+		return response;
+	}
+	
+	@Override
+	public GenericResponseObject createJob(GenericRequestObject gRequest) {
+		JobResponseObject response = new JobResponseObject(gRequest);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			UsdtJobRequestObject request = (UsdtJobRequestObject)gRequest;
+			UsdtJobVO jobVO = request.getModel();
+			response.setUniqueName(jobVO.getName());
+			// check exist
+			if(jobRepository.findByName(jobVO.getName()) == null) {
+				UsdtJob job = ModelUtilProvider.getModelUtil().convertTo(jobVO, UsdtJob.class);
+				job.setTime(new Date().getTime());
+				job.setStatus(JobState.stop);
+				jobRepository.safeSave(job);
+			} else {
+				LOGGER.error("Job is existed");
+				response.setMessage(Messages.COMMON_EXIST);
+				response.setSuccess(false);
+			}
+		}catch (Exception e) {
+			LOGGER.info("RequestObject: {}", gRequest.toString());
+			LOGGER.error("An error when creating Job", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
 
 }
