@@ -48,16 +48,21 @@ public class BittrexController {
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	
-	@RequestMapping(value = "/start", method = RequestMethod.GET)
-	public ResponseEntity<GenericResponseObject> getJob() {
-		GenericResponseObject responseObject = bittrexService.startJob(new GenericRequestObject(RequestType.start, ObjectType.Usdt, null));
+	@RequestMapping(value = "/startmartket", method = RequestMethod.GET)
+	public ResponseEntity<GenericResponseObject> startmartket() {
+		GenericResponseObject responseObject = bittrexService.startMartketJob(new GenericRequestObject(RequestType.start, ObjectType.Job, null));
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
+	@RequestMapping(value = "/startlastprice", method = RequestMethod.GET)
+	public ResponseEntity<GenericResponseObject> startlastprice() {
+		GenericResponseObject responseObject = bittrexService.startLastPriceJob(new GenericRequestObject(RequestType.start, ObjectType.Job, null));
 		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 	}
 	
-//	@RequestMapping(value = "/job", method = RequestMethod.GET)
-//	public ResponseEntity<GenericResponseObject> getJob() {
-//		GenericResponseObject responseObject = bittrexService.getBittrexJob(new GenericRequestObject(RequestType.read, ObjectType.Usdt, null));
-//		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-//	}
+	@RequestMapping(value = "/getmartket", method = RequestMethod.GET)
+	public ResponseEntity<GenericResponseObject> getJob() {
+		GenericResponseObject responseObject = bittrexService.getmartket(new GenericRequestObject(RequestType.read, ObjectType.Job, null));
+		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
+	}
 
 }

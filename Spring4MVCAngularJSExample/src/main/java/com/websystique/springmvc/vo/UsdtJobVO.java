@@ -6,12 +6,10 @@ import java.util.List;
 public class UsdtJobVO extends JobVO {
 	private String url;
 
-private List<Integer> coins = new ArrayList<>();
-	
+	private List<Integer> coins = new ArrayList<>();
+
 	private List<Double> inputs = new ArrayList<>();
 
-	
-	
 	public List<Double> getInputs() {
 		return inputs;
 	}
@@ -27,7 +25,7 @@ private List<Integer> coins = new ArrayList<>();
 	public void setCoins(List<Integer> coins) {
 		this.coins = coins;
 	}
-	
+
 	public String getUrl() {
 		return url;
 	}
@@ -35,7 +33,6 @@ private List<Integer> coins = new ArrayList<>();
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
 
 	public UsdtJobVO() {
 		super();

@@ -26,7 +26,18 @@ public class UsdtTotal extends GenericModel<ObjectId> {
 	@Indexed(unique = true)
 	private long time;
 	
-	private Map<String, Double> list = new HashMap<>();
+	private String jobId;
+	
+	
+	public String getJobId() {
+		return jobId;
+	}
+
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+
+	
 
 	public long getTime() {
 		return time;
@@ -36,12 +47,12 @@ public class UsdtTotal extends GenericModel<ObjectId> {
 		this.time = time;
 	}
 	
-
-	public Map<String, Double> getList() {
+	private Map<Long, Double> list = new HashMap<>();
+	public Map<Long, Double> getList() {
 		return list;
 	}
 
-	public void setList(Map<String, Double> list) {
+	public void setList(Map<Long, Double> list) {
 		this.list = list;
 	}
 

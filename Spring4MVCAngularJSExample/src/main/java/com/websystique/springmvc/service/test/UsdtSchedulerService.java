@@ -22,13 +22,13 @@ import com.websystique.springmvc.model.JobState;
 import com.websystique.springmvc.model.UsdtJob;
 import com.websystique.springmvc.request.ObjectType;
 
-@Service("bittrexSchedulerServiceImpl")
-public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
+@Service("usdtSchedulerService")
+public class UsdtSchedulerService extends AbstractSchedulerService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(BittrexSchedulerServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(UsdtSchedulerService.class);
 	
 	@Autowired
-	BittrexJobSchedulerHandler bittrexJobSchedulerHandler;
+	UsdtJobSchedulerHandler usdtJobSchedulerHandler;
 	
 
 	@Override
@@ -51,13 +51,14 @@ public class BittrexSchedulerServiceImpl extends AbstractSchedulerService {
 			JobKey jobKey = new JobKey(jobId, groupName);
 
 			//add Handler for job
-			addHandler(groupName, bittrexJobSchedulerHandler);
+			addHandler(groupName, usdtJobSchedulerHandler);
 
 			JobDetail jobDetail = JobBuilder.newJob(QJob.class).withIdentity(jobKey).build();
 			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_JOB_ID, jobId);
-			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_BITTREX_INPUTS, usdtJob.getInputs());
-			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_BITTREX_COINS, usdtJob.getCoins());
-			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new BittrexJobListener(jobId, jobName));
+//			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_BITTREX_INPUTS, usdtJob.getInputs());
+//			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_BITTREX_COINS, usdtJob.getCoins());
+//			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_BITTREX_URL, usdtJob.getUrl());
+			jobDetail.getJobDataMap().put(JobConstant.JOB_DATA_MAP_LISTENER, new UsdtJobListener(jobId, jobName));
 
 			Trigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerName, triggerGroupName)
 					// TODO update time period

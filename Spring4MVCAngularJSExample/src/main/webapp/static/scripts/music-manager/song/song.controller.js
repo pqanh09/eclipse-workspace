@@ -8,81 +8,116 @@
 
 	function controllerFunction($scope, $http, $timeout) {
 		var vm = this;
-		vm.data = [
-//			USDT-BTC	Bitcoin
-//		    USDT-BCC	Bitcoin Cash
-//		    USDT-BTG	Bitcoin Gold
-//		    USDT-DASH	Dash
-//		    USDT-ETH	Ethereum
-//		    USDT-ETC	Ethereum Classic
-//		    USDT-LTC	Litecoin
-//		    USDT-XMR	Monero
-//		    USDT-NEO	Neo
-//		    USDT-OMG	OmiseGo
-//		    USDT-XRP	Ripple
-//		    USDT-ZEC	ZCash
-			{stt:"0", id:"USDT-BTC",name:"Bitcoin",lastPrice:0,input:10,percent:0},
-			{stt:"1", id:"USDT-BCC",name:"Bitcoin Cash",lastPrice:0,input:10,percent:0},
-			{stt:"2", id:"USDT-BTG",name:"Bitcoin Gold",lastPrice:0,input:10,percent:0},
-		
-			{stt:"3", id:"USDT-DASH",name:"Dash",lastPrice:0,input:10,percent:0},
-			{stt:"4", id:"USDT-ETH",name:"Ethereum",lastPrice:0,input:10,percent:0},
-			{stt:"5", id:"USDT-ETC",name:"Ethereum Classic",lastPrice:0,input:10,percent:0},
-			
-			{stt:"6", id:"USDT-LTC",name:"Litecoin",lastPrice:0,input:10,percent:0},
-			{stt:"7", id:"USDT-XMR",name:"Monero",lastPrice:0,input:10,percent:0},
-			{stt:"8", id:"USDT-NEO",name:"Neo",lastPrice:0,input:10,percent:0},
-			
-			{stt:"9", id:"USDT-OMG",name:"OmiseGo",lastPrice:0,input:10,percent:0},
-			{stt:"10", id:"USDT-XRP",name:"Ripple",lastPrice:0,input:10,percent:0},
-			{stt:"11", id:"USDT-ZEC",name:"ZCasj",lastPrice:0,input:10,percent:0}
-
-		];
+		var martketConst = {
+				0 : {
+					id: 'USDT-BTC',
+					name: 'Bitcoin'
+				},
+				1 : {
+					id: 'USDT-BCC',
+					name: 'Bitcoin Cash'
+				},
+				2 : {
+					id: 'USDT-BTG',
+					name: 'Bitcoin Gold'
+				},
+				3 : {
+					id: 'USDT-DASH',
+					name: 'Dash'
+				},
+				4 : {
+					id: 'USDT-ETH',
+					name: 'Ethereum'
+				},
+				5 : {
+					id: 'USDT-ETC',
+					name: 'Ethereum Classic'
+				},
+				6 : {
+					id: 'USDT-LTC',
+					name: 'Litecoin'
+				},
+				7 : {
+					id: 'USDT-XMR',
+					name: 'Monero'
+				},
+				8 : {
+					id: 'USDT-NEO',
+					name: 'Neo'
+				},
+				9 : {
+					id: 'USDT-OMG',
+					name: 'OmiseGo'
+				},
+				10 : {
+					id: 'USDT-XRP',
+					name: 'Ripple'
+				},
+				11 : {
+					id: 'USDT-ZEC',
+					name: 'ZCash'
+				}
+		};
+		vm.data = [];
 //		vm.time = -1;
 		vm.averageTotal = [];
 		
-		function getInput() {
-			$http
-					.get(
-							"/Spring4MVCAngularJSExample/api/bittrex/averagetotal")
-					.then(function(response) {
-						vm.averageTotal.length = 0;
-						var list = _.get(response, 'data.UsdtTotalResponseObject.list[0].list', []);
-						for(var key in list) {
-							var t = new Date(key);
-							vm.averageTotal.push({
-								time: moment(new Date(Number(key))).format('HH:mm'),
-								value:list[key].toFixed(1) 
-							});
-						}
-						vm.averageTotal.reverse();
-						
-						$timeout();
+		function init() {
+			//get market 
+			$http.get("/Spring4MVCAngularJSExample/api/bittrex/getmartket")
+			.then(function(response) {
+				var market = _.get(response, 'data.JobResponseObject.list[0]');
+				if(angular.isDefined(market)){
+					// init data
+					var coins = market.coins;
+					var inputs = market.inputs;
+					for(var i = 0; i < coins.length; i++){
+						var coin = martketConst[coins[i]];
+						vm.data.push({
+							stt: i,
+							id: coin.id,
+							name: coin.name,
+							input: inputs[i],
+							lastPrice: 0,
+							percent: 0
+						});
+					}
+				} else {
+					console.error("No Job to start");
+				}
+			});
+			$http.get("/Spring4MVCAngularJSExample/api/bittrex/averagetotal")
+			.then(function(response) {
+				vm.averageTotal.length = 0;
+				var list = _.get(response, 'data.UsdtTotalResponseObject.list[0].list', []);
+				for(var key in list) {
+					var t = new Date(key);
+					vm.averageTotal.push({
+						time: moment(new Date(Number(key))).format('HH:mm'),
+						value:list[key].toFixed(1) 
 					});
+				}
+				vm.averageTotal.reverse();
+			});
 		}
-		getInput();
+		init();
 
 		var stompClient = null;
 		function connect() {
 			var socket = new SockJS('/Spring4MVCAngularJSExample/register');
 			stompClient = Stomp.over(socket);
 			stompClient.connect({}, function(frame) {
-				stompClient.subscribe('/topic/greetings', function(calResult) {
-					vm.dataStr = calResult.body.toString();
-					$timeout();
-				});
-			
 				stompClient.subscribe('/topic/usdtMarkets', function(calResult) {
 					var result = JSON.parse(calResult.body);
-					getInput();
-					
+					vm.averageTotal.unshift({
+						time: moment(new Date(result.time)).format('HH:mm'),
+						value: result.total.toFixed(1)
+					});
 //					vm.time = moment(new Date(result.time)).format('HH:mm:ss YYYY-MM-DD'); 
 					angular.forEach(vm.data, function(obj) {
-						obj.lastPrice = result.lastPrice[obj.stt - 1].toFixed(2);
-						obj.percent = result.percent[obj.stt - 1].toFixed(1);
-						obj.input = result.input[obj.stt - 1].toFixed(2);
+						obj.lastPrice = result.lastPrice[obj.stt].toFixed(2);
+						obj.percent = result.percent[obj.stt].toFixed(1);
 					});
-					
 					$timeout();
 				});
 

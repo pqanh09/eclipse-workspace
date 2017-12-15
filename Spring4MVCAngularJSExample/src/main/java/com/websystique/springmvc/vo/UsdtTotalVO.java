@@ -6,7 +6,7 @@ import java.util.Map;
 public class UsdtTotalVO extends GenericVO{
 	private long time;
 	
-	private Map<String, Double> list = new HashMap<>();
+	private Map<Long, Double> list = new HashMap<>();
 
 	public long getTime() {
 		return time;
@@ -17,24 +17,25 @@ public class UsdtTotalVO extends GenericVO{
 	}
 	
 
-	public Map<String, Double> getList() {
+	public Map<Long, Double> getList() {
 		return list;
 	}
 
-	public void setList(Map<String, Double> list) {
+	public void setList(Map<Long, Double> list) {
 		this.list = list;
 	}
 
-	@Override
-	public String toString() {
-		return "UsdtTotalVO [time=" + time + ", list=" + list + "]";
+	private String jobId;
+	
+	
+	public String getJobId() {
+		return jobId;
 	}
 
-	public UsdtTotalVO(long time, Map<String, Double> list) {
-		super();
-		this.time = time;
-		this.list = list;
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
 	}
+	
 
 	public UsdtTotalVO() {
 		super();

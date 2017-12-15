@@ -25,7 +25,6 @@ import com.websystique.springmvc.response.GenericResponseObject;
 import com.websystique.springmvc.response.JobResponseObject;
 import com.websystique.springmvc.response.Messages;
 import com.websystique.springmvc.response.PartResponseStatus;
-import com.websystique.springmvc.service.test.BittrexSchedulerServiceImpl;
 import com.websystique.springmvc.service.test.MangaSchedulerServiceImpl;
 import com.websystique.springmvc.vo.JobVO;
 import com.websystique.springmvc.vo.MangaJobVO;
@@ -43,9 +42,6 @@ public class JobServiceImpl extends AbstractServiceImpl implements JobService{
 	
 	@Autowired 
 	MangaSchedulerServiceImpl mangaSchedulerServiceImpl;
-	
-	@Autowired 
-	BittrexSchedulerServiceImpl bittrexSchedulerServiceImpl;
 	
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
@@ -213,13 +209,6 @@ public class JobServiceImpl extends AbstractServiceImpl implements JobService{
 				}
 				if(JobType.Manga.equals(dbJob.getType())){
 					if (!mangaSchedulerServiceImpl.startJob(dbJob)){
-						LOGGER.error("Can't start job");
-						response.setMessage("Can't start job");
-						response.setSuccess(false);
-						return response;
-					}
-				} else if (JobType.Bittrex.equals(dbJob.getType())){
-					if (!bittrexSchedulerServiceImpl.startJob(dbJob)){
 						LOGGER.error("Can't start job");
 						response.setMessage("Can't start job");
 						response.setSuccess(false);

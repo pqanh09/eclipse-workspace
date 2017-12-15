@@ -1,6 +1,7 @@
 package com.websystique.springmvc.model;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
@@ -26,7 +27,6 @@ public class UsdtLastPrice extends GenericModel<ObjectId> {
 	
 	private Map<Integer, String> logError = new HashMap<>();
 	
-	private Map<Integer, Map<Integer, Double>> list = new HashMap<>();
 
 	public long getTime() {
 		return time;
@@ -37,11 +37,14 @@ public class UsdtLastPrice extends GenericModel<ObjectId> {
 	}
 	
 
-	public Map<Integer, Map<Integer, Double>> getList() {
+	
+	private Map<Long, List<Double>> list = new HashMap<>();
+
+	public Map<Long, List<Double>> getList() {
 		return list;
 	}
 
-	public void setList(Map<Integer, Map<Integer, Double>> list) {
+	public void setList(Map<Long, List<Double>> list) {
 		this.list = list;
 	}
 
