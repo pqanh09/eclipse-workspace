@@ -235,14 +235,4 @@ public class JobServiceImpl extends AbstractServiceImpl implements JobService{
 		return response;
 	}
 
-	@Override
-	public GenericResponseObject auto(GenericRequestObject request) {
-		JobResponseObject response = new JobResponseObject(request);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		Thread thread = new Thread(new MyRunnable(simpMessagingTemplate));
-		thread.start();
-		return response;
-	}
-
 }

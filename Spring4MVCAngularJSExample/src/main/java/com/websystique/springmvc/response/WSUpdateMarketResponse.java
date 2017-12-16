@@ -3,7 +3,7 @@ package com.websystique.springmvc.response;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WSBittresResponse {
+public class WSUpdateMarketResponse {
 	private long time;
 	private List<Double> lastPrice = new ArrayList<>();
 	private List<Double> percent = new ArrayList<>();
@@ -17,7 +17,7 @@ public class WSBittresResponse {
 		this.total = total;
 	}
 
-	public WSBittresResponse(long time, List<Double> lastPrice, List<Double> percent, Double total) {
+	public WSUpdateMarketResponse(long time, List<Double> lastPrice, List<Double> percent, Double total) {
 		super();
 		this.time = time;
 		this.lastPrice = lastPrice;
@@ -49,7 +49,7 @@ public class WSBittresResponse {
 		this.percent = percent;
 	}
 
-	public WSBittresResponse() {
+	public WSUpdateMarketResponse() {
 		super();
 	}
 

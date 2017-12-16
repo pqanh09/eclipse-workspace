@@ -25,6 +25,7 @@ public class Job extends GenericModel<ObjectId> {
 	public static final String COLLECTION_NAME = "Job";
 	public static final String ATT_JOB_TYPE = "type";
 	public static final String ATT_JOB_STATE = "status";
+	public static final String ATT_JOB_NAME = "name";
 	private static final int HISTORY_SIZE = 12;
 
 	@NotNull

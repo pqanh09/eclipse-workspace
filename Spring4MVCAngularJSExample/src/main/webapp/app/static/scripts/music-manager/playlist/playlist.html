@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="col-md-12">
+        <div class="well well-sm">
+                <fieldset>
+
+                    <legend>
+                        <div class="col-md-12" style="height: 49px;">
+                            <div ng-show="vm.alertData.show" class=" alert {{vm.alertData.key}}"
+                                 style="margin: -10px -25px 0 -25px">
+                                {{vm.alertData.message}}
+                            </div>
+                        </div>
+                    </legend>
+                    <legend style="margin: -32px 0px 0px 0px; font-size: x-large; font-weight: bold">
+                        <div class="form-group">
+                            <div class="col-md-3 text-right">Name</div>
+                            <div class="col-md-1 text-center"></div>
+                            <div class="col-md-4 text-left">Input</div>
+                            <div class="col-md-4 text-left">Last Price({{vm.time}})</div>
+                        </div>
+                    </legend>
+                    <legend style="margin-top: 52px">
+                        <div class="row" ng-repeat="obj in vm.data" style="margin-top: 10px">
+                            <div class="col-md-3 text-right">{{obj.name}}</div>
+                            <div class="col-md-1 text-center">
+                                <input ng-disabled="vm.disableFrom" type="checkbox" class="checkbox-coin"
+                                       ng-model="obj.show">
+                            </div>
+                            <div class="col-md-4 text-left">
+                                <input ng-disabled="vm.disableFrom" type="text" class="form-control"
+                                       ng-model="obj.input">
+                            </div>
+                            <div class="col-md-4 text-left">{{obj.lastPrice}}</div>
+                        </div>
+                    </legend>
+                    <legend style="margin-bottom: -9px">
+                        <div class="form-group">
+                            <div class="col-md-4 text-center">
+                                <button ng-click="vm.update()" type="button" class="btn btn-primary btn-lg"
+                                        ng-disabled="vm.disableFrom">Update Input
+                                </button>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <button type="button" class="btn btn-success btn-lg" ng-disabled="vm.disableFrom"
+                                        ng-click="vm.startJob()">Start Job
+                                </button>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <button type="button" class="btn btn-danger btn-lg" ng-disabled="!vm.disableFrom"
+                                        ng-click="vm.stopJob()">Stop Job
+                                </button>
+
+                            </div>
+                        </div>
+
+                    </legend>
+                </fieldset>
+        </div>
+    </div>
+    <div class="col-md-12 text-left">
+        <!--<label>
+            <input type="checkbox" ng-click="vm.configShowAlert()" > {{vm.alertData.alertData.label}}
+        </label>-->
+        <h3 ng-click="vm.configShowAlert()">{{vm.alertData.label}}</h3>
+    </div>
+</div>

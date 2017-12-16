@@ -10,7 +10,7 @@
 
   function directiveFunction(){
     return {
-      templateUrl : 'static/scripts/music-manager/playlist/playlist.html',
+      templateUrl : 'app/static/scripts/music-manager/playlist/playlist.html',
       restrict: 'EA',
       controller: 'musicPlayListController',
       controllerAs: 'vm',

@@ -7,6 +7,5 @@ public interface JobService extends GenericService{
 	GenericResponseObject pollManga(GenericRequestObject request);
 	GenericResponseObject stopJob(GenericRequestObject request);
 	GenericResponseObject startJob(GenericRequestObject request);
-	GenericResponseObject auto(GenericRequestObject request);
 //	GenericResponseObject getJobInSchedule(GenericRequestObject request);
 }

@@ -85,13 +85,5 @@ public class JobController {
 //		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
 //	}
 
-	// -------------------Retrieve All
-	// Job--------------------------------------------------------
-
-	@RequestMapping(value = "/job/greeting", method = RequestMethod.GET)
-	public ResponseEntity<GenericResponseObject> greeting() {
-		GenericResponseObject responseObject = jobService.auto(new GenericRequestObject(RequestType.read, ObjectType.Job, null));
-		return new ResponseEntity<GenericResponseObject>(responseObject, HttpStatus.OK);
-	}
 
 }

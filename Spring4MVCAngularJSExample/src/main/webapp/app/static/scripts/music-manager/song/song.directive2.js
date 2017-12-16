@@ -11,7 +11,7 @@
 
     function directiveFunction(){
         return {
-            templateUrl : 'static/scripts/music-manager/song/song.html',
+            templateUrl : 'app/static/scripts/music-manager/song/song.html',
             restrict: 'EA',
             controller: 'musicSongController',
             controllerAs: 'vmSong',

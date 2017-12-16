@@ -12,10 +12,7 @@ public class AppWebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer
 	
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry config) {
-		config.enableSimpleBroker("/topic", "/aaa");
-//		config.setApplicationDestinationPrefixes("/calcApp");
-//		config.enableSimpleBroker("/topic/", "/queue/");
-		// prefix of request url
+		config.enableSimpleBroker("/topic");
         config.setApplicationDestinationPrefixes("/wsrq");
 	}
 	@Override

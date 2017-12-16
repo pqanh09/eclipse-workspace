@@ -21,7 +21,7 @@
     function HomeRoute($routeProvider) {
         $routeProvider
             .otherwise({
-                templateUrl: 'static/scripts/home.html',
+                templateUrl: 'app/static/scripts/home.html',
                 controller: "homeController"
             });
 

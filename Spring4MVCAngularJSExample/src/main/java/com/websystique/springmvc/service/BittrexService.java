@@ -8,6 +8,8 @@ public interface BittrexService extends GenericService{
 	GenericResponseObject getmartket(GenericRequestObject request);
 	GenericResponseObject createJob(GenericRequestObject request);
 	GenericResponseObject startMartketJob(GenericRequestObject request);
+	GenericResponseObject stopMartketJob(GenericRequestObject request);
 	GenericResponseObject startLastPriceJob(GenericRequestObject request);
+	GenericResponseObject getLatestLastPrice(GenericRequestObject request);
 	
 }

@@ -32,7 +32,7 @@ import com.websystique.springmvc.model.UsdtLastPrice;
 import com.websystique.springmvc.model.UsdtTotal;
 import com.websystique.springmvc.repositories.UsdtLastPriceRepository;
 import com.websystique.springmvc.repositories.UsdtTotalRepository;
-import com.websystique.springmvc.response.WSBittresResponse;
+import com.websystique.springmvc.response.WSUpdateMarketResponse;
 
 @Service("usdtJobSchedulerHandler")
 public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
@@ -179,6 +179,7 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			}
 			//caculate percent
 			List<Double> percent = new ArrayList<>();
+			List<Double> lastPricesByCoins = new ArrayList<>();
 			double total = 0;
 			
 			for(int i = 0; i < coins.size(); i++){
@@ -187,6 +188,7 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 				double lastPr = lastPrices.get(num);
 				double pc = ((lastPr - input) / input) * 100;
 				percent.add(pc);
+				lastPricesByCoins.add(lastPr);
 				total = total + pc;
 			}
 			
@@ -196,7 +198,7 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 				usdtTotal = new UsdtTotal(dtHour.getTime());
 			}
 			usdtTotal.setJobId(jobDb.getInstanceid().toString());
-			usdtTotal.getList().put(timeId, total / 12);
+			usdtTotal.getList().put(timeId, total / coins.size());
 			
 			usdtTotalRepository.safeSave(usdtTotal);
 			
@@ -207,7 +209,7 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			
 			// triger update UIs
 			if (simpMessagingTemplate != null) {
-				simpMessagingTemplate.convertAndSend("/topic/usdtMarkets", new WSBittresResponse(timeId, lastPrices, percent, total / 12));
+				simpMessagingTemplate.convertAndSend("/topic/usdtMarkets", new WSUpdateMarketResponse(timeId, lastPricesByCoins, percent, total / coins.size()));
 			} else {
 				LOGGER.error("SimpMessagingTemplate is null.");
 				return;
