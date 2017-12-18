@@ -6,9 +6,15 @@
 
   angular.module('music.manager.sampleone.modify').controller('musicSampleoneModifyController', controllerFunction);
 
+<<<<<<< HEAD
   controllerFunction.$inject = ['$scope', '$http', '$timeout', 'musicManagerService','sampleoneService','musicConstant'];
 
   function controllerFunction($scope, $http, $timeout, musicManagerService,sampleoneService, musicConstant) {
+=======
+  controllerFunction.$inject = ['$scope', '$http', '$timeout', 'musicManagerService','sampleoneService'];
+
+  function controllerFunction($scope, $http, $timeout, musicManagerService,sampleoneService) {
+>>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     var vmModify = this;
     vmModify.data = angular.copy(musicManagerService.defaultData);
     vmModify.configShowAlert = configShowAlert;
@@ -20,6 +26,7 @@
     vmModify.profileName = '';
     vmModify.isCreate = true;
     vmModify.apllyLabel = 'Create';
+<<<<<<< HEAD
     vmModify.currentProfileId = sampleoneService.currentSelected[0];
     function init(){
       //update
@@ -27,6 +34,15 @@
         vmModify.isCreate = false;
         vmModify.apllyLabel = 'Update';
         getTotal(vmModify.currentProfileId);
+=======
+    vmModify.currentSelected = sampleoneService.currentSelected;
+    function init(){
+      //update
+      if(vmModify.currentSelected && vmModify.currentSelected.length > 0){
+        vmModify.isCreate = false;
+        vmModify.apllyLabel = 'Update';
+        getTotal(vmModify.currentSelected[0]);
+>>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
       } else {
         vmModify.isCreate = true;
         vmModify.apllyLabel = 'Create';
@@ -39,7 +55,11 @@
     init();
 
     function getTotal(totalId){
+<<<<<<< HEAD
       return $http.get(musicConstant.restApi.total.getOne + totalId)
+=======
+      return $http.get('http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/total/'+ totalId)
+>>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
         .then(function(response) {
           var responseObj = _.get(response, 'data.UsdtTotalResponseObject');
           if(angular.isDefined(responseObj)) {
@@ -74,7 +94,11 @@
     };
     function getLastPrice() {
       //get last price
+<<<<<<< HEAD
       $http.get(musicConstant.restApi.lastPrice.getLatest)
+=======
+      $http.get("http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/getLatestLastPriceData")
+>>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
         .then(function(response) {
           var lastPriceResponse = _.get(response, 'data.UsdtLastPriceResponseObject');
           if(angular.isDefined(lastPriceResponse)){
@@ -112,6 +136,7 @@
     }
 
     function apply() {
+<<<<<<< HEAD
       var requestObject = angular.copy(musicManagerService.defaultRequest);
       angular.forEach(vmModify.data, function(data){
         if(data.show){
@@ -128,6 +153,21 @@
         method: (vmModify.isCreate)? 'POST' : 'PUT',
         url: musicConstant.restApi.total.dfault,
         data: requestObject,
+=======
+      var usdtTotalRequestObject = angular.copy(musicManagerService.defaultRequest);
+      angular.forEach(vmModify.data, function(data){
+        if(data.show){
+          usdtTotalRequestObject.UsdtTotalRequestObject.model.coins.push(data.stt);
+          usdtTotalRequestObject.UsdtTotalRequestObject.model.inputs.push(data.input);
+        }
+      });
+      usdtTotalRequestObject.UsdtTotalRequestObject.model.name = vmModify.profileName;
+
+      var requestObj = {
+        method: (vmModify.isCreate)? 'POST' : 'PUT',
+        url: 'http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/total',
+        data: usdtTotalRequestObject,
+>>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
         headers: {'Content-Type': 'application/json'}
       }
       $http(requestObj).then(function(response){
@@ -152,7 +192,11 @@
       musicManagerService.configShowAlert(vmModify.alertData);
     }
     function viewAll() {
+<<<<<<< HEAD
       vmModify.currentView.url = musicConstant.templateUrl.musicManager.sampleone.viewTmp;
+=======
+      vmModify.currentView.url = sampleoneService.listView.viewAll;
+>>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     }
 
 
