@@ -6,19 +6,11 @@
 
     angular.module('music.manager.sampleone.modify').directive('sampleoneModify', directiveFunction);
 
-<<<<<<< HEAD
     directiveFunction.$inject = ['musicConstant'];
 
     function directiveFunction(musicConstant){
         return {
             templateUrl : musicConstant.templateUrl.musicManager.sampleone.modify,
-=======
-    directiveFunction.$inject = [];
-
-    function directiveFunction(){
-        return {
-            templateUrl : 'app/static/scripts/music-manager/sampleone/modify/modify.html',
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
             restrict: 'EA',
             controller: 'musicSampleoneModifyController',
             controllerAs: 'vmModify',

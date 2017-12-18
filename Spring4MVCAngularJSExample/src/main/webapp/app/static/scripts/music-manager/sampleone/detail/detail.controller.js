@@ -6,15 +6,9 @@
 
   angular.module('music.manager.sampleone.detail').controller('musicSampleoneDetailController', controllerFunction);
 
-<<<<<<< HEAD
-  controllerFunction.$inject = ['$scope', '$http', '$timeout', 'musicManagerService','sampleoneService', 'musicConstant'];
+   controllerFunction.$inject = ['$scope', '$http', '$timeout', 'musicManagerService','sampleoneService', 'musicConstant'];
 
   function controllerFunction($scope, $http, $timeout, musicManagerService,sampleoneService, musicConstant) {
-=======
-  controllerFunction.$inject = ['$scope', '$http', '$timeout', 'musicManagerService','sampleoneService'];
-
-  function controllerFunction($scope, $http, $timeout, musicManagerService,sampleoneService) {
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     var vmDetail = this;
     vmDetail.data = [];
     vmDetail.configShowAlert = configShowAlert;
@@ -23,7 +17,7 @@
     vmDetail.countdownStr = 'Ready......';
     vmDetail.alertData = angular.copy(musicManagerService.alertDefaultData);
     vmDetail.countdown = 0;
-<<<<<<< HEAD
+
     vmDetail.currentProfileId = sampleoneService.currentSelected[0];
     vmDetail.averageTotal = [];
     function init(){
@@ -100,8 +94,7 @@
       });
     }
 	connect();
-	// connect();
-=======
+
     vmDetail.currentSelected = sampleoneService.currentSelected;
     function init(){
       console.log(vmDetail.currentSelected);
@@ -110,7 +103,6 @@
 
 
    // connect();
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     function countdownFunc() {
       $timeout(function () {
         if (vmDetail.countdown > 0) {
@@ -125,21 +117,14 @@
         countdownFunc();
       }, 1000);
     }
-<<<<<<< HEAD
-=======
 
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     countdownFunc();
 
     function configShowAlert() {
       musicManagerService.configShowAlert(vmDetail.alertData);
     }
     function viewAll() {
-<<<<<<< HEAD
-      vmDetail.currentView.url = musicConstant.templateUrl.musicManager.sampleone.viewTmp;
-=======
       vmDetail.currentView.url = sampleoneService.listView.viewAll;
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     }
 
 

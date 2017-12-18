@@ -6,15 +6,11 @@
 
   angular.module('music.manager.sampleone.view').controller('musicSampleoneViewController', controllerFunction);
 
-<<<<<<< HEAD
+
   controllerFunction.$inject = ['$scope', '$q', '$http', '$timeout', 'musicManagerService','sampleoneService', 'musicConstant'];
 
   function controllerFunction($scope, $q, $http, $timeout, musicManagerService, sampleoneService, musicConstant) {
-=======
-  controllerFunction.$inject = ['$scope', '$http', '$timeout', 'musicManagerService','sampleoneService'];
 
-  function controllerFunction($scope, $http, $timeout, musicManagerService,sampleoneService) {
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     var vmView = this;
     vmView.data = [];
     vmView.configShowAlert = configShowAlert;
@@ -22,17 +18,14 @@
     vmView.viewModify = viewModify;
     vmView.deleteFunc = deleteFunc;
     vmView.checkFunc = checkFunc;
-<<<<<<< HEAD
     vmView.refresh = refresh;
-=======
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
+
     vmView.currentView = sampleoneService.currentView;
     vmView.countdownStr = 'Ready......';
     vmView.alertData = angular.copy(musicManagerService.alertDefaultData);
     vmView.countdown = 0;
     vmView.lastPrice = [];
     vmView.currentSelected = sampleoneService.currentSelected;
-<<<<<<< HEAD
     vmView.disableCreate = false;
     vmView.disableUpdate = false;
     vmView.disableDelete = false;
@@ -40,17 +33,6 @@
 
     function getTotals() {
       return $http.get(musicConstant.restApi.total.dfault)
-=======
-    vmView.action = 0;
-    vmView.lastPriceTime = '';
-    //action 0 : can create, view,...
-    //action 1 : update
-    //action 2 : delete
-
-
-    function getTotals() {
-      return $http.get('http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/total')
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
         .then(function (response) {
           var responseObj = _.get(response, 'data.UsdtTotalResponseObject');
           if (angular.isDefined(responseObj)) {
@@ -67,7 +49,7 @@
                   var tmpTotals = totalList[i].totals;
                   var lastTotal = undefined;
                   for (var lastTotal in tmpTotals);
-<<<<<<< HEAD
+
 	                vmView.data.push({
 	                  totalId: totalList[i].objectId,
 	                  stt: i + 1,
@@ -77,7 +59,6 @@
 	                  avgTotal: (lastTotal) ? tmpTotals[lastTotal].toFixed(2): 0,
 	                  time: (lastTotal) ? moment(new Date(Number(lastTotal))).format('HH:mm') : 'Waiting'
 	                });
-=======
                   if(lastTotal){
                     vmView.data.push({
                       totalId: totalList[i].objectId,
@@ -89,7 +70,6 @@
                       time: moment(new Date(Number(lastTotal))).format('HH:mm')
                     });
                   }
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
                   vmView.currentSelected.length = 0;
 
                 }
@@ -110,14 +90,10 @@
           console.error(error);
         });
     };
-<<<<<<< HEAD
     
     function getLatestLastPrice() {
       return $http.get(musicConstant.restApi.lastPrice.getLatest)
-=======
-    function getLatestLastPrice() {
-      return $http.get("http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/getLatestLastPriceData")
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
+
         .then(function (response) {
           var lastPriceResponse = _.get(response, 'data.UsdtLastPriceResponseObject');
           if (angular.isDefined(lastPriceResponse)) {
@@ -159,7 +135,6 @@
     }
 
     function getData() {
-<<<<<<< HEAD
       var promises = [];
       promises.push(getTotals());
       promises.push(getLatestLastPrice());
@@ -181,7 +156,6 @@
       });
     }
     connect();
-=======
       //get market 
       getTotals();
       getLatestLastPrice();
@@ -208,7 +182,6 @@
     }
 
    // connect();
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     function countdownFunc() {
       $timeout(function () {
         if (vmView.countdown > 0) {
@@ -232,11 +205,8 @@
     function viewDetail(obj) {
       vmView.currentSelected.length = 0;
       vmView.currentSelected.push(obj.totalId);
-<<<<<<< HEAD
       vmView.currentView.url = musicConstant.templateUrl.musicManager.sampleone.detailTmp;
-=======
-      vmView.currentView.url = sampleoneService.listView.detail;
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
+
     }
     function checkFunc(obj) {
       if(obj.checked){
@@ -254,7 +224,6 @@
       }
     }
     function viewModify() {
-<<<<<<< HEAD
       vmView.currentView.url = musicConstant.templateUrl.musicManager.sampleone.modifyTmp;
     }
     
@@ -289,13 +258,6 @@
     }
     function refresh() {
     	getData();
-=======
-      vmView.currentView.url = sampleoneService.listView.modify;
-    }
-    function deleteFunc() {
-      //
-      console.log('Delete...........');
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
     }
 
     $scope.$watch(
@@ -304,7 +266,6 @@
         updateCtrlButton(newSize);
       });
     function updateCtrlButton(newSize){
-<<<<<<< HEAD
         //newSize == 0 : can create, view,...
         //newSize == 1 : update
         //newSize >= : delete
@@ -321,16 +282,7 @@
             vmView.disableUpdate = true;
             vmView.disableDelete = true;
         }
-        
-=======
-      if(newSize === 1) {
-        vmView.action = 1;
-      } else if(newSize > 1){
-        vmView.action = 2;
-      } else {
-        vmView.action = 0;
-      }
->>>>>>> 480a8650a0738e4d7efde273ffb838c08376ecec
+
     }
   }
 })();
