@@ -7,10 +7,10 @@
 
     function controllerFunction($scope, $http, $timeout, musicManagerService, $q) {
         var vm = this;
-        //
-        vm.state = 0;
         vm.disableFromManageLastPriceJob = true;
-        //state 0 : create Last Price Job
+				//
+				vm.state = 0;
+				//state 0 : create Last Price Job
         //state 1 : start Last Price Job
         //state 2 : stop Last Price Job
         vm.alertData = angular.copy(musicManagerService.alertDefaultData);

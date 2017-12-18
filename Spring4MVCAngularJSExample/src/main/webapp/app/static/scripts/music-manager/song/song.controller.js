@@ -16,7 +16,7 @@
 		vm.lastPriceTime = '';
 		vm.countdownStr = 'Ready......';
 		vm.jobId = musicManagerService.jobId;
-		vm.jobId = '5a36a98d954b971d723644f1';
+		vm.jobId = '5a371d3e540f8a15a3b4a755';
 		//$scope.$digest();
 		vm.averageTotal = [];
 		function getJob(){

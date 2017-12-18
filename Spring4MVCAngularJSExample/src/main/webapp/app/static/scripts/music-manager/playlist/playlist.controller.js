@@ -14,7 +14,7 @@
         vm.alertData = angular.copy(musicManagerService.alertDefaultData);
         vm.time = '00:00';
         vm.jobId = musicManagerService.jobId;
-		vm.jobId = 'PlayList';
+		    vm.jobId = 'PlayList';
         function init() {
             //get last price
             $http.get("api/bittrex/getLatestLastPriceData")
@@ -69,7 +69,7 @@
 
             $http({
                 method: 'POST',
-                url: 'api/bittrex/total',
+                url: 'http://localhost:8080/Spring4MVCAngularJSExample/api/bittrex/total',
                 data: request,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){

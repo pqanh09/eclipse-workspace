@@ -30,7 +30,9 @@
 		                    				coins.push(musicManagerService.martketConst[tmpCoins[j]].id);
 		                    			}
 		                    			var tmpTotals = totalList[i].totals;
-		                    			var lastTotal = tmpTotals[tmpTotals.length-1];
+		                    			var lastTotal;
+		                    			for(var lastTotal in lastTotal);
+//		                    			= tmpTotals[tmpTotals.length-1];
 //		                    			var avgTotal;
 //		                    			var totalTime;
 //		                    			for(var key in lastTotal) {
@@ -41,8 +43,8 @@
 		                    				stt: i + 1,
 		                    				name: totalList[i].name,
 		                    				coins: coins,
-		                    				avgTotal: 'aaa',
-		                    				time: 'bbb'
+		                    				avgTotal: tmpTotals[lastTotal].toFixed(2),
+		                    				time: moment(new Date(Number(lastTotal))).format('HH:mm')
 		                    			});
 		                    			
 		                    		}
@@ -131,7 +133,7 @@
 					getData().then(function(){
 						vm.countdown = 59;
 					});
-					vm.countdown = 60;
+					//vm.countdown = 60;
 					$timeout();
 				});
 
