@@ -95,14 +95,6 @@
     }
 	connect();
 
-    vmDetail.currentSelected = sampleoneService.currentSelected;
-    function init(){
-      console.log(vmDetail.currentSelected);
-    };
-    init();
-
-
-   // connect();
     function countdownFunc() {
       $timeout(function () {
         if (vmDetail.countdown > 0) {
@@ -124,7 +116,7 @@
       musicManagerService.configShowAlert(vmDetail.alertData);
     }
     function viewAll() {
-      vmDetail.currentView.url = sampleoneService.listView.viewAll;
+    	vmDetail.currentView.url = musicConstant.templateUrl.musicManager.sampleone.viewTmp;
     }
 
 

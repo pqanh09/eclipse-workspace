@@ -59,17 +59,7 @@
 	                  avgTotal: (lastTotal) ? tmpTotals[lastTotal].toFixed(2): 0,
 	                  time: (lastTotal) ? moment(new Date(Number(lastTotal))).format('HH:mm') : 'Waiting'
 	                });
-                  if(lastTotal){
-                    vmView.data.push({
-                      totalId: totalList[i].objectId,
-                      stt: i + 1,
-                      checked: false,
-                      name: totalList[i].name,
-                      coins: coins,
-                      avgTotal: tmpTotals[lastTotal].toFixed(2),
-                      time: moment(new Date(Number(lastTotal))).format('HH:mm')
-                    });
-                  }
+                  
                   vmView.currentSelected.length = 0;
 
                 }
@@ -143,45 +133,22 @@
     getData();
 
     var stompClient = null;
+
+    var stompClient = null;
     function connect() {
       var socket = new SockJS(musicConstant.wsApi.register);
       stompClient = Stomp.over(socket);
       stompClient.connect({}, function (frame) {
         stompClient.subscribe(musicConstant.wsApi.subscribe, function (calResult) {
-          getData().then(function(){
-        	  vmView.countdown = 59;
-          });
+        	getData().then(function(){
+            vmView.countdown = 59;
+             });
           $timeout();
         });
       });
     }
-    connect();
-      //get market 
-      getTotals();
-      getLatestLastPrice();
 
-    }
-
-    getData();
-
-    var stompClient = null;
-
-    function connect() {
-      var socket = new SockJS('http://localhost:8080/Spring4MVCAngularJSExample/register');
-      stompClient = Stomp.over(socket);
-      stompClient.connect({}, function (frame) {
-        stompClient.subscribe('/topic/usdtMarkets', function (calResult) {
-          // getData().then(function(){
-          // vmView.countdown = 59;
-          // });
-          //vmView.countdown = 60;
-          $timeout();
-        });
-
-      });
-    }
-
-   // connect();
+   connect();
     function countdownFunc() {
       $timeout(function () {
         if (vmView.countdown > 0) {
