@@ -3,6 +3,7 @@ package com.websystique.springmvc.service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -309,6 +310,9 @@ public class BittrexServiceImpl extends AbstractServiceImpl implements BittrexSe
 				UsdtTotal model = ModelUtilProvider.getModelUtil().convertTo(modelVO, UsdtTotal.class);
 				//set ObjectId
 				model.setInstanceid(new ObjectId(modelVO.getObjectId()));
+				model.setLastPrices(new ArrayList<>());
+				model.setTotals(new HashMap<Long, Double>());
+				model.setPercents(new ArrayList<>());
 				usdtTotalRepository.safeSave(model);
 			}
 		}catch (Exception e) {

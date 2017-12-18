@@ -1,0 +1,68 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset style="height: 73px;">
+                <legend></legend>
+                <div ng-show="vmModify.alertData.show" class=" alert {{vmModify.alertData.key}}"
+                     style="margin-bottom: 0px; height: 50px;">{{vmModify.alertData.message}}</div>
+            </fieldset>
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px; font-size: x-large;">
+                    <div class="col-md-1 text-center">
+                        <button  type="button" class="btn btn-default func-button"  ng-click="vmModify.viewAll()" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                            </button>
+                    </div>
+                    <div class="col-md-3 text-right">Name
+                    </div>
+                    <div class="col-md-4 text-left">
+                        <input ng-disabled="!vmModify.isCreate" type="text"
+                                class="form-control" ng-model="vmModify.profileName">
+                    </div>
+                    <div class="col-md-4 text-left"></div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px; font-size: larger; font-weight: bold;">
+                    <div class="col-md-3 text-right"></div>
+                    <div class="col-md-1 text-center"></div>
+                    <div class="col-md-4 text-left">Input</div>
+                    <div class="col-md-4 text-left">Last Price({{vmModify.time}})</div>
+                </div>
+                <div class="row" style="margin-top: 0px" ng-repeat="obj in vmModify.data">
+                    <div class="col-md-3 text-right">{{obj.name}}</div>
+                    <div class="col-md-1 text-center">
+                        <input  type="checkbox"
+                                class="checkbox-coin" ng-model="obj.show">
+                    </div>
+                    <div class="col-md-4 text-left">
+                        <input  type="text"
+                                class="form-control" ng-model="obj.input">
+                    </div>
+                    <div class="col-md-4 text-left">{{obj.lastPrice}}</div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px">
+                    <div class="col-md-12 text-center">
+                        <button ng-click="vmModify.apply()" type="button"
+                                class="btn btn-primary btn-lg">{{vmModify.apllyLabel}}
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px">
+                    <div class="col-md-12 text-left">
+                        <h4 ng-click="vmModify.configShowAlert()">{{vmModify.alertData.label}}</h4>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

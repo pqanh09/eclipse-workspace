@@ -65,12 +65,11 @@
     service.defaultRequest = {
       'UsdtTotalRequestObject': {
           'model': {
-          'name': "Test1",
-          'coins': [
-          ],
-          'inputs': [
-          ]
-        }
+	          'name': "Test1",
+	          'coins': [],
+	          'inputs': []
+	       },
+	       'ids': []
       }
     };
     service.jobId;

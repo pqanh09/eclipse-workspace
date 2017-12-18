@@ -6,11 +6,11 @@
 
   angular.module('music.manager').directive('musicManager', directiveFunction);
 
-  directiveFunction.$inject = [];
+  directiveFunction.$inject = ['musicConstant'];
 
-  function directiveFunction() {
+  function directiveFunction(musicConstant) {
     return {
-      templateUrl: 'app/static/scripts/music-manager/music-manager.html',
+      templateUrl: musicConstant.templateUrl.musicManager.url,
       restrict: 'EA',
       controller: 'musicManagerController',
       controllerAs: 'vm',

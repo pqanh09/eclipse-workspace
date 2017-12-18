@@ -7,21 +7,21 @@
     //controller
     angular.module('myApp').controller('homeController', homeController);
 
-    homeController.$inject = [];
+    homeController.$inject = ['musicConstant'];
 
-    function homeController() {
+    function homeController(musicConstant) {
         var vm = this;
     }
 
     //routing
     angular.module('myApp').config(HomeRoute);
 
-    HomeRoute.$inject = ['$routeProvider'];
+    HomeRoute.$inject = ['$routeProvider', 'musicConstant'];
 
-    function HomeRoute($routeProvider) {
+    function HomeRoute($routeProvider, musicConstant) {
         $routeProvider
             .otherwise({
-                templateUrl: 'app/static/scripts/home.html',
+                templateUrl: musicConstant.templateUrl.home.url,
                 controller: "homeController"
             });
 

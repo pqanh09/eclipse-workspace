@@ -1,25 +1,27 @@
 <div class="container">
-	<div class="row">
-		<div class="col-md-12">
-			<fieldset style="height: 73px;">
-				<legend></legend>
-				<div ng-show="vm.alertData.show" class=" alert {{vm.alertData.key}}"
-					style="margin-bottom: 0px; height: 50px;">{{vm.alertData.message}}</div>
-			</fieldset>
-			<fieldset>
-				<legend></legend>
-				<div class="row" style="margin-top: 0px; font-size: x-large;">
-					<div class="col-md-2 text-right">Name:</div>
-					<div class="col-md-4 text-left">
-						{{vm.profileName}}
-					</div>
-					<div class="col-md-3 text-left"></div>
-					<div class="col-md-3 text-left">
-						<h4 ng-show="!vm.disableFrom">{{vm.countdownStr}}</h4>
-					</div>
-				</div>
-			</fieldset>
-			<fieldset>
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset style="height: 73px;">
+                <legend></legend>
+                <div ng-show="vmDetail.alertData.show" class=" alert {{vmDetail.alertData.key}}"
+                     style="margin-bottom: 0px; height: 50px;">{{vmDetail.alertData.message}}</div>
+            </fieldset>
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px; font-size: x-large;">
+                    <div class="col-md-1 text-center">
+                        <button type="button" class="btn btn-default func-button"  ng-click="vmDetail.viewAll()" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                            </button>
+                    </div>
+                    <div class="col-md-7 text-center">
+                        <h4>{{vmDetail.countdownStr}}</h4>
+                    </div>
+                    <div class="col-md-8 text-center">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
 				<legend></legend>
 				<div class="row" style="margin-top: 0px">
 					<div class="col-md-3">
@@ -35,7 +37,7 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr ng-repeat="aver in vm.averageTotal">
+									<tr ng-repeat="aver in vmDetail.averageTotal">
 										<td>{{aver.time}}</td>
 										<td>{{aver.value}}</td>
 									</tr>
@@ -63,7 +65,7 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-show="obj.show" ng-repeat="obj in vm.data">
+										<tr ng-show="obj.show" ng-repeat="obj in vmDetail.data">
 											<td>{{obj.stt + 1}}</td>
 											<td>{{obj.id}}</td>
 											<td>{{obj.name}}</td>
@@ -77,22 +79,13 @@
 							</div>
 						
 					</div>
-
-
 				</div>
-
-			</fieldset>
-
-			<fieldset>
-				<legend></legend>
 				<div class="row" style="margin-top: 0px">
-					<div class="col-md-12 text-left">
-						<h4 ng-click="vm.configShowAlert()">{{vm.alertData.label}}</h4>
-					</div>
-				</div>
+                    <div class="col-md-12 text-left">
+                        <h4 ng-click="vmDetail.configShowAlert()">{{vmDetail.alertData.label}}</h4>
+                    </div>
+                </div>
 			</fieldset>
-		</div>
-	</div>
+        </div>
+    </div>
 </div>
-
-
