@@ -5,16 +5,16 @@
 (function(){
     'use strict';
 
-    angular.module('music.manager.song').directive('song', directiveFunction);
+    angular.module('music.manager.song').directive('viewall', directiveFunction);
 
     directiveFunction.$inject = [];
 
     function directiveFunction(){
         return {
-            templateUrl : 'app/static/scripts/music-manager/song/song.html',
+            templateUrl : 'app/static/scripts/music-manager/viewall/viewall.html',
             restrict: 'EA',
-            controller: 'musicSongController',
-            controllerAs: 'vmSong',
+            controller: 'musicViewallController',
+            controllerAs: 'vm',
             scope: {},
             bindToController: {}
         }

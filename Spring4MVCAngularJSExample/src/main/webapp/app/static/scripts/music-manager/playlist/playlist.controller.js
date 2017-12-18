@@ -8,37 +8,16 @@
     function controllerFunction($scope, $http, $timeout, musicManagerService) {
         var vm = this;
         vm.data = angular.copy(musicManagerService.defaultData);
-        vm.update = update;
-        vm.startJob = startJob;
-        vm.stopJob = stopJob;
+        vm.create = create;
+        vm.profileName = 'AAA';
         vm.configShowAlert = configShowAlert;
-        vm.disableFrom = false;
         vm.alertData = angular.copy(musicManagerService.alertDefaultData);
         vm.time = '00:00';
+        vm.jobId = musicManagerService.jobId;
+		vm.jobId = 'PlayList';
         function init() {
-
-            //get market
-            $http.get("api/bittrex/getmartket")
-              .then(function(response) {
-                  var job = _.get(response, 'data.JobResponseObject.list[0]');
-                  if(angular.isDefined(job)){
-                      // init data
-                      var coins = job.coins;
-                      var inputs = job.inputs;
-                      for(var i = 0; i < coins.length; i++){
-                          vm.data[coins[i]].input = inputs[i];
-                          vm.data[coins[i]].show = true;
-                      }
-                      if(job.status !== 'stop'){
-                          vm.disableFrom = true;
-                      }
-                  } else {
-                      //create new Job
-                      vm.disableFrom = false;
-                  }
-              });
             //get last price
-            $http.get("api/bittrex/lastPrice")
+            $http.get("api/bittrex/getLatestLastPriceData")
               .then(function(response) {
                   var lastPriceResponse = _.get(response, 'data.UsdtLastPriceResponseObject');
                   if(angular.isDefined(lastPriceResponse)){
@@ -55,40 +34,46 @@
                         	  vm.time = moment(new Date(lastTime)).format('HH:mm');
                         	  for(var i = 0; i < vm.data.length; i ++){
                         		  vm.data[i].lastPrice = lastList[i].toFixed(2);
+                        		  vm.data[i].input = lastList[i].toFixed(2);
+                        		  vm.data[i].show = true;
                         	  }
                           } else {
                               musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown');
-                              console.log(response);
+                              console.error(response);
                           }
                       } else {
                           musicManagerService.showAlert(vm.alertData, $timeout, 'error', lastPriceResponse.message);
                       }
                   } else {
                       musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown');
-                      console.log(response);
+                      console.error(response);
                   }
-              });
+              }, function(error){
+                musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown error. Please see log.');
+                console.error(error);
+            });
 
         }
         init();
 
         /////
-        function update() {
+        function create() {
             var request = angular.copy(musicManagerService.defaultRequest);
             angular.forEach(vm.data, function(data){
                 if(data.show){
-                    request.UsdtJobRequestObject.model.coins.push(data.stt);
-                    request.UsdtJobRequestObject.model.inputs.push(data.input);
+                    request.UsdtTotalRequestObject.model.coins.push(data.stt);
+                    request.UsdtTotalRequestObject.model.inputs.push(data.input);
                 }
             });
+            request.UsdtTotalRequestObject.model.name = vm.profileName;
 
             $http({
                 method: 'POST',
-                url: 'api/bittrex/job',
+                url: 'api/bittrex/total',
                 data: request,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response){
-                var jobResponse = _.get(response, 'data.JobResponseObject');
+                var jobResponse = _.get(response, 'data.UsdtTotalResponseObject');
                 if(angular.isDefined(jobResponse)) {
                     if(jobResponse.success){
                         musicManagerService.showAlert(vm.alertData, $timeout, 'success', jobResponse.message);
@@ -96,50 +81,16 @@
                         musicManagerService.showAlert(vm.alertData, $timeout, 'error', jobResponse.message);
                     }
                 } else {
-                    console.log(response);
-                }
-            }, function(error){
-                musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown error.');
-                console.log(error);
-            });
-        }
-
-        function startJob() {
-        	$http.get("api/bittrex/startmartket")
-                    .then(function(response) {
-                        var jobResponse = _.get(response, 'data.JobResponseObject');
-                        if(angular.isDefined(job)){
-                        	if(job.success){
-                        		musicManagerService.showAlert(vm.alertData, $timeout, 'success', 'Start Job successfully.');
-                        	} else {
-                        		musicManagerService.showAlert(vm.alertData, $timeout, 'error', job.message);	
-                        	}
-                        } else {
-                            vm.disableFrom = false;
-                            musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown');
-                            console.error(response);
-                        }
-                    });
-        }
-
-        function stopJob() {
-        	
-        	$http.get("api/bittrex/stopmartket")
-            .then(function(response) {
-                var jobResponse = _.get(response, 'data.JobResponseObject');
-                if(angular.isDefined(job)){
-                	if(job.success){
-                		musicManagerService.showAlert(vm.alertData, $timeout, 'success', 'Stop Job successfully.');
-                	} else {
-                		musicManagerService.showAlert(vm.alertData, $timeout, 'error', job.message);	
-                	}
-                } else {
-                    vm.disableFrom = false;
-                    musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown');
+                	 musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown error. Please see log.');
                     console.error(response);
                 }
+            }, function(error){
+                musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown error. Please see log.');
+                console.error(error);
             });
         }
+
+       
 
         function configShowAlert(){
             musicManagerService.configShowAlert(vm.alertData);

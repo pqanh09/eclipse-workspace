@@ -23,15 +23,14 @@ import com.websystique.springmvc.repositories.JobRepository;
 import com.websystique.springmvc.repositories.UsdtLastPriceRepository;
 import com.websystique.springmvc.repositories.UsdtTotalRepository;
 import com.websystique.springmvc.request.GenericRequestObject;
-import com.websystique.springmvc.request.JobRequestObject;
-import com.websystique.springmvc.request.UsdtJobRequestObject;
+import com.websystique.springmvc.request.UsdtTotalRequestObject;
 import com.websystique.springmvc.response.GenericResponseObject;
 import com.websystique.springmvc.response.JobResponseObject;
 import com.websystique.springmvc.response.Messages;
+import com.websystique.springmvc.response.PartResponseStatus;
 import com.websystique.springmvc.response.UsdtLastPriceResponseObject;
 import com.websystique.springmvc.response.UsdtTotalResponseObject;
 import com.websystique.springmvc.service.test.UsdtSchedulerService;
-import com.websystique.springmvc.vo.JobVO;
 import com.websystique.springmvc.vo.UsdtJobVO;
 import com.websystique.springmvc.vo.UsdtLastPriceVO;
 import com.websystique.springmvc.vo.UsdtTotalVO;
@@ -52,220 +51,10 @@ public class BittrexServiceImpl extends AbstractServiceImpl implements BittrexSe
 	@Autowired
 	private UsdtLastPriceRepository usdtLastPriceRepository;
 
+
+	//Last Price data
 	@Override
-	public GenericResponseObject getTotal(GenericRequestObject request) {
-		UsdtTotalResponseObject response = new UsdtTotalResponseObject(request);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-			Date dtmp = new Date();
-			Date date = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), 0, 0);
-			long time = date.getTime();
-			// Criteria criteria =
-			// Criteria.where(UsdtTotal.ATTR_TIME).gte(time);
-			// List<UsdtTotal> list =
-			// usdtTotalRepository.searchByCriteria(criteria, UsdtTotal.class);
-			UsdtTotal usdtTotal = usdtTotalRepository.findByTime(time);
-			List<UsdtTotalVO> result = new ArrayList<>();
-			if (usdtTotal != null) {
-				result.add(ModelUtilProvider.getModelUtil().convertTo(usdtTotal, UsdtTotalVO.class));
-			}
-
-			response.setList(result);
-		} catch (Exception e) {
-			LOGGER.error("An error when getting total", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
-
-	@Override
-	public GenericResponseObject createJob(GenericRequestObject gRequest) {
-		JobResponseObject response = new JobResponseObject(gRequest);
-		response.setMessage("Update input successfully. Waiting to start Job");
-		response.setSuccess(true);
-		try {
-			UsdtJobRequestObject request = (UsdtJobRequestObject) gRequest;
-			UsdtJobVO jobVO = request.getModel();
-			response.setUniqueName(jobVO.getName());
-			// job update Market
-			if (JobType.UpdateMarket.equals(jobVO.getType())) {
-				// check running or schedule. Only one job can run
-				Criteria criteriaJobType = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.UpdateMarket);
-				Criteria criteria1 = Criteria.where(Job.ATT_JOB_STATE)
-						.in(Arrays.asList(JobState.running, JobState.scheduled)).andOperator(criteriaJobType);
-
-				List<Job> result = jobRepository.searchByCriteria(criteria1, Job.class);
-				if (result != null && !result.isEmpty()) {
-					LOGGER.error("Please stop current UpdateMarket Job before creating new Job.");
-					response.setMessage("Please stop current UpdateMarket Job before creating new Job.");
-					response.setSuccess(false);
-					return response;
-				}
-				// check exist
-
-				Criteria criteria = Criteria.where(Job.ATT_JOB_STATE).is(JobState.stop).andOperator(criteriaJobType);
-
-				result = jobRepository.searchByCriteria(criteria, Job.class);
-				UsdtJob job = ModelUtilProvider.getModelUtil().convertTo(jobVO, UsdtJob.class);
-				job.setStatus(JobState.stop);
-				if (result == null || result.isEmpty()) {
-					job.setName(String.valueOf(new Date().getTime()));
-				} else {
-					job.setInstanceid(result.get(0).getInstanceid());
-				}
-				jobRepository.safeSave(job);
-			}
-			// Job get last price every minute
-			else if (JobType.GetLastPrice.equals(jobVO.getType())) {
-				// check running or schedule. Only one job can run
-				Criteria criteriaName = Criteria.where(Job.ATT_JOB_NAME).is(JobType.GetLastPrice.toString());
-				Criteria criteriaType = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.UpdateMarket);
-				Criteria criteria1 = Criteria.where(Job.ATT_JOB_STATE)
-						.in(Arrays.asList(JobState.running, JobState.scheduled))
-						.andOperator(criteriaName, criteriaType);
-
-				List<Job> result = jobRepository.searchByCriteria(criteria1, Job.class);
-				if (result != null && !result.isEmpty()) {
-					LOGGER.error("GetLastPrice is exist and It's already started");
-					response.setMessage("GetLastPrice is exist and It's already started");
-					response.setSuccess(false);
-					return response;
-				}
-				// check exist
-				Criteria criteria = Criteria.where(Job.ATT_JOB_STATE).is(JobState.stop).andOperator(criteriaName,
-						criteriaType);
-
-				result = jobRepository.searchByCriteria(criteria, Job.class);
-				if (result == null || result.isEmpty()) {
-					UsdtJob job = ModelUtilProvider.getModelUtil().convertTo(jobVO, UsdtJob.class);
-					job.setName(JobType.GetLastPrice.toString());
-					job.setStatus(JobState.stop);
-					jobRepository.safeSave(job);
-				} else {
-					LOGGER.error("Already have UpdateMarket Job, waitting to start");
-					response.setMessage("Already have UpdateMarket Job, waitting to start");
-					response.setSuccess(false);
-				}
-			} else {
-				LOGGER.error("Can't create this job " + jobVO.getType());
-				response.setMessage("Can't create this job " + jobVO.getType());
-				response.setSuccess(false);
-			}
-		} catch (Exception e) {
-			LOGGER.info("RequestObject: {}", gRequest.toString());
-			LOGGER.error("An error when creating Job", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
-
-	@Override
-	public GenericResponseObject startMartketJob(GenericRequestObject gRequest) {
-		JobResponseObject response = new JobResponseObject(gRequest);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-			// check exist
-			Criteria criteriaStatus = Criteria.where(Job.ATT_JOB_STATE).is(JobState.stop);
-			Criteria criteria = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.UpdateMarket).andOperator(criteriaStatus);
-			
-			List<Job> result = jobRepository.searchByCriteria(criteria, Job.class);
-			if(result == null || result.isEmpty()) {
-				LOGGER.error("No Bittrex Job to start");
-				response.setMessage("No Bittrex Job to start");
-				response.setSuccess(false);
-			} else {
-				if (!usdtSchedulerService.startJob(result.get(0))){
-					LOGGER.error("Can't start job");
-					response.setMessage("Can't start job");
-					response.setSuccess(false);
-					return response;
-				}
-			}
-		}catch (Exception e) {
-			LOGGER.info("RequestObject: {}", gRequest.toString());
-			LOGGER.error("An error when starting job", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
-
-	@Override
-	public GenericResponseObject startLastPriceJob(GenericRequestObject request) {
-		JobResponseObject response = new JobResponseObject(request);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-			// check exist
-			Criteria criteriaStatus = Criteria.where(Job.ATT_JOB_STATE).is(JobState.stop);
-			Criteria criteria = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.GetLastPrice).andOperator(criteriaStatus);
-
-			List<Job> result = jobRepository.searchByCriteria(criteria, Job.class);
-			if (result == null || result.isEmpty()) {
-				Criteria criteriaStatus1 = Criteria.where(Job.ATT_JOB_STATE)
-						.in(Arrays.asList(JobState.running, JobState.scheduled));
-				Criteria criteria1 = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.GetLastPrice)
-						.andOperator(criteriaStatus1);
-
-				result = jobRepository.searchByCriteria(criteria1, Job.class);
-				if (result != null && !result.isEmpty()) {
-					LOGGER.error("GetLastPrice's already started");
-				} else {
-					LOGGER.error("No Bittrex Job to start");
-					response.setMessage("No Bittrex Job to start");
-					response.setSuccess(false);
-				}
-			} else {
-				if (!usdtSchedulerService.startJob(result.get(0))) {
-					LOGGER.error("Can't start job");
-					response.setMessage("Can't start job");
-					response.setSuccess(false);
-					return response;
-				}
-			}
-		} catch (Exception e) {
-			LOGGER.info("RequestObject: {}", request.toString());
-			LOGGER.error("An error when starting job", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
-
-	@Override
-	public GenericResponseObject getmartket(GenericRequestObject request) {
-		JobResponseObject response = new JobResponseObject(request);
-		response.setMessage(Messages.COMMON_SUCCESS);
-		response.setSuccess(true);
-		try {
-			List<JobVO> result = new ArrayList<>();
-			response.setList(result);
-
-			Criteria criteriaStatus1 = Criteria.where(Job.ATT_JOB_STATE)
-					.in(Arrays.asList(JobState.running, JobState.scheduled, JobState.stop));
-			Criteria criteria1 = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.UpdateMarket).andOperator(criteriaStatus1);
-
-			List<Job> jobs = jobRepository.searchByCriteria(criteria1, Job.class);
-			if (jobs != null && !jobs.isEmpty()) {
-				Job job = jobs.get(0);
-				UsdtJobVO jobVO = ModelUtilProvider.getModelUtil().convertTo(job, UsdtJobVO.class);
-				jobVO.setObjectId(job.getInstanceid().toString());
-				result.add(jobVO);
-			}
-		} catch (Exception e) {
-			LOGGER.error("An error when getting market.", e);
-			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
-			response.setSuccess(false);
-		}
-		return response;
-	}
-
-	@Override
-	public GenericResponseObject getLatestLastPrice(GenericRequestObject gRequest) {
+	public GenericResponseObject getLatestLastPriceData(GenericRequestObject gRequest) {
 		UsdtLastPriceResponseObject response = new UsdtLastPriceResponseObject(gRequest);
 		response.setMessage(Messages.COMMON_SUCCESS);
 		response.setSuccess(true);
@@ -288,36 +77,279 @@ public class BittrexServiceImpl extends AbstractServiceImpl implements BittrexSe
 		}
 		return response;
 	}
-
+	
+	
+	//Last Price job
+	
 	@Override
-	public GenericResponseObject stopMartketJob(GenericRequestObject gRequest) {
-		JobResponseObject response = new JobResponseObject(gRequest);
+	public GenericResponseObject getLastPriceJob(GenericRequestObject request) {
+		JobResponseObject response = new JobResponseObject(request);
 		response.setMessage(Messages.COMMON_SUCCESS);
 		response.setSuccess(true);
 		try {
-			Criteria criteriaStatus1 = Criteria.where(Job.ATT_JOB_STATE)
-					.in(Arrays.asList(JobState.running, JobState.scheduled, JobState.stop));
-			Criteria criteria1 = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.UpdateMarket).andOperator(criteriaStatus1);
+				// check running or schedule. Only one job can run
+				Criteria criteriaName = Criteria.where(Job.ATT_JOB_NAME).is(JobType.GetLastPrice.toString());
+				Criteria criteria = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.GetLastPrice).andOperator(criteriaName);
 
-			List<Job> jobs = jobRepository.searchByCriteria(criteria1, Job.class);
-			if (jobs != null && !jobs.isEmpty()) {
-				
-				if (!usdtSchedulerService.stopJob(jobs.get(0).getInstanceid().toString())){
-					LOGGER.error("Can't stop job");
-					response.setMessage("Can't stop job");
-					response.setSuccess(false);
+				List<Job> jobs = jobRepository.searchByCriteria(criteria, Job.class);
+				if (jobs != null && !jobs.isEmpty()) {
+					UsdtJobVO jobVO = ModelUtilProvider.getModelUtil().convertTo(jobs.get(0), UsdtJobVO.class);
+					response.getList().add(jobVO);
 				}
-			} else {
-				response.setSuccess(false);
-				response.setMessage("There is no Job to stop.");
-			}
-		}catch (Exception e) {
-			LOGGER.info("RequestObject: {}", gRequest.toString());
-			LOGGER.error("An error when stopping Job", e);
+		} catch (Exception e) {
+			LOGGER.info("RequestObject: {}", request.toString());
+			LOGGER.error("An error when getting Last Price Job", e);
 			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
 			response.setSuccess(false);
 		}
 		return response;
 	}
+	@Override
+	public GenericResponseObject createLastPriceJob(GenericRequestObject request) {
+		JobResponseObject response = new JobResponseObject(request);
+		response.setMessage("Create Job successfully. Waiting to start Job");
+		response.setSuccess(true);
+		try {
+			UsdtJob job = new UsdtJob();
+			job.setUrl("https://bittrex.com/api/v2.0/pub/Markets/GetMarketSummaries?_=");
+			//poll every minute
+			job.setCronExpression("0 * * ? * *");
+			job.setType(JobType.GetLastPrice);
+			job.setName(JobType.GetLastPrice.toString());
+			job.setStatus(JobState.stop);
+			jobRepository.safeSave(job);
+	
+		} catch (Exception e) {
+			LOGGER.info("RequestObject: {}", request.toString());
+			LOGGER.error("An error when creating Job", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+	
+	@Override
+	public GenericResponseObject startLastPriceJob(GenericRequestObject request) {
+		JobResponseObject response = new JobResponseObject(request);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			// check exist
+			Criteria criteriaName = Criteria.where(Job.ATT_JOB_NAME).is(JobType.GetLastPrice.toString());
+			Criteria criteria = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.GetLastPrice).andOperator(criteriaName);
+			List<Job> result = jobRepository.searchByCriteria(criteria, Job.class);
+			if (result != null && !result.isEmpty()) {
+				UsdtJob job = (UsdtJob) result.get(0);
+				if (JobState.running.equals(job.getStatus()) || JobState.scheduled.equals(job.getStatus())) {
+					LOGGER.error("Last Price Job is already started");
+					response.setMessage("Last Price Job is already started");
+					response.setSuccess(false);
+					return response;
+				} else {
+					if (!usdtSchedulerService.startJob(job)) {
+						response.setMessage("Can't start job. Please see log to more detail");
+						response.setSuccess(false);
+						return response;
+					}
+				}
+			} else {
+				LOGGER.error("Not found Last Price Job to start");
+				response.setMessage("Not found Last Price Job to start");
+				response.setSuccess(false);
+				return response;
+			}
+		} catch (Exception e) {
+			LOGGER.info("RequestObject: {}", request.toString());
+			LOGGER.error("An error when starting job", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+
+	@Override
+	public GenericResponseObject stopLastPriceJob(GenericRequestObject request) {
+		JobResponseObject response = new JobResponseObject(request);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			// check exist
+			Criteria criteriaName = Criteria.where(Job.ATT_JOB_NAME).is(JobType.GetLastPrice.toString());
+			Criteria criteria = Criteria.where(Job.ATT_JOB_TYPE).is(JobType.GetLastPrice).andOperator(criteriaName);
+			List<Job> result = jobRepository.searchByCriteria(criteria, Job.class);
+			if (result != null && !result.isEmpty()) {
+				UsdtJob job = (UsdtJob) result.get(0);
+				if (JobState.running.equals(job.getStatus()) || JobState.scheduled.equals(job.getStatus())) {
+					//TODO Stop Job
+					if (!usdtSchedulerService.stopJob(job.getInstanceid().toString(), JobState.stop)) {
+						response.setMessage("Can't stop job. Please see log to more detail");
+						response.setSuccess(false);
+						return response;
+					}
+				} else {
+					LOGGER.error("Last Price Job is NOT yet started");
+					response.setMessage("Last Price Job is NOT yet started");
+					response.setSuccess(false);
+					return response;
+				}
+			} else {
+				LOGGER.error("Not found Last Price Job to start");
+				response.setMessage("Not found Last Price Job to start");
+				response.setSuccess(false);
+				return response;
+			}
+		} catch (Exception e) {
+			LOGGER.info("RequestObject: {}", request.toString());
+			LOGGER.error("An error when stoping job", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+	
+	
+	//Total
+	@Override
+	public GenericResponseObject getTotalById(GenericRequestObject gRequest) {
+		UsdtTotalResponseObject response = new UsdtTotalResponseObject(gRequest);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			UsdtTotalRequestObject request = (UsdtTotalRequestObject)gRequest;
+			List<String> ids = request.getIds();
+			if(ids == null || ids.isEmpty()){
+				LOGGER.error("No ID to find");
+				response.setMessage("No ID to find");
+				response.setSuccess(false);
+			} else {
+				UsdtTotal usdtTotal = usdtTotalRepository.findOne(new ObjectId(ids.get(0)));
+				if(usdtTotal  == null) {
+					LOGGER.error(Messages.COMMON_NOT_FOUND);
+					response.setMessage(Messages.COMMON_NOT_FOUND);
+					response.setSuccess(false);
+				} else {
+					UsdtTotalVO usdtTotalVO = ModelUtilProvider.getModelUtil().convertTo(usdtTotal, UsdtTotalVO.class);
+					usdtTotalVO.setObjectId(usdtTotal.getInstanceid().toString());
+					response.getList().add(usdtTotalVO);
+				}
+			}
+			
+		}catch (Exception e) {
+			LOGGER.error("An error when reading profile", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+	@Override
+	public GenericResponseObject getAllTotals(GenericRequestObject request) {
+		UsdtTotalResponseObject response = new UsdtTotalResponseObject(request);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+				List<UsdtTotal> usdtTotals = usdtTotalRepository.findAll();
+				for (UsdtTotal usdtTotal : usdtTotals) {
+					UsdtTotalVO usdtTotalVO = ModelUtilProvider.getModelUtil().convertTo(usdtTotal, UsdtTotalVO.class);
+					usdtTotalVO.setObjectId(usdtTotal.getInstanceid().toString());
+					response.getList().add(usdtTotalVO);
+				}
+		}catch (Exception e) {
+			LOGGER.error("An error when reading profiles", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+	@Override
+	public GenericResponseObject createTotal(GenericRequestObject gRequest) {
+		UsdtTotalResponseObject response = new UsdtTotalResponseObject(gRequest);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			UsdtTotalRequestObject request = (UsdtTotalRequestObject)gRequest;
+			UsdtTotalVO modelVO = request.getModel();
+			response.setUniqueName(modelVO.getName());
+			// check exist
+			if(usdtTotalRepository.findByName(modelVO.getName()) == null) {
+				UsdtTotal model = ModelUtilProvider.getModelUtil().convertTo(modelVO, UsdtTotal.class);
+				usdtTotalRepository.safeSave(model);
+			} else {
+				LOGGER.error(Messages.COMMON_EXIST);
+				response.setMessage(Messages.COMMON_EXIST);
+				response.setSuccess(false);
+			}
+		}catch (Exception e) {
+			LOGGER.info("RequestObject: {}", gRequest.toString());
+			LOGGER.error("An error when creating profile", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+	//update -> remove all total, percent
+	@Override
+	public GenericResponseObject updateTotal(GenericRequestObject gRequest) {
+		UsdtTotalResponseObject response = new UsdtTotalResponseObject(gRequest);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			UsdtTotalRequestObject request = (UsdtTotalRequestObject)gRequest;
+			UsdtTotalVO modelVO = request.getModel();
+			response.setUniqueName(modelVO.getName());
+			//check not found
+			if(usdtTotalRepository.findOne(new ObjectId(modelVO.getObjectId())) == null){
+				LOGGER.error(Messages.COMMON_NOT_FOUND);
+				response.setMessage(Messages.COMMON_NOT_FOUND);
+				response.setSuccess(false);
+			} else {
+				UsdtTotal model = ModelUtilProvider.getModelUtil().convertTo(modelVO, UsdtTotal.class);
+				//set ObjectId
+				model.setInstanceid(new ObjectId(modelVO.getObjectId()));
+				usdtTotalRepository.safeSave(model);
+			}
+		}catch (Exception e) {
+			LOGGER.info("RequestObject: {}", gRequest.toString());
+			LOGGER.error("An error when updating profile", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+	@Override
+	public GenericResponseObject deleteTotal(GenericRequestObject gRequest) {
+		UsdtTotalResponseObject response = new UsdtTotalResponseObject(gRequest);
+		response.setMessage(Messages.COMMON_SUCCESS);
+		response.setSuccess(true);
+		try {
+			UsdtTotalRequestObject request = (UsdtTotalRequestObject)gRequest;
+			List<String> ids = request.getIds();
+			List<PartResponseStatus> partStatus = new ArrayList<>();
+			
+			for (String id : ids) {
+				PartResponseStatus part = new PartResponseStatus(id, true, Messages.COMMON_SUCCESS);
+				try {
+					usdtTotalRepository.delete(new ObjectId(id));
+				}catch (Exception e) {
+					LOGGER.error("An error when deleting Profile {}:", id, e);
+					part.setMessage("An error when deleting Profile " + id);
+					part.setSuccess(false);
+				}
+				partStatus.add(part);
+			}
+			response.setPartStatus(partStatus);
+		}catch (Exception e) {
+			LOGGER.error("An error when delete Profile(s)", e);
+			response.setMessage(Messages.COMMON_UNKNOWN_ERROR);
+			response.setSuccess(false);
+		}
+		return response;
+	}
+
+
 
 }

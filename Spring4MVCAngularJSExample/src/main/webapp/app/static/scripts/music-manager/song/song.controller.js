@@ -8,90 +8,107 @@
 
 	function controllerFunction($scope, $http, $timeout, musicManagerService) {
 		var vm = this;
-		vm.data = [];
+		vm.data = angular.copy(musicManagerService.defaultData);
 		vm.configShowAlert = configShowAlert;
-		vm.disableFrom = false;
 		vm.alertData = angular.copy(musicManagerService.alertDefaultData);
-//		vm.time = -1;
-
+		vm.coins = [];
+		vm.countdown = 0;
+		vm.lastPriceTime = '';
+		vm.countdownStr = 'Ready......';
+		vm.jobId = musicManagerService.jobId;
+		vm.jobId = '5a36a98d954b971d723644f1';
 		//$scope.$digest();
 		vm.averageTotal = [];
 		function getJob(){
-			return $http.get("api/bittrex/getmartket")
+			return $http.get('api/bittrex/total/'+vm.jobId)
 					.then(function(response) {
-						var job = _.get(response, 'data.JobResponseObject.list[0]');
-						if(angular.isDefined(job)){
-							if(job.status === 'stop'){
-								musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Please start get data');
-								vm.disableFrom = true;
-							}else {
-								vm.data = angular.copy(musicManagerService.defaultData);
-								// init data
-								var coins = job.coins;
-								var inputs = job.inputs;
-								for(var i = 0; i < coins.length; i++){
-									vm.data[coins[i]].input = inputs[i];
-									vm.data[coins[i]].show = true;
-								}
-								vm.disableFrom = false;
-							}
-						} else {
-							musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'No inputs to start');
-							vm.disableFrom = true;
-						}
-					});
+						var responseObj = _.get(response, 'data.UsdtTotalResponseObject');
+						if(angular.isDefined(responseObj)) {
+		                    if(responseObj.success){
+		                    	var totalObj = _.get(response, 'data.UsdtTotalResponseObject.list[0]');
+		                    	if(angular.isDefined(responseObj)) {
+		                    		//Market table
+		                    		var coins = totalObj.coins;
+		                    		var inputs = totalObj.inputs;
+		                    		var percents = totalObj.percents;
+		                    		var lastPrices = totalObj.lastPrices;
+		                    		vm.profileName = totalObj.name;
+		                    		for(var i = 0; i < coins.length; i++){
+		                    			vm.data[coins[i]].show = true;
+		                    			vm.data[coins[i]].input = inputs[i].toFixed(2);
+										vm.data[coins[i]].percent = percents[i].toFixed(1);
+										vm.data[coins[i]].lastPrice = lastPrices[i].toFixed(2);
+									}
+		                    		//Total table
+		                    		var totals = totalObj.totals;
+		                    		vm.averageTotal.length = 0;
+			  						for(var key in totals) {
+			  							vm.averageTotal.push({
+			  								time: moment(new Date(Number(key))).format('HH:mm'),
+			  								value:totals[key].toFixed(1)
+			  							});
+			  						}
+			  						vm.averageTotal.reverse();
+		                    		musicManagerService.showAlert(vm.alertData, $timeout, 'success', responseObj.message);
+		                    	} else {
+		                    		musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown error. Please see log.');
+				                    console.error(response);
+		                    	}
+		                        //musicManagerService.showAlert(vm.alertData, $timeout, 'success', responseObj.message);
+		                        
+		                    } else {
+		                        musicManagerService.showAlert(vm.alertData, $timeout, 'error', responseObj.message);
+		                    }
+		                } else {
+		                	musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown error. Please see log.');
+		                    console.error(response);
+		                }
+					}, function(error){
+                musicManagerService.showAlert(vm.alertData, $timeout, 'error', 'Unknown error. Please see log.');
+                console.error(error);
+            });
 		};
-		function getAverageTotal(){
-			return $http.get("api/bittrex/averagetotal")
-					.then(function(response) {
-						vm.averageTotal.length = 0;
-						var list = _.get(response, 'data.UsdtTotalResponseObject.list[0].list', []);
-						for(var key in list) {
-							vm.averageTotal.push({
-								time: moment(new Date(Number(key))).format('HH:mm'),
-								value:list[key].toFixed(1)
-							});
-						}
-						vm.averageTotal.reverse();
-					});
-		};
+//		function getAverage
+		
 		function init() {
 			//get market 
-			getJob().then(function(){
-				if(!vm.disableFrom){
-					getAverageTotal();
-				}
-			});
+			getJob();
+
 		}
 		init();
 
 		var stompClient = null;
 		function connect() {
-			var socket = new SockJS('register');
+			var socket = new SockJS('http://localhost:8080/Spring4MVCAngularJSExample/register');
 			stompClient = Stomp.over(socket);
 			stompClient.connect({}, function(frame) {
 				stompClient.subscribe('/topic/usdtMarkets', function(calResult) {
-					if (vm.disableFrom) {
-						getJob();
-						getAverageTotal();
-					} else {
-						var result = JSON.parse(calResult.body);
-						vm.averageTotal.unshift({
-							time: moment(new Date(result.time)).format('HH:mm'),
-							value: result.total.toFixed(1)
-						});
-					}
-//					vm.time = moment(new Date(result.time)).format('HH:mm:ss YYYY-MM-DD'); 
-					angular.forEach(vm.data, function(obj) {
-						obj.lastPrice = result.lastPrice[obj.stt].toFixed(2);
-						obj.percent = result.percent[obj.stt].toFixed(1);
+					getJob().then(function(){
+						vm.countdown = 59;
 					});
+//					vm.countdown = 60;
 					$timeout();
 				});
 
 			});
 		}
 		connect();
+		function countdownFunc(){
+			$timeout(function() {
+		    	if(vm.countdown > 0){
+		    		vm.countdownStr = vm.countdown.toString();
+		    		vm.countdown = vm.countdown - 1;
+		    	}
+		    	else if(vm.countdown === 0){
+		    		vm.countdownStr = 'Getting data......';
+		    	} else {
+		    		vm.countdownStr = ':ASLKFASK:LAS';
+		    	}
+		    	countdownFunc();
+		    }, 1000);
+		}
+		countdownFunc();
+		
 		function configShowAlert(){
             musicManagerService.configShowAlert(vm.alertData);
         }

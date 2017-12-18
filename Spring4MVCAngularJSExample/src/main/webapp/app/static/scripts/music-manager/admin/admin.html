@@ -1,0 +1,46 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset style="height: 73px;">
+		        <legend></legend>
+		        <div ng-show="vm.alertData.show" class=" alert {{vm.alertData.key}}"
+                                 style="margin-bottom: 0px">
+                                {{vm.alertData.message}}
+                </div>
+	        </fieldset>
+	        <fieldset>
+		        <legend></legend>
+		        <div class="row" style="margin-top: 0px">
+			        <div class="col-md-12 text-center">
+	                                <button type="button" class="btn btn-info btn-lg" ng-disabled="vm.state !== 0"
+	                                        ng-click="vm.createLastPriceJob()">Create Job to get Last Price
+	                                </button>
+                    </div>
+		        </div>
+	        </fieldset>
+	        <fieldset>
+		        <legend></legend>
+		        <div class="row" style="margin-top: 0px" ng-disabled="vm.disableFromManageLastPriceJob">
+			        <div class="col-md-6 text-center">
+	                                <button type="button" class="btn btn-success btn-lg" ng-disabled="vm.state !== 1"
+	                                        ng-click="vm.startLastPriceJob()">Start Job to get Last Price
+	                                </button>
+                    </div>
+                    <div class="col-md-6 text-center">
+	                                <button type="button" class="btn btn-danger btn-lg" ng-disabled="vm.state !== 2"
+	                                        ng-click="vm.stopLastPriceJob()">Stop Job to get Last Price
+	                                </button>
+                    </div>
+		        </div>
+	        </fieldset>
+    	    <fieldset>
+		        <legend></legend>
+                	<div class="row" style="margin-top: 0px">
+                		<div class="col-md-12 text-left">
+        					<h4 ng-click="vm.configShowAlert()">{{vm.alertData.label}}</h4>
+					    </div>
+                	</div>	
+	        </fieldset>
+		</div>
+	</div>
+</div>

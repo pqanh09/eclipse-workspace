@@ -1,41 +1,76 @@
 package com.websystique.springmvc.vo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class UsdtTotalVO extends GenericVO{
-	private long time;
-	
-	private Map<Long, Double> list = new HashMap<>();
+public class UsdtTotalVO extends GenericVO {
+	private List<Integer> coins = new ArrayList<>();
+	private List<Double> inputs = new ArrayList<>();
+	private List<Double> lastPrices = new ArrayList<>();
+	private List<Double> percents = new ArrayList<>();
+	private Map<Long, Double> totals = new HashMap<>();
 
-	public long getTime() {
-		return time;
+	public List<Integer> getCoins() {
+		return coins;
 	}
 
-	public void setTime(long time) {
-		this.time = time;
-	}
-	
 
-	public Map<Long, Double> getList() {
-		return list;
+
+	public void setCoins(List<Integer> coins) {
+		this.coins = coins;
 	}
 
-	public void setList(Map<Long, Double> list) {
-		this.list = list;
+
+
+	public List<Double> getInputs() {
+		return inputs;
 	}
 
-	private String jobId;
-	
-	
-	public String getJobId() {
-		return jobId;
+
+
+	public void setInputs(List<Double> inputs) {
+		this.inputs = inputs;
 	}
 
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
+
+
+	public List<Double> getLastPrices() {
+		return lastPrices;
 	}
-	
+
+
+
+	public void setLastPrices(List<Double> lastPrices) {
+		this.lastPrices = lastPrices;
+	}
+
+
+
+	public List<Double> getPercents() {
+		return percents;
+	}
+
+
+
+	public void setPercents(List<Double> percents) {
+		this.percents = percents;
+	}
+
+
+
+	public Map<Long, Double> getTotals() {
+		return totals;
+	}
+
+
+
+	public void setTotals(Map<Long, Double> totals) {
+		this.totals = totals;
+	}
+
+
 
 	public UsdtTotalVO() {
 		super();

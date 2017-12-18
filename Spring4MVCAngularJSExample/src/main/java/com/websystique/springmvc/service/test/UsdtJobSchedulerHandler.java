@@ -32,7 +32,6 @@ import com.websystique.springmvc.model.UsdtLastPrice;
 import com.websystique.springmvc.model.UsdtTotal;
 import com.websystique.springmvc.repositories.UsdtLastPriceRepository;
 import com.websystique.springmvc.repositories.UsdtTotalRepository;
-import com.websystique.springmvc.response.WSUpdateMarketResponse;
 
 @Service("usdtJobSchedulerHandler")
 public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
@@ -44,23 +43,23 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 
 	@Autowired
 	private UsdtTotalRepository usdtTotalRepository;
-	
+
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
-	
 
-	
-	private void getLastPrice(UsdtJob jobDb){
+	private void getLastPrice(UsdtJob jobDb) {
 		// check url
-		if(StringUtils.isBlank(jobDb.getUrl())){
+		if (StringUtils.isBlank(jobDb.getUrl())) {
 			LOGGER.error("No URL to process.");
 			return;
 		}
+		
 
 		HttpURLConnection conn = null;
 		try {
 			Date dtmp = new Date();
-			long timeId = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), dtmp.getMinutes(), 0).getTime();
+			long timeId = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), dtmp.getMinutes(),
+					0).getTime();
 
 			URL url = new URL(jobDb.getUrl() + String.valueOf(timeId));
 			conn = (HttpURLConnection) url.openConnection();
@@ -96,14 +95,14 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 				}
 			}
 
-			//save data to DB
+			// save data to DB
 			Date dtHour = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), 0, 0);
 			UsdtLastPrice usdtLastPrice = usdtLastPriceRepository.findByTime(dtHour.getTime());
 			if (usdtLastPrice == null) {
 				usdtLastPrice = new UsdtLastPrice(dtHour.getTime());
 			}
 			List<Double> lastPrices = new ArrayList<>();
-			
+
 			lastPrices.add(map.get(UsdtEnum.USDT_BTC.toId()));
 			lastPrices.add(map.get(UsdtEnum.USDT_BCC.toId()));
 			lastPrices.add(map.get(UsdtEnum.USDT_BTG.toId()));
@@ -121,13 +120,27 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			lastPrices.add(map.get(UsdtEnum.USDT_ZEC.toId()));
 
 			usdtLastPrice.getList().put(timeId, lastPrices);
-			
+
 			usdtLastPriceRepository.safeSave(usdtLastPrice);
+
+			/////////////
+			// caculate percent
+			calculate(lastPrices, timeId);
 			
+			// update job
 			jobDb.setStatus(JobState.scheduled);
 
 			jobRepository.safeSave(jobDb);
-			
+
+			/////////////
+
+			// triger update UIs
+			if (simpMessagingTemplate != null) {
+				simpMessagingTemplate.convertAndSend("/topic/usdtMarkets", "OK");
+			} else {
+				LOGGER.error("SimpMessagingTemplate is null.");
+				return;
+			}
 		} catch (Exception e) {
 			// TODO error
 			LOGGER.error("An error when getting last price: ", e);
@@ -143,83 +156,110 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			}
 		}
 	}
-	private void updateMarket(UsdtJob jobDb){
-		// check coins
-		if(jobDb.getCoins().isEmpty()){
-			LOGGER.error("No coins to process.");
-			return;
-		}
-		List<Integer> coins = jobDb.getCoins();
-		// check inputs
-		if(jobDb.getInputs().isEmpty()){
-			LOGGER.error("No inputs to process.");
-			return;
-		}
-		List<Double> inputs = jobDb.getInputs();
-		
-		
-		
-		
-		try {
-			Date dtmp = new Date();
-			long timeId = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), dtmp.getMinutes(), 0).getTime();
-			
-			//save data to DB
-			Date dtHour = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), 0, 0);
-			UsdtLastPrice usdtLastPrice = usdtLastPriceRepository.findByTime(dtHour.getTime());
-			if (usdtLastPrice == null) {
-				LOGGER.error("No UsdtLastPrice to process");
-				return;
-			}
-			int minute = dtmp.getMinutes();
-			List<Double> lastPrices = usdtLastPrice.getList().get(timeId);
-			if(lastPrices == null || lastPrices.isEmpty()){
-				LOGGER.error("No Last price  of time {} to process", timeId);
-				return;
-			}
-			//caculate percent
-			List<Double> percent = new ArrayList<>();
+	private void calculate(List<Double> lastPrices, long timeId){
+		List<UsdtTotal> usdtTotals = usdtTotalRepository.findAll();
+		for (UsdtTotal usdtTotal : usdtTotals) {
+			List<Integer> coins = usdtTotal.getCoins();
+			List<Double> inputs = usdtTotal.getInputs();
+			List<Double> percents = new ArrayList<>();
 			List<Double> lastPricesByCoins = new ArrayList<>();
 			double total = 0;
-			
-			for(int i = 0; i < coins.size(); i++){
+
+			for (int i = 0; i < coins.size(); i++) {
 				int num = coins.get(i);
 				double input = inputs.get(i);
 				double lastPr = lastPrices.get(num);
 				double pc = ((lastPr - input) / input) * 100;
-				percent.add(pc);
+				percents.add(pc);
 				lastPricesByCoins.add(lastPr);
 				total = total + pc;
 			}
-			
-			//save total to DB
-			UsdtTotal usdtTotal = usdtTotalRepository.findByTime(dtHour.getTime());
-			if (usdtTotal == null) {
-				usdtTotal = new UsdtTotal(dtHour.getTime());
-			}
-			usdtTotal.setJobId(jobDb.getInstanceid().toString());
-			usdtTotal.getList().put(timeId, total / coins.size());
+			usdtTotal.setPercents(percents);
+			usdtTotal.setLastPrices(lastPricesByCoins);
+
+			usdtTotal.addTotalAverage(timeId, total / coins.size());
 			
 			usdtTotalRepository.safeSave(usdtTotal);
-			
-			// update job
-			jobDb.setStatus(JobState.scheduled);
-			
-			jobRepository.safeSave(jobDb);
-			
-			// triger update UIs
-			if (simpMessagingTemplate != null) {
-				simpMessagingTemplate.convertAndSend("/topic/usdtMarkets", new WSUpdateMarketResponse(timeId, lastPricesByCoins, percent, total / coins.size()));
-			} else {
-				LOGGER.error("SimpMessagingTemplate is null.");
-				return;
-			}
-		} catch (Exception e) {
-			// TODO error
-			LOGGER.error("An error when polling bittrex: ", e);
-			return;
-		} 
+		}
+		
 	}
+	private void updateMarket1(UsdtJob jobDb) {
+//		// check coins
+//		if (jobDb.getCoins().isEmpty()) {
+//			LOGGER.error("No coins to process.");
+//			return;
+//		}
+//		List<Integer> coins = jobDb.getCoins();
+//		// check inputs
+//		if (jobDb.getInputs().isEmpty()) {
+//			LOGGER.error("No inputs to process.");
+//			return;
+//		}
+//		List<Double> inputs = jobDb.getInputs();
+//
+//		try {
+//			Date dtmp = new Date();
+//			long timeId = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), dtmp.getMinutes(),
+//					0).getTime();
+//
+//			// save data to DB
+//			Date dtHour = new Date(dtmp.getYear(), dtmp.getMonth(), dtmp.getDate(), dtmp.getHours(), 0, 0);
+//			UsdtLastPrice usdtLastPrice = usdtLastPriceRepository.findByTime(dtHour.getTime());
+//			if (usdtLastPrice == null) {
+//				LOGGER.error("No UsdtLastPrice to process");
+//				return;
+//			}
+//			int minute = dtmp.getMinutes();
+//			List<Double> lastPrices = usdtLastPrice.getList().get(timeId);
+//			if (lastPrices == null || lastPrices.isEmpty()) {
+//				LOGGER.error("No Last price  of time {} to process", timeId);
+//				return;
+//			}
+//			// caculate percent
+//			List<Double> percent = new ArrayList<>();
+//			List<Double> lastPricesByCoins = new ArrayList<>();
+//			double total = 0;
+//
+//			for (int i = 0; i < coins.size(); i++) {
+//				int num = coins.get(i);
+//				double input = inputs.get(i);
+//				double lastPr = lastPrices.get(num);
+//				double pc = ((lastPr - input) / input) * 100;
+//				percent.add(pc);
+//				lastPricesByCoins.add(lastPr);
+//				total = total + pc;
+//			}
+//
+//			// save total to DB
+//			UsdtTotal usdtTotal = usdtTotalRepository.findByTime(dtHour.getTime());
+//			if (usdtTotal == null) {
+//				usdtTotal = new UsdtTotal(dtHour.getTime());
+//			}
+//			usdtTotal.setJobId(jobDb.getInstanceid().toString());
+//			usdtTotal.getList().put(timeId, total / coins.size());
+//
+//			usdtTotalRepository.safeSave(usdtTotal);
+//
+//			// update job
+//			jobDb.setStatus(JobState.scheduled);
+//
+//			jobRepository.safeSave(jobDb);
+//
+//			// triger update UIs
+//			if (simpMessagingTemplate != null) {
+//				simpMessagingTemplate.convertAndSend("/topic/usdtMarkets",
+//						new WSUpdateMarketResponse(timeId, lastPricesByCoins, percent, total / coins.size()));
+//			} else {
+//				LOGGER.error("SimpMessagingTemplate is null.");
+//				return;
+//			}
+//		} catch (Exception e) {
+//			// TODO error
+//			LOGGER.error("An error when polling bittrex: ", e);
+//			return;
+//		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void process(JobDataMap jobParams) throws Exception {
@@ -238,11 +278,13 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 			LOGGER.error("Not found job in db ");
 			return;
 		}
-		if(JobType.GetLastPrice.equals(jobDb.getType())){
+		if (JobType.GetLastPrice.equals(jobDb.getType())) {
 			getLastPrice(jobDb);
-		} else if(JobType.UpdateMarket.equals(jobDb.getType())){
-			updateMarket(jobDb);
-		} else {
+		}
+//		else if (JobType.UpdateMarket.equals(jobDb.getType())) {
+//			updateMarket(jobDb);
+//		} 
+		else {
 			LOGGER.error("Not support {} Job", jobDb.getType());
 			return;
 		}

@@ -7,5 +7,5 @@ import com.websystique.springmvc.model.UsdtTotal;
 
 @Repository
 public interface UsdtTotalRepository extends GenericRepository<UsdtTotal, ObjectId>, UsdtTotalRepositoryCustom {
-	UsdtTotal findByTime(long name);
+	UsdtTotal findByName(String name);
 }

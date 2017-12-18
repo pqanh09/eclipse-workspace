@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class UsdtLastPriceVO extends GenericVO{
 
-private long time;
+	private long time;
 	
 	private Map<Integer, String> logError = new HashMap<>();
 	

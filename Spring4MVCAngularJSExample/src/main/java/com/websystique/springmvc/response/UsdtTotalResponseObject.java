@@ -5,7 +5,6 @@ import com.websystique.springmvc.vo.UsdtTotalVO;
 
 public class UsdtTotalResponseObject extends GenericModelResponseObject<UsdtTotalVO>{
 	
-
 	/**
 	 * 
 	 */
@@ -13,7 +12,6 @@ public class UsdtTotalResponseObject extends GenericModelResponseObject<UsdtTota
 
 	public UsdtTotalResponseObject(GenericRequestObject request) {
 		super(request);
-		// TODO Auto-generated constructor stub
 	}
 
 	

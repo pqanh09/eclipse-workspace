@@ -59,16 +59,13 @@
           percent: 0
         });
       }
-
     })();
+    
+    
     service.defaultRequest = {
-      'UsdtJobRequestObject': {
+      'UsdtTotalRequestObject': {
           'model': {
-          'description': "UpdateMarket",
-          'url': "",
-          'type': "UpdateMarket",
-          'status':"stop",
-          'cronExpression': "5 * * ? * * *",
+          'name': "Test1",
           'coins': [
           ],
           'inputs': [
@@ -76,6 +73,7 @@
         }
       }
     };
+    service.jobId;
     service.alertDefaultData = {
       key: 'alert-success',
       message: 'Every thing is Ok',
@@ -93,8 +91,10 @@
       alertData.autoHide = !alertData.autoHide;
       if(alertData.autoHide){
         alertData.label = 'Auto hide alert after 5s.';
+        alertData.show = false;
       } else {
         alertData.label = 'Keep showing alert.';
+        alertData.show = true;
       }
     };
     service.showAlert = function(alertData, $timeout, type, message){

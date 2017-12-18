@@ -39,7 +39,7 @@ public class AbstractSchedulerService implements SchedulerService{
 	}
 	
 	@Override
-	public boolean stopJob(String jobId) {
+	public boolean stopJob(String jobId, JobState status) {
 		try {
 			Scheduler sched = new StdSchedulerFactory().getScheduler();
 			TriggerKey trigKey = triggerKeyMap.get(jobId);
@@ -47,7 +47,6 @@ public class AbstractSchedulerService implements SchedulerService{
 				LOGGER.error("Not found Job {} in list schedule", jobId);
 				sched.unscheduleJob(trigKey);
 			}
-			
 			LOGGER.info("Job {} is cancelled", jobId);
 			Job jobdb = jobRepository.findOne(new ObjectId(jobId));
 			jobdb.setStatus(JobState.stop);

@@ -166,7 +166,7 @@ public class JobServiceImpl extends AbstractServiceImpl implements JobService{
 					response.setSuccess(false);
 					return response;
 				}
-				if (!mangaSchedulerServiceImpl.stopJob(request.getIds().get(0))){
+				if (!mangaSchedulerServiceImpl.stopJob(request.getIds().get(0), JobState.stop)){
 					LOGGER.error("Can't stop job");
 					response.setMessage("Can't stop job");
 					response.setSuccess(false);

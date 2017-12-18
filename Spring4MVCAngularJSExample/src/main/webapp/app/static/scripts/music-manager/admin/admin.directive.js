@@ -4,15 +4,15 @@
 (function(){
   'use strict';
 
-  angular.module('music.manager.playlist').directive('playList', directiveFunction);
+  angular.module('music.manager.admin').directive('admin', directiveFunction);
 
   directiveFunction.$inject = [];
 
   function directiveFunction(){
     return {
-      templateUrl : 'app/static/scripts/music-manager/playlist/playlist.html',
+      templateUrl : 'app/static/scripts/music-manager/admin/admin.html',
       restrict: 'EA',
-      controller: 'musicPlayListController',
+      controller: 'musicAdminController',
       controllerAs: 'vm',
       scope: {},
       bindToController: false

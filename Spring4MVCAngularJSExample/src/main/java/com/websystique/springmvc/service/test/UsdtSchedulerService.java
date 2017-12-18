@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import com.websystique.springmvc.model.Job;
 import com.websystique.springmvc.model.JobState;
 import com.websystique.springmvc.model.UsdtJob;
-import com.websystique.springmvc.request.ObjectType;
 
 @Service("usdtSchedulerService")
 public class UsdtSchedulerService extends AbstractSchedulerService {
@@ -34,14 +33,12 @@ public class UsdtSchedulerService extends AbstractSchedulerService {
 	@Override
 	public boolean startJob(Job job) {
 		try {
-			
 			//check input
 			if(!(job instanceof UsdtJob)){
 				LOGGER.error("Not support this {} Job", job.getType());
 				return false;
 			}
 			UsdtJob usdtJob = (UsdtJob) job;
-			
 			String jobId = usdtJob.getInstanceid().toString();
 			String jobName = usdtJob.getName();
 			String groupName = usdtJob.getType().toString();
@@ -64,11 +61,7 @@ public class UsdtSchedulerService extends AbstractSchedulerService {
 					// TODO update time period
 					.withSchedule(CronScheduleBuilder.cronSchedule(usdtJob.getCronExpression()))
 					.build();
-
-
 			TriggerKey triggerKey = trigger.getKey();
-
-
 			Scheduler sched = new StdSchedulerFactory().getScheduler();
 			//TODO jobListenerName = jobID 
 			sched.getListenerManager().addJobListener(new QuartzListener(jobId, jobName),
@@ -84,7 +77,7 @@ public class UsdtSchedulerService extends AbstractSchedulerService {
 			LOGGER.info("Job: {}", job.toString());
 			LOGGER.error("An error when starting job: ", e);
 			LOGGER.info("Try to stop job");
-			if(stopJob(job.getInstanceid().toString())){
+			if(stopJob(job.getInstanceid().toString(), JobState.stop)){
 				LOGGER.info("Stop successfully");
 				job.setStatus(JobState.stop);
 				jobRepository.safeSave(job);
@@ -93,10 +86,7 @@ public class UsdtSchedulerService extends AbstractSchedulerService {
 			}
 			return false;
 		}
-		
 		return true;
 	}
-	
-
 }
 

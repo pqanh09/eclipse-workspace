@@ -99,7 +99,7 @@ public class MangaSchedulerServiceImpl extends AbstractSchedulerService {
 			LOGGER.info("Job: {}", job.toString());
 			LOGGER.error("An error when starting job: ", e);
 			LOGGER.info("Try to stop job");
-			if(stopJob(job.getInstanceid().toString())){
+			if(stopJob(job.getInstanceid().toString(), JobState.stop)){
 				LOGGER.info("Stop successfully");
 				job.setStatus(JobState.stop);
 				jobRepository.safeSave(job);
