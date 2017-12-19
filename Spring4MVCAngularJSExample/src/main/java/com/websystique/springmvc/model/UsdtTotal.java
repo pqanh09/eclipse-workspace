@@ -33,17 +33,44 @@ public class UsdtTotal extends GenericModel<ObjectId> {
 	private List<Double> inputs = new ArrayList<>();
 	private List<Double> lastPrices = new ArrayList<>();
 	private List<Double> percents = new ArrayList<>();
-	private Map<Long, Double> totals = new HashMap<>();
+	private List<Double> costs = new ArrayList<>();
+	private List<Double> units = new ArrayList<>();
+	private double profit = 0;
+	public List<Double> getCosts() {
+		return costs;
+	}
+
+	public void setCosts(List<Double> costs) {
+		this.costs = costs;
+	}
+
+	public List<Double> getUnits() {
+		return units;
+	}
+
+	public void setUnits(List<Double> units) {
+		this.units = units;
+	}
+
+	public double getProfit() {
+		return profit;
+	}
+
+	public void setProfit(double profit) {
+		this.profit = profit;
+	}
+
+	private Map<Long, Double> totalPercent = new HashMap<>();
 	
 	private static final int TOTAL_SIZE = 60;
 	
 	public void addTotalAverage(long time, double value){
-		if(TOTAL_SIZE == totals.size()){
-			Entry<Long, Double> entry = totals.entrySet().iterator().next();
+		if(TOTAL_SIZE == totalPercent.size()){
+			Entry<Long, Double> entry = totalPercent.entrySet().iterator().next();
 			long key = entry.getKey();
-			totals.remove(key);
+			totalPercent.remove(key);
 		}
-		totals.put(time, value);
+		totalPercent.put(time, value);
 	}
 	
 	public List<Double> getLastPrices() {
@@ -65,12 +92,12 @@ public class UsdtTotal extends GenericModel<ObjectId> {
 	
 	
 	
-	public Map<Long, Double> getTotals() {
-		return totals;
+	public Map<Long, Double> getTotalPercent() {
+		return totalPercent;
 	}
 
-	public void setTotals(Map<Long, Double> totals) {
-		this.totals = totals;
+	public void setTotalPercent(Map<Long, Double> totals) {
+		this.totalPercent = totals;
 	}
 
 	public List<Double> getInputs() {

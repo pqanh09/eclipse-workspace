@@ -16,7 +16,7 @@
 			}
 		},
 		wsApi : {
-			register: 'http://localhost:8080/Spring4MVCAngularJSExample/register',
+			register: 'http://35.188.117.45:8080/Spring4MVCAngularJSExample/register',
 			subscribe: '/topic/usdtMarkets'
 		},
 		templateUrl : {

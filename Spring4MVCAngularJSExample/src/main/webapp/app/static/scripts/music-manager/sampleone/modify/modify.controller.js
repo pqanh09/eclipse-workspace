@@ -51,10 +51,14 @@
                 //Market table
                 var coins = totalObj.coins;
                 var inputs = totalObj.inputs;
+                var costs = totalObj.costs;
+                var units = totalObj.units;
                 vmModify.profileName = totalObj.name;
                 for(var i = 0; i < coins.length; i++){
                   vmModify.data[coins[i]].show = true;
                   vmModify.data[coins[i]].input = inputs[i].toFixed(2);
+                  vmModify.data[coins[i]].cost = costs[i].toFixed(0);
+                  vmModify.data[coins[i]].unit = units[i].toFixed(2);
                 }
               } else {
                 musicManagerService.showAlert(vmModify.alertData, $timeout, 'error', 'Unknown error. Please see log.');
@@ -93,7 +97,10 @@
                 vmModify.time = moment(new Date(lastTime)).format('HH:mm');
                 for(var i = 0; i < vmModify.data.length; i ++){
                   vmModify.data[i].lastPrice = lastList[i].toFixed(2);
-                  vmModify.data[i].input = lastList[i].toFixed(2);
+                  if(vmModify.isCreate){
+                	  vmModify.data[i].input = lastList[i].toFixed(2);
+                  }
+                  
                   //vmModify.data[i].show = true;
                 }
               } else {
@@ -118,7 +125,9 @@
       angular.forEach(vmModify.data, function(data){
         if(data.show){
         	requestObject.UsdtTotalRequestObject.model.coins.push(data.stt);
-          requestObject.UsdtTotalRequestObject.model.inputs.push(data.input);
+        	requestObject.UsdtTotalRequestObject.model.inputs.push(data.input);
+        	requestObject.UsdtTotalRequestObject.model.costs.push(data.cost);
+        	requestObject.UsdtTotalRequestObject.model.units.push(data.unit);
         }
       });
       requestObject.UsdtTotalRequestObject.model.name = vmModify.profileName;

@@ -17,13 +17,14 @@
     vmDetail.countdownStr = 'Ready......';
     vmDetail.alertData = angular.copy(musicManagerService.alertDefaultData);
     vmDetail.countdown = 0;
-
     vmDetail.currentProfileId = sampleoneService.currentSelected[0];
     vmDetail.averageTotal = [];
+    vmDetail.profit = '';
     function init(){
         //update
         if(vmDetail.currentProfileId){
         	vmDetail.data = angular.copy(musicManagerService.defaultData);
+        	vmDetail.profit = '';
         	getTotal(vmDetail.currentProfileId);
         } else {
         	musicManagerService.showAlert(vmDetail.alertData, $timeout, 'error', 'Please select profile');
@@ -44,15 +45,22 @@
 	                    		var inputs = totalObj.inputs;
 	                    		var percents = totalObj.percents;
 	                    		var lastPrices = totalObj.lastPrices;
+	                    		var costs = totalObj.costs;
+	                    		var units = totalObj.units;
+	                    		vmDetail.profit = totalObj.profit.toFixed(5);
 	                    		vmDetail.profileName = totalObj.name;
 	                    		for(var i = 0; i < coins.length; i++){
 	                    			vmDetail.data[coins[i]].show = true;
 	                    			vmDetail.data[coins[i]].input = inputs[i].toFixed(2);
 									vmDetail.data[coins[i]].percent = percents[i].toFixed(1);
 									vmDetail.data[coins[i]].lastPrice = lastPrices[i].toFixed(2);
+									vmDetail.data[coins[i]].cost = costs[i].toFixed(0);
+									vmDetail.data[coins[i]].unit = units[i];
+									var profit = units[i]*costs[i]*lastPrices[i];
+									vmDetail.data[coins[i]].profit = profit.toFixed(5);
 								}
 	                    		//Total table
-	                    		var totals = totalObj.totals;
+	                    		var totals = totalObj.totalPercent;
 	                    		vmDetail.averageTotal.length = 0;
 		  						for(var key in totals) {
 		  							vmDetail.averageTotal.push({

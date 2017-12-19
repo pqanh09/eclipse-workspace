@@ -56,7 +56,9 @@
           name: coin.name,
           input: 0,
           lastPrice: 0,
-          percent: 0
+          percent: 0,
+          unit: 0,
+          cost: 0
         });
       }
     })();
@@ -67,7 +69,9 @@
           'model': {
 	          'name': "Test1",
 	          'coins': [],
-	          'inputs': []
+	          'inputs': [],
+	          'costs': [],
+	          'units': []
 	       },
 	       'ids': []
       }

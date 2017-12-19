@@ -41,27 +41,20 @@
               if (angular.isDefined(responseObj)) {
                 vmView.data.length = 0;
                 for (var i = 0; i < totalList.length; i++) {
-                  var tmpCoins = totalList[i].coins;
-                  var coins = [];
-                  for (var j = 0; j < tmpCoins.length; j++) {
-                    coins.push(musicManagerService.martketConst[tmpCoins[j]].id);
-                  }
-                  var tmpTotals = totalList[i].totals;
+                  var tmpTotals = totalList[i].totalPercent;
                   var lastTotal = undefined;
                   for (var lastTotal in tmpTotals);
-
 	                vmView.data.push({
 	                  totalId: totalList[i].objectId,
 	                  stt: i + 1,
 	                  checked: false,
 	                  name: totalList[i].name,
-	                  coins: coins,
 	                  avgTotal: (lastTotal) ? tmpTotals[lastTotal].toFixed(2): 0,
-	                  time: (lastTotal) ? moment(new Date(Number(lastTotal))).format('HH:mm') : 'Waiting'
+	                  time: (lastTotal) ? moment(new Date(Number(lastTotal))).format('HH:mm') : 'Waiting',
+            		  profit: totalList[i].profit.toFixed(5),
+            		  costs: totalList[i].costs
 	                });
-                  
                   vmView.currentSelected.length = 0;
-
                 }
               } else {
                 musicManagerService.showAlert(vmView.alertData, $timeout, 'error', 'Unknown error. Please see log.');
@@ -211,6 +204,7 @@
             if(jobResponse.success){
               musicManagerService.showAlert(vmView.alertData, $timeout, 'success', jobResponse.message);
               getTotals();
+              vmView.currentSelected.length = 0;
             } else {
               musicManagerService.showAlert(vmView.alertData, $timeout, 'error', jobResponse.message);
             }

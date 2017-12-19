@@ -311,7 +311,7 @@ public class BittrexServiceImpl extends AbstractServiceImpl implements BittrexSe
 				//set ObjectId
 				model.setInstanceid(new ObjectId(modelVO.getObjectId()));
 				model.setLastPrices(new ArrayList<>());
-				model.setTotals(new HashMap<Long, Double>());
+				model.setTotalPercent(new HashMap<Long, Double>());
 				model.setPercents(new ArrayList<>());
 				usdtTotalRepository.safeSave(model);
 			}

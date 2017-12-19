@@ -13,7 +13,8 @@ public class Main3 {
 	public static void main(String[] args) throws InterruptedException {
 		
 		
-		
+		double a = 0;
+		System.out.println(a);
 		List<Double> inputList = new ArrayList<>();
 		inputList.add(1.0);
 		inputList.add(2.0);
