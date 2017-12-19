@@ -56,9 +56,9 @@
                 vmModify.profileName = totalObj.name;
                 for(var i = 0; i < coins.length; i++){
                   vmModify.data[coins[i]].show = true;
-                  vmModify.data[coins[i]].input = inputs[i].toFixed(2);
-                  vmModify.data[coins[i]].cost = costs[i].toFixed(0);
-                  vmModify.data[coins[i]].unit = units[i].toFixed(2);
+                  vmModify.data[coins[i]].input = inputs[i];
+                  vmModify.data[coins[i]].cost = costs[i];
+                  vmModify.data[coins[i]].unit = units[i];
                 }
               } else {
                 musicManagerService.showAlert(vmModify.alertData, $timeout, 'error', 'Unknown error. Please see log.');

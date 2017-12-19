@@ -41,18 +41,22 @@
               if (angular.isDefined(responseObj)) {
                 vmView.data.length = 0;
                 for (var i = 0; i < totalList.length; i++) {
-                  var tmpTotals = totalList[i].totalPercent;
+                  var tmpTotals = totalList[i].profitPercent;
                   var lastTotal = undefined;
                   for (var lastTotal in tmpTotals);
+                  	var totalCost = 0;
+                  	for( var j = 0; j < totalList[i].costs.length; j ++){
+                  		totalCost += totalList[i].costs[j];
+                  	}
 	                vmView.data.push({
 	                  totalId: totalList[i].objectId,
 	                  stt: i + 1,
 	                  checked: false,
 	                  name: totalList[i].name,
-	                  avgTotal: (lastTotal) ? tmpTotals[lastTotal].toFixed(2): 0,
+	                  profitPercent: (lastTotal) ? tmpTotals[lastTotal].toFixed(1): 0,
 	                  time: (lastTotal) ? moment(new Date(Number(lastTotal))).format('HH:mm') : 'Waiting',
-            		  profit: totalList[i].profit.toFixed(5),
-            		  costs: totalList[i].costs
+	                  totalProfit: totalList[i].totalProfit.toFixed(5),
+            		  costs: totalCost
 	                });
                   vmView.currentSelected.length = 0;
                 }

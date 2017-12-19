@@ -9,11 +9,10 @@ public class UsdtTotalVO extends GenericVO {
 	private List<Integer> coins = new ArrayList<>();
 	private List<Double> inputs = new ArrayList<>();
 	private List<Double> lastPrices = new ArrayList<>();
-	private List<Double> percents = new ArrayList<>();
-	private Map<Long, Double> totalPercent = new HashMap<>();
+	private Map<Long, Double> profitPercent = new HashMap<>();
 	private List<Double> costs = new ArrayList<>();
 	private List<Double> units = new ArrayList<>();
-	private double profit = 0;
+	private double totalProfit = 0;
 	public List<Double> getCosts() {
 		return costs;
 	}
@@ -30,12 +29,12 @@ public class UsdtTotalVO extends GenericVO {
 		this.units = units;
 	}
 
-	public double getProfit() {
-		return profit;
+	public double getTotalProfit() {
+		return totalProfit;
 	}
 
-	public void setProfit(double profit) {
-		this.profit = profit;
+	public void setTotalProfit(double profit) {
+		this.totalProfit = profit;
 	}
 	public List<Integer> getCoins() {
 		return coins;
@@ -72,27 +71,14 @@ public class UsdtTotalVO extends GenericVO {
 	}
 
 
-
-	public List<Double> getPercents() {
-		return percents;
+	public Map<Long, Double> getProfitPercent() {
+		return profitPercent;
 	}
 
 
 
-	public void setPercents(List<Double> percents) {
-		this.percents = percents;
-	}
-
-
-
-	public Map<Long, Double> getTotalPercent() {
-		return totalPercent;
-	}
-
-
-
-	public void setTotalPercent(Map<Long, Double> totals) {
-		this.totalPercent = totals;
+	public void setProfitPercent(Map<Long, Double> totals) {
+		this.profitPercent = totals;
 	}
 
 

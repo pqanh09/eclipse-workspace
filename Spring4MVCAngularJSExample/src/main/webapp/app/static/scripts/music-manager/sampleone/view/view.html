@@ -79,11 +79,11 @@
                                 <tr>
                                     <th style="width: 2%;"></th>
                                     <th style="width: 5%;">#</th>
-                                    <th style="width: 25%;">Name</th>
-                                    <th style="width: 15%; text-align: left">AVG Total</th>
-                                    <th style="width: 15%; text-align: left">Cost</th>
-                                    <th style="width: 33%; text-align: left">Profit</th>
-                                    <th style="width: 15%; text-align: center">Time</th>
+                                    <th style="width: 20%;">Name</th>
+                                    <th style="width: 13%; text-align: center">Time</th>
+                                    <th style="width: 13%; text-align: left">Cost</th>
+                                    <th style="width: 27%; text-align: left">Profit</th>
+                                    <th style="width: 20%; text-align: left">Percent</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -94,10 +94,10 @@
                                     <td style="vertical-align: middle;"><span
                                             style="cursor: pointer;font-size: medium;font-weight: bold;"
                                             ng-click="vmView.viewDetail(obj)">{{obj.name}}</span></td>
-                                    <td style="text-align: left; vertical-align: middle;">{{obj.avgTotal}}%</td>
-                                    <td style="text-align: left; vertical-align: middle;">{{obj.costs}}</td>
-                                    <td style="text-align: left; vertical-align: middle;">{{obj.profit}}</td>
                                     <td style="text-align: center; vertical-align: middle;">{{obj.time}}</td>
+                                    <td style="text-align: left; vertical-align: middle;">{{obj.costs}}</td>
+                                    <td style="text-align: left; vertical-align: middle;">{{obj.totalProfit}}</td>
+                                    <td style="text-align: left; vertical-align: middle;">{{obj.profitPercent}}%</td>
                                 </tr>
                                 </tbody>
                             </table>

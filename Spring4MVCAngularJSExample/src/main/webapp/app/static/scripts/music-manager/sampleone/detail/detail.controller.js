@@ -19,12 +19,13 @@
     vmDetail.countdown = 0;
     vmDetail.currentProfileId = sampleoneService.currentSelected[0];
     vmDetail.averageTotal = [];
-    vmDetail.profit = '';
+    vmDetail.totalProfit = '';
+    vmDetail.totalInput = 0;
     function init(){
         //update
         if(vmDetail.currentProfileId){
         	vmDetail.data = angular.copy(musicManagerService.defaultData);
-        	vmDetail.profit = '';
+        	vmDetail.totalProfit = '';
         	getTotal(vmDetail.currentProfileId);
         } else {
         	musicManagerService.showAlert(vmDetail.alertData, $timeout, 'error', 'Please select profile');
@@ -47,25 +48,28 @@
 	                    		var lastPrices = totalObj.lastPrices;
 	                    		var costs = totalObj.costs;
 	                    		var units = totalObj.units;
-	                    		vmDetail.profit = totalObj.profit.toFixed(5);
+	                    		vmDetail.totalProfit = totalObj.totalProfit.toFixed(5);
 	                    		vmDetail.profileName = totalObj.name;
+	                    		vmDetail.totalInput = 0;
 	                    		for(var i = 0; i < coins.length; i++){
 	                    			vmDetail.data[coins[i]].show = true;
 	                    			vmDetail.data[coins[i]].input = inputs[i].toFixed(2);
-									vmDetail.data[coins[i]].percent = percents[i].toFixed(1);
+	                    			var percent = ((lastPrices[i]-inputs[i])*100)/inputs[i];
+									vmDetail.data[coins[i]].percent = percent.toFixed(1);
 									vmDetail.data[coins[i]].lastPrice = lastPrices[i].toFixed(2);
 									vmDetail.data[coins[i]].cost = costs[i].toFixed(0);
 									vmDetail.data[coins[i]].unit = units[i];
-									var profit = units[i]*costs[i]*lastPrices[i];
+									var profit = units[i]*(lastPrices[i]-inputs[i]);
 									vmDetail.data[coins[i]].profit = profit.toFixed(5);
+									vmDetail.totalInput += (units[i]*inputs[i]);
 								}
 	                    		//Total table
-	                    		var totals = totalObj.totalPercent;
+	                    		var profitPercent = totalObj.profitPercent;
 	                    		vmDetail.averageTotal.length = 0;
-		  						for(var key in totals) {
+		  						for(var key in profitPercent) {
 		  							vmDetail.averageTotal.push({
 		  								time: moment(new Date(Number(key))).format('HH:mm'),
-		  								value:totals[key].toFixed(1)
+		  								value:profitPercent[key].toFixed(1)
 		  							});
 		  						}
 		  						vmDetail.averageTotal.reverse();

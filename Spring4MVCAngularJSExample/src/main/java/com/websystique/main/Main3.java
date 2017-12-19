@@ -13,21 +13,22 @@ public class Main3 {
 	public static void main(String[] args) throws InterruptedException {
 		
 		
-		double a = 0;
+		double a = 319.617366195708;
 		System.out.println(a);
-		List<Double> inputList = new ArrayList<>();
-		inputList.add(1.0);
-		inputList.add(2.0);
-		inputList.add(3.0);
-		JobDataMap amap = new JobDataMap();
-		Map<String, String> map = new HashMap<>();
-		map.put("a", "aaaa");
-		map.put("b", "bbb");
-		JSONObject json = new JSONObject(map);
-		System.out.println(json.toString());
-		amap.put("a", map);
-		Map<String, String> input = (Map<String, String>) amap.get("a");
-		System.out.println(input);
+		System.out.println(Double.MAX_VALUE);
+//		List<Double> inputList = new ArrayList<>();
+//		inputList.add(1.0);
+//		inputList.add(2.0);
+//		inputList.add(3.0);
+//		JobDataMap amap = new JobDataMap();
+//		Map<String, String> map = new HashMap<>();
+//		map.put("a", "aaaa");
+//		map.put("b", "bbb");
+//		JSONObject json = new JSONObject(map);
+//		System.out.println(json.toString());
+//		amap.put("a", map);
+//		Map<String, String> input = (Map<String, String>) amap.get("a");
+//		System.out.println(input);
 		
 		
 		// TODO Auto-generated method stub

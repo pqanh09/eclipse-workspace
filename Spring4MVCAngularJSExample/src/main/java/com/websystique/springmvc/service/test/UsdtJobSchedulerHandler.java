@@ -160,45 +160,31 @@ public class UsdtJobSchedulerHandler extends AbstractJobSchedulerHandler {
 		for (UsdtTotal usdtTotal : usdtTotals) {
 			List<Integer> coins = usdtTotal.getCoins();
 			List<Double> inputs = usdtTotal.getInputs();
-			List<Double> costs = usdtTotal.getCosts();
 			List<Double> units = usdtTotal.getUnits();
-			List<Double> percents = new ArrayList<>();
 			List<Double> lastPricesByCoins = new ArrayList<>();
-			double totalPercent = 0;
-			double profit = 0;
-
 			// private List<Double> costs = new ArrayList<>();
 			// private List<Double> units = new ArrayList<>();
 			// private double profit = 0;
 			double input = 0;
 			double lastPr = 0;
-			double pc = 0;
 			int num = 0;
-			double cost = 0;
-			double totalCost = 0;
-			for (Double c : costs) {
-				totalCost += c;
-			}
 			double unit = 0;
+			double totalProfit = 0;
+			double totalInput = 0;
 			for (int i = 0; i < coins.size(); i++) {
-				lastPr = lastPrices.get(num);
 				num = coins.get(i);
+				lastPr = lastPrices.get(num);
 				input = inputs.get(i);
-				cost = costs.get(i);
 				unit = units.get(i);
-				// percent
-				pc = ((lastPr - input) / input) * 100 * cost / totalCost;
-				totalPercent += pc;
-				percents.add(pc);
 				// profit
-				profit = profit + ((lastPr - input) * unit);
+				totalProfit = totalProfit + ((lastPr - input) * unit);
+				totalInput = totalInput + (input * unit);
 				//
 				lastPricesByCoins.add(lastPr);
 			}
-			usdtTotal.setPercents(percents);
 			usdtTotal.setLastPrices(lastPricesByCoins);
-			usdtTotal.setProfit(profit);
-			usdtTotal.addTotalAverage(timeId, totalPercent / coins.size());
+			usdtTotal.setTotalProfit(totalProfit);
+			usdtTotal.addProfitPercent(timeId, (totalProfit / totalInput)*100);
 
 			usdtTotalRepository.safeSave(usdtTotal);
 		}

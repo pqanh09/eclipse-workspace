@@ -27,7 +27,7 @@
 					<div class="col-md-3">
 						<div class="panel panel-success">
 							<div class="panel-heading">
-								<h3 class="panel-title">Average Percent Total</h3>
+								<h3 class="panel-title">Profit Percent</h3>
 							</div>
 							<table class="table table-hover" id="task-table">
 								<thead>
@@ -80,24 +80,25 @@
 											<td style="text-align: left;">{{obj.percent}}%</td>
 										</tr>
 										<tr>
-											<td></td>
-											<td></td>
-											<td rowspan="2" style="font-size: large; font-weight: bold; text-align: right;">Total profit:</td>
-											<td style="font-size: large; font-weight: bold;">{{vmDetail.profit}}</td>
-											<td></td>
-											<td></td>
-											<td></td>
+											<td colspan="4" style="font-size: large; font-weight: bold; text-align: right;">Total profit:</td>
+											<td colspan="4" style="font-size: large; font-weight: bold; text-align: left;">{{vmDetail.totalProfit}}</td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
 							</div>
 					</div>
+					<div class="row" style="margin-top: 0px">
+						
+                    	<div class="col-md-12 text-left">
+                        <h5 >Real input:{{vmDetail.totalInput}}</h5>
+                    	</div>
+                		</div>
 						<div class="row" style="margin-top: 0px">
-                    <div class="col-md-12 text-left">
+                    	<div class="col-md-12 text-left">
                         <h4 ng-click="vmDetail.configShowAlert()">{{vmDetail.alertData.label}}</h4>
-                    </div>
-                </div>
+                    	</div>
+                		</div>
 					</div>
 				</div>
 				
