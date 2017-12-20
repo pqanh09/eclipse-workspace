@@ -59,7 +59,7 @@
                                 <tbody>
                                 <tr ng-repeat="lp in vmView.lastPrice">
                                     <td>{{lp.id}}</td>
-                                    <td>{{lp.value}}</td>
+                                    <td>{{lp.value|setDecimal:2}}</td>
                                 </tr>
 
                                 </tbody>
@@ -91,13 +91,13 @@
                                     <td style="vertical-align: middle;"><input type="checkbox"
                                                class="checkbox-coin" ng-click="vmView.checkFunc(obj)" ng-model="obj.checked"></td>
                                     <td style="vertical-align: middle;">{{obj.stt}}</td>
-                                    <td style="vertical-align: middle;"><span
-                                            style="cursor: pointer;font-size: medium;font-weight: bold;"
-                                            ng-click="vmView.viewDetail(obj)">{{obj.name}}</span></td>
+                                    <td style="vertical-align: middle; cursor: pointer;" ng-click="vmView.viewDetail(obj)"><span
+                                            style="font-size: medium;font-weight: bold;"
+                                            >{{obj.name}}</span></td>
                                     <td style="text-align: center; vertical-align: middle;">{{obj.time}}</td>
                                     <td style="text-align: left; vertical-align: middle;">{{obj.costs}}</td>
-                                    <td style="text-align: left; vertical-align: middle;">{{obj.totalProfit}}</td>
-                                    <td style="text-align: left; vertical-align: middle;">{{obj.profitPercent}}%</td>
+                                    <td style="text-align: left; vertical-align: middle;">{{obj.totalProfit|setDecimal:2}}</td>
+                                    <td style="text-align: left; vertical-align: middle;" ng-click="vmView.viewDetail2(obj)">{{obj.profitPercent|setDecimal:1}}%</td>
                                 </tr>
                                 </tbody>
                             </table>

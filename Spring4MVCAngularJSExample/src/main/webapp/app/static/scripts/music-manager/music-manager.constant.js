@@ -27,14 +27,14 @@
 			},
 			musicManager: {
 				url: 'app/static/scripts/music-manager/music-manager.html',
-				viewall: 'app/static/scripts/music-manager/viewall/viewall.html',
 				song: 'app/static/scripts/music-manager/song/song.html',
-				playlist: 'app/static/scripts/music-manager/playlist/playlist.html',
 				admin: 'app/static/scripts/music-manager/admin/admin.html',
 				sampleone: {
 					url: 'app/static/scripts/music-manager/sampleone/sampleone.html',
 					detail: 'app/static/scripts/music-manager/sampleone/detail/detail.html',
 					detailTmp: 'app/static/scripts/music-manager/sampleone/detail/temp.html',
+					detail2: 'app/static/scripts/music-manager/sampleone/detail2/detail2.html',
+					detailTmp2: 'app/static/scripts/music-manager/sampleone/detail2/temp.html',
 					modify: 'app/static/scripts/music-manager/sampleone/modify/modify.html',
 					modifyTmp: 'app/static/scripts/music-manager/sampleone/modify/temp.html',
 					view: 'app/static/scripts/music-manager/sampleone/view/view.html',

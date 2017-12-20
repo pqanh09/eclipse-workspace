@@ -4,8 +4,18 @@
 (function () {
   'use strict';
 
-  angular.module('music.manager.sampleone.view').controller('musicSampleoneViewController', controllerFunction);
+  var viewApp = angular.module('music.manager.sampleone.view').controller('musicSampleoneViewController', controllerFunction);
 
+  viewApp.filter('setDecimal', function ($filter) {
+      return function (input, places) {
+          if (isNaN(input)) return input;
+          // If we want 1 decimal place, we want to mult/div by 10
+          // If we want 2 decimal places, we want to mult/div by 100, etc
+          // So use the following to create that factor
+          var factor = "1" + Array(+(places > 0 && places + 1)).join("0");
+          return Math.round(input * factor) / factor;
+      };
+  });
 
   controllerFunction.$inject = ['$scope', '$q', '$http', '$timeout', 'musicManagerService','sampleoneService', 'musicConstant'];
 
@@ -15,6 +25,7 @@
     vmView.data = [];
     vmView.configShowAlert = configShowAlert;
     vmView.viewDetail = viewDetail;
+    vmView.viewDetail2 = viewDetail2;
     vmView.viewModify = viewModify;
     vmView.deleteFunc = deleteFunc;
     vmView.checkFunc = checkFunc;
@@ -53,9 +64,9 @@
 	                  stt: i + 1,
 	                  checked: false,
 	                  name: totalList[i].name,
-	                  profitPercent: (lastTotal) ? tmpTotals[lastTotal].toFixed(1): 0,
+	                  profitPercent: (lastTotal) ? tmpTotals[lastTotal]: 0,
 	                  time: (lastTotal) ? moment(new Date(Number(lastTotal))).format('HH:mm') : 'Waiting',
-	                  totalProfit: totalList[i].totalProfit.toFixed(5),
+	                  totalProfit: totalList[i].totalProfit,
             		  costs: totalCost
 	                });
                   vmView.currentSelected.length = 0;
@@ -100,7 +111,7 @@
                 for (var i = 0; i < latestList.length; i++) {
                   vmView.lastPrice.push({
                     id: musicManagerService.martketConst[i].id,
-                    value: latestList[i].toFixed(2)
+                    value: latestList[i]
                   });
                 }
                 vmView.lastPriceTime = moment(new Date(Number(latestTime))).format('HH:mm');
@@ -170,8 +181,12 @@
       vmView.currentSelected.length = 0;
       vmView.currentSelected.push(obj.totalId);
       vmView.currentView.url = musicConstant.templateUrl.musicManager.sampleone.detailTmp;
-
     }
+    function viewDetail2(obj) {
+        vmView.currentSelected.length = 0;
+        vmView.currentSelected.push(obj.totalId);
+        vmView.currentView.url = musicConstant.templateUrl.musicManager.sampleone.detailTmp2;
+      }
     function checkFunc(obj) {
       if(obj.checked){
         vmView.currentSelected.push(obj.totalId);

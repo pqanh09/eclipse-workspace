@@ -1,0 +1,66 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset>
+				<legend></legend>
+				<div class="row" style="margin-top: 0px">
+					<div class="col-md-12">
+					<div class="row" style="margin-top: 0px">
+                    <div class="col-md-12 text-left">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<!-- <h3 class="panel-title">USDT-Markets</h3> -->
+									<h3 class="panel-title">All</h3>
+								</div>
+								<table class="table table-hover" id="dev-table">
+									<thead>
+										<tr>
+											<th style="width: 5%;">#</th>
+											<!-- <th style="width: 20%;">ID</th>
+											<th style="width: 15%; text-align: left;">Unit</th>
+											<th style="width: 10%; text-align: left;">Cost</th>
+											<th style="width: 13%; text-align: left">Input</th>
+											<th style="width: 15%; text-align: left;">Profit</th>
+											<th style="width: 13%; text-align: left">Last</th>
+											<th style="width: 9%; text-align: left;">%</th>  -->
+											<th style="width: 20%;">1</th>
+											<th style="width: 15%; text-align: left;">2</th>
+											<th style="width: 10%; text-align: left;">3</th>
+											<th style="width: 15%; text-align: left;">4</th>
+											<th style="width: 13%; text-align: left">5</th>
+											<th style="width: 13%; text-align: left">6</th>
+											<th style="width: 9%; text-align: left;">7</th>
+
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="obj in vm.data">
+											<td>{{obj.stt + 1}}</td>
+											<td>{{obj.pair}}</td>
+											<td style="text-align: left;">{{obj.unit|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.cost|setDecimal:0}}</td>
+											<td style="text-align: left;">{{obj.input|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.profit|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.lastPrice|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.percent|setDecimal:1}}%</td>
+										</tr>
+										<tr>
+											<td colspan="8" style="font-size: large; font-weight: bold; text-align: left;">1: {{vm.totalProfit|setDecimal:2}}</td>
+										</tr>
+										<tr>
+											<td colspan="8" style="font-size: large; font-weight: bold; text-align: left;">2: {{vm.percentProfit|setDecimal:1}}%</td>
+										</tr>
+										<tr>
+											<td colspan="8" style="font-size: large; font-weight: bold; text-align: left;">3: {{vm.realInput|setDecimal:2}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							</div>
+					</div>
+				</div>
+				
+			</fieldset>
+        </div>
+    </div>
+</div>
