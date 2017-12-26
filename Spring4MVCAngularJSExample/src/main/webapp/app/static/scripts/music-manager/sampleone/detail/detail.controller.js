@@ -32,18 +32,24 @@
     vmDetail.averageTotal = [];
     vmDetail.totalProfit = '';
     vmDetail.totalInput = 0;
+    vmDetail.profileName = '';
+    vmDetail.funcStr = 'Sell';
+    vmDetail.isSell = false;
+    vmDetail.alarmNum = 99999;
+    var buyAudio = new Audio('app/static/audio/Sell-Quando.mp3');
+    var sellAudio = new Audio('app/static/audio/Buy-WhoLetTheDogsOut.mp3');
     function init(){
         if(vmDetail.currentProfileId){
         	vmDetail.data = angular.copy(musicManagerService.defaultData);
         	vmDetail.totalProfit = '';
-        	getTotal(vmDetail.currentProfileId);
+        	getTotal(vmDetail.currentProfileId, false);
         } else {
         	musicManagerService.showAlert(vmDetail.alertData, $timeout, 'error', 'Please select profile');
         	return;
         }
     };
     init();
-    function getTotal(totalId){
+    function getTotal(totalId, update){
 		return $http.get(musicConstant.restApi.total.getOne + totalId)
 				.then(function(response) {
 					var responseObj = _.get(response, 'data.UsdtTotalResponseObject');
@@ -52,34 +58,73 @@
 	                    	var totalObj = _.get(response, 'data.UsdtTotalResponseObject.list[0]');
 	                    	if(angular.isDefined(responseObj)) {
 	                    		//Market table
-	                    		var coins = totalObj.coins;
-	                    		var inputs = totalObj.inputs;
-	                    		var percents = totalObj.percents;
-	                    		var lastPrices = totalObj.lastPrices;
-	                    		var costs = totalObj.costs;
-	                    		var units = totalObj.units;
-	                    		vmDetail.totalProfit = totalObj.totalProfit.toFixed(5);
-	                    		vmDetail.profileName = totalObj.name;
-	                    		vmDetail.totalInput = 0;
-	                    		for(var i = 0; i < coins.length; i++){
-	                    			vmDetail.data[coins[i]].show = true;
-	                    			vmDetail.data[coins[i]].input = inputs[i].toFixed(2);
-	                    			var percent = ((lastPrices[i]-inputs[i])*100)/inputs[i];
-									vmDetail.data[coins[i]].percent = percent.toFixed(1);
-									vmDetail.data[coins[i]].lastPrice = lastPrices[i].toFixed(2);
-									vmDetail.data[coins[i]].cost = costs[i].toFixed(0);
-									vmDetail.data[coins[i]].unit = units[i];
-									var profit = units[i]*(lastPrices[i]-inputs[i]);
-									vmDetail.data[coins[i]].profit = profit.toFixed(5);
-									vmDetail.totalInput += (units[i]*inputs[i]);
-								}
+	                    		if(!update){
+	                    			var coins = totalObj.coins;
+		                    		var inputs = totalObj.inputs;//
+		                    		var percents = totalObj.percents;
+		                    		var lastPrices = totalObj.lastPrices;//
+		                    		var costs = totalObj.costs;
+		                    		var units = totalObj.units;//
+		                    		vmDetail.totalProfit = totalObj.totalProfit;//
+		                    		vmDetail.profileName = totalObj.name;
+		                    		vmDetail.funcStr = totalObj.sell ? 'Sell' : 'Buy';
+		                    		vmDetail.alarmNum = totalObj.alarmNum;
+		                    		vmDetail.isSell = totalObj.sell;
+		                    		vmDetail.totalInput = 0;
+		                    		for(var i = 0; i < coins.length; i++){
+		                    			vmDetail.data[coins[i]].show = true;
+		                    			vmDetail.data[coins[i]].input = inputs[i];
+		                    			vmDetail.data[coins[i]].percent = ((lastPrices[i]-inputs[i])*100)/inputs[i];//
+//										vmDetail.data[coins[i]].percent = percent;
+										vmDetail.data[coins[i]].lastPrice = lastPrices[i];
+										vmDetail.data[coins[i]].cost = costs[i];
+										vmDetail.data[coins[i]].unit = units[i];
+										vmDetail.data[coins[i]].profit = units[i]*(lastPrices[i]-inputs[i]);//
+//										vmDetail.data[coins[i]].profit = profit;
+										vmDetail.totalInput += (units[i]*inputs[i]);
+									}
+	                    		} else {
+	                    			var coins = totalObj.coins;
+	                    			var inputs = totalObj.inputs;//
+	                    			var lastPrices = totalObj.lastPrices;//
+	                    			var units = totalObj.units;//
+	                    			vmDetail.totalProfit = totalObj.totalProfit;//
+	                    			var alarm = false;
+	                    			for(var i = 0; i < coins.length; i++){
+	                    				var percent = ((lastPrices[i]-inputs[i])*100)/inputs[i];
+	                    				vmDetail.data[coins[i]].percent = percent;//
+		                    			vmDetail.data[coins[i]].profit = units[i]*(lastPrices[i]-inputs[i]);//
+		                    			if(vmDetail.isSell){
+		                    				alarm = (percent > vmDetail.alarmNum);
+	                    				} else {
+	                    					alarm = alarm ? true: (percent < vmDetail.alarmNum);
+	                    					
+	                    				}
+									}
+	                    			if(alarm){
+	                    				if(vmDetail.isSell){
+	                    					if(sellAudio){
+	                    						sellAudio.pause(); 
+	                    						sellAudio.play();
+		                    				}
+	                    				} else {
+	                    					if(buyAudio){
+		                    					buyAudio.pause(); 
+		                    					buyAudio.play();
+		                    				}
+	                    				}
+	                    				
+	                    			}
+	                    		}
+	                    		
+	                    		
 	                    		//Total table
 	                    		var profitPercent = totalObj.profitPercent;
 	                    		vmDetail.averageTotal.length = 0;
 		  						for(var key in profitPercent) {
 		  							vmDetail.averageTotal.push({
 		  								time: moment(new Date(Number(key))).format('HH:mm'),
-		  								value:profitPercent[key].toFixed(1)
+		  								value:profitPercent[key]
 		  							});
 		  						}
 		  						vmDetail.averageTotal.reverse();
@@ -108,7 +153,7 @@
       stompClient = Stomp.over(socket);
       stompClient.connect({}, function (frame) {
         stompClient.subscribe(musicConstant.wsApi.subscribe, function (calResult) {
-          getTotal(vmDetail.currentProfileId).then(function(){
+          getTotal(vmDetail.currentProfileId, true).then(function(){
         	  vmDetail.countdown = 59;
           });
           $timeout();

@@ -20,6 +20,10 @@
     vmModify.apply = apply;
     vmModify.time = '00:00';
     vmModify.profileName = '';
+    vmModify.isSell = true;
+    vmModify.funcStr = 'Sell';
+    vmModify.alarmNum = 5;
+    vmModify.changeFuncType = changeFuncType;
     vmModify.isCreate = true;
     vmModify.apllyLabel = 'Create';
     vmModify.currentProfileId = sampleoneService.currentSelected[0];
@@ -54,6 +58,9 @@
                 var costs = totalObj.costs;
                 var units = totalObj.units;
                 vmModify.profileName = totalObj.name;
+                vmModify.alarmNum = totalObj.alarmNum;
+                vmModify.isSell = totalObj.sell;
+                vmModify.funcStr = totalObj.sell ? 'Sell' : 'Buy';
                 for(var i = 0; i < coins.length; i++){
                   vmModify.data[coins[i]].show = true;
                   vmModify.data[coins[i]].input = inputs[i];
@@ -131,6 +138,8 @@
         }
       });
       requestObject.UsdtTotalRequestObject.model.name = vmModify.profileName;
+      requestObject.UsdtTotalRequestObject.model.sell = vmModify.isSell;
+      requestObject.UsdtTotalRequestObject.model.alarmNum = vmModify.alarmNum;
       //update
       if(!vmModify.isCreate && vmModify.currentProfileId){
     	  requestObject.UsdtTotalRequestObject.model.objectId = vmModify.currentProfileId;
@@ -164,6 +173,13 @@
     }
     function viewAll() {
       vmModify.currentView.url = musicConstant.templateUrl.musicManager.sampleone.viewTmp;
+    }
+    function changeFuncType() {
+    	if(vmModify.isSell){
+    		vmModify.funcStr = 'Sell';
+    	} else {
+    		vmModify.funcStr = 'Buy';
+    	}
     }
 
 

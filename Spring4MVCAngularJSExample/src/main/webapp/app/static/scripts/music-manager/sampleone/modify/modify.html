@@ -14,13 +14,25 @@
                         <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
                             </button>
                     </div>
-                    <div class="col-md-3 text-right">Name
+                    <div class="col-md-2 text-right">Name
                     </div>
-                    <div class="col-md-4 text-left">
+                    <div class="col-md-3 text-left">
                         <input ng-disabled="!vmModify.isCreate" type="text"
                                 class="form-control" ng-model="vmModify.profileName">
                     </div>
-                    <div class="col-md-4 text-left"></div>
+                    <div class="col-md-3 text-left">
+	                    <label>
+	                    	<input type="checkbox"  class="checkbox-coin"  ng-model="vmModify.isSell" ng-click="vmModify.changeFuncType()">
+	                    	{{vmModify.funcStr}}
+	                    </label>
+                    </div>
+                    <div class="col-md-1 text-right">
+                    Alarm
+                    </div>
+                    <div class="col-md-2 text-left">
+                    	<input  type="text"
+                                class="form-control" ng-model="vmModify.alarmNum">
+                     </div>
                 </div>
             </fieldset>
 

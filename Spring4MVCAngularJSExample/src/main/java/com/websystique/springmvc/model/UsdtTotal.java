@@ -35,6 +35,28 @@ public class UsdtTotal extends GenericModel<ObjectId> {
 	private List<Double> costs = new ArrayList<>();
 	private List<Double> units = new ArrayList<>();
 	private double totalProfit = 0;
+	private boolean sell;
+	
+	private int alarmNum = 5;
+	
+	public int getAlarmNum() {
+		return alarmNum;
+	}
+
+	public void setAlarmNum(int alarmNum) {
+		this.alarmNum = alarmNum;
+	}
+
+	
+
+	public boolean isSell() {
+		return sell;
+	}
+
+	public void setSell(boolean sell) {
+		this.sell = sell;
+	}
+
 	public List<Double> getCosts() {
 		return costs;
 	}
