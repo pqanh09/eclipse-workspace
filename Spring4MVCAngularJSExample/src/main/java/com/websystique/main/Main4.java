@@ -17,11 +17,11 @@ public class Main4 {
 //		System.out.println(a);
 //		
 		// main
-		String url = "http://35.225.138.104:8080/Spring4MVCAngularJSExample/";
+		//String url = "http://35.225.138.104:8080/Spring4MVCAngularJSExample/";
 //		String url = "http://www.nettruyen.com/truyen-tranh/cuu-vi-ho-ly-phan-2";
-		Document document = Jsoup.connect(url).get();
-		System.out.println(document);
-//
+//		Document document = Jsoup.connect(url).get();
+//		System.out.println(document);
+////
 //		Elements chapterList = document.select("div.col-xs-5.chapter > a");
 //		for (Element chapter : chapterList) {
 //			System.out.println("Chapter Name:" +  chapter.text());
@@ -30,18 +30,19 @@ public class Main4 {
 //		}
 		
 		
-//		String url = "http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho/chap-534/352808";
-//		Document document = Jsoup.connect(url).get();
-////		document.charset(Charset.forName("UTF-8"));
-//
-//
-//		Elements images = document.select("div.page-chapter img");
-//		
-//		System.out.println(images);
-//		for (Element chapter : images) {
-//			System.out.println("Number: " +  chapter.attr("data-index"));
-//			System.out.println("imageURL : " + chapter.attr("src"));
-//		}
+		String url = "http://www.nettruyen.com/truyen-tranh/hiep-khach-giang-ho/chap-534/352808";
+		Document document = Jsoup.connect(url).get();
+//		document.charset(Charset.forName("UTF-8"));
+
+
+		Elements images = document.select("div.page-chapter img");
+		
+		System.out.println(images);
+		for (Element chapter : images) {
+			System.out.println("Number: " +  chapter.attr("data-index"));
+			System.out.println("imageURL : " + chapter.attr("src"));
+		}
+		System.out.println();
 		
 		
 		

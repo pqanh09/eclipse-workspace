@@ -94,6 +94,7 @@
 	                    				var percent = ((lastPrices[i]-inputs[i])*100)/inputs[i];
 	                    				vmDetail.data[coins[i]].percent = percent;//
 		                    			vmDetail.data[coins[i]].profit = units[i]*(lastPrices[i]-inputs[i]);//
+		                    			vmDetail.data[coins[i]].lastPrice = lastPrices[i];
 		                    			if(vmDetail.isSell){
 		                    				alarm = (percent > vmDetail.alarmNum);
 	                    				} else {
@@ -161,6 +162,14 @@
       });
     }
 	connect();
+	
+	$scope.$on("$destroy", function() {
+        if (stompClient) {
+        	stompClient.disconnect(function() {
+        		console.log('See you next time!')
+        	});
+        }
+    });
 
     function countdownFunc() {
       $timeout(function () {

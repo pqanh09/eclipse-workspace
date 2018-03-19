@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyApp2</string>
+    <string name="btn_1">Go to 1</string>
+    <string name="btn_2">Go to 2</string>
+    <string name="btn_3">Go to 3</string>
+    <string name="btn_4">Go to 4</string>
+    <string name="btn_5">Check internet</string>
+    <string name="atv_btn_1">Button atv</string>
+    <string name="atv2_text">Test Gesture</string>
+    <string name="atv2_text_2">Location</string>
+</resources>

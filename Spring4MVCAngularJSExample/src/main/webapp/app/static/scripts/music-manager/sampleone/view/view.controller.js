@@ -172,6 +172,13 @@
       }, 1000);
     }
 
+	$scope.$on("$destroy", function() {
+        if (stompClient) {
+        	stompClient.disconnect(function() {
+        		console.log('See you next time!')
+        	});
+        }
+    });
     countdownFunc();
 
     function configShowAlert() {
