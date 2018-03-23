@@ -1,0 +1,117 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset style="height: 73px;">
+                <legend></legend>
+                <div ng-show="vmView.alertData.show" class=" alert {{vmView.alertData.key}}"
+                     style="margin-bottom: 0px; height: 50px;">{{vmView.alertData.message}}
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px; font-size: x-large;">
+                    <div class="col-md-1 text-center">
+                        <!--<span ng-click="vmDetail.viewAll()" class="glyphicon glyphicon-backward" aria-hidden="true"></span>-->
+                    </div>
+
+                    <div class="col-md-7 text-center">
+                        <h4>{{vmView.countdownStr}}</h4>
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <!-- <button ng-disabled="vmView.action !== 0" type="button" class="btn btn-default func-button"  ng-click="vmView.refresh()" aria-label="Left Align">
+                            <span  class="glyphicon glyphicon-refresh"  aria-hidden="true"></span>
+                        </button> -->
+
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <button ng-disabled="vmView.disableCreate" type="button" class="btn btn-default func-button"  ng-click="vmView.viewModify()" aria-label="Left Align">
+                            <span  class="glyphicon glyphicon-plus"  aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <button ng-disabled="vmView.disableUpdate" type="button" class="btn btn-default func-button"  ng-click="vmView.viewModify()" aria-label="Left Align">
+                        <span ng-click="vmView.viewModify()" class="glyphicon glyphicon-edit"  aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="col-md-1 text-center">
+                        <button ng-disabled="vmView.disableDelete" type="button" class="btn btn-default func-button"  ng-click="vmView.deleteFunc()" aria-label="Left Align">
+                        <span ng-click="vmView.deleteFunc()" class="glyphicon glyphicon-trash"
+                              aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px">
+                    <div class="col-md-3">
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">Coins - {{vmView.lastPriceTime}}</h3>
+                            </div>
+                            <table class="table table-hover" id="task-table">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>$</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="lp in vmView.lastPrice">
+                                    <td>{{lp.id}}</td>
+                                    <td>{{lp.value|setDecimal:2}}</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9">
+                    <div class="row" style="margin-top: 0px">
+                    <div class="col-md-12 text-left">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">All profiles</h3>
+                            </div>
+                            <table class="table table-hover" id="dev-table">
+                                <thead>
+                                <tr>
+                                    <th style="width: 2%;"></th>
+                                    <th style="width: 5%;">#</th>
+                                    <th style="width: 20%;">Name</th>
+                                    <th style="width: 13%; text-align: center">Time</th>
+                                    <th style="width: 13%; text-align: left">Cost</th>
+                                    <th style="width: 27%; text-align: left">Profit</th>
+                                    <th style="width: 20%; text-align: left">Percent</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="obj in vmView.data">
+                                    <td style="vertical-align: middle;"><input type="checkbox"
+                                               class="checkbox-coin" ng-click="vmView.checkFunc(obj)" ng-model="obj.checked"></td>
+                                    <td style="vertical-align: middle;">{{obj.stt}}</td>
+                                    <td style="vertical-align: middle; cursor: pointer;" ng-click="vmView.viewDetail(obj)"><span
+                                            style="font-size: medium;font-weight: bold;"
+                                            >{{obj.name}}</span></td>
+                                    <td style="text-align: center; vertical-align: middle;">{{obj.time}}</td>
+                                    <td style="text-align: left; vertical-align: middle;">{{obj.costs}}</td>
+                                    <td style="text-align: left; vertical-align: middle;">{{obj.totalProfit|setDecimal:2}}</td>
+                                    <td style="text-align: left; vertical-align: middle;">{{obj.profitPercent|setDecimal:1}}%</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+                </div>
+                        <div class="row" style="margin-top: 0px">
+                    <div class="col-md-12 text-left">
+                        <h4 ng-click="vmView.configShowAlert()">{{vmView.alertData.label}}</h4>
+                    </div>
+                </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</div>

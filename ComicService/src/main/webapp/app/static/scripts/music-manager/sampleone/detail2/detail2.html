@@ -1,0 +1,112 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <fieldset style="height: 73px;">
+                <legend></legend>
+                <div ng-show="vmDetail2.alertData.show" class=" alert {{vmDetail2.alertData.key}}"
+                     style="margin-bottom: 0px; height: 50px;">{{vmDetail2.alertData.message}}</div>
+            </fieldset>
+            <fieldset>
+                <legend></legend>
+                <div class="row" style="margin-top: 0px; font-size: x-large;">
+                    <div class="col-md-1 text-center">
+                        <button type="button" class="btn btn-default func-button"  ng-click="vmDetail2.viewAll()" aria-label="Left Align">
+                        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                            </button>
+                    </div>
+                    <div class="col-md-7 text-center">
+                        <h4>{{vmDetail2.countdownStr}}</h4>
+                    </div>
+                    <div class="col-md-8 text-center">
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+				<legend></legend>
+				<div class="row" style="margin-top: 0px">
+					<div class="col-md-3">
+						<div class="panel panel-success">
+							<div class="panel-heading">
+								<h3 class="panel-title">% Profit </h3>
+							</div>
+							<table class="table table-hover" id="task-table">
+								<thead>
+									<tr>
+										<th>Time</th>
+										<th>%</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="aver in vmDetail2.percentProfitList">
+										<td>{{aver.time}}</td>
+										<td>{{aver.value|setDecimal:1}}</td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="col-md-9">
+					<div class="row" style="margin-top: 0px">
+                    <div class="col-md-12 text-left">
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">USDT-Markets</h3>
+								</div>
+								<table class="table table-hover" id="dev-table">
+									<thead>
+										<tr>
+											<th style="width: 5%;">#</th>
+											<th style="width: 20%;">ID</th>
+											<th style="width: 15%; text-align: left;">Unit</th>
+											<th style="width: 10%; text-align: left;">Cost</th>
+											<th style="width: 13%; text-align: left">Input</th>
+											<th style="width: 15%; text-align: left;">Profit</th>
+											<th style="width: 13%; text-align: left">Last</th>
+											<th style="width: 9%; text-align: left;">%</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="obj in vmDetail2.data">
+											<td>{{obj.stt + 1}}</td>
+											<td>{{obj.pair}}</td>
+											<td style="text-align: left;">{{obj.unit|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.cost|setDecimal:0}}</td>
+											<td style="text-align: left;">{{obj.input|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.profit|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.lastPrice|setDecimal:2}}</td>
+											<td style="text-align: left;">{{obj.percent|setDecimal:1}}%</td>
+										</tr>
+										<tr>
+											<td colspan="8" style="font-size: large; font-weight: bold; text-align: left;">Total profit: {{vmDetail2.totalProfit|setDecimal:2}}</td>
+										</tr>
+										<tr>
+											<td colspan="8" style="font-size: large; font-weight: bold; text-align: left;">% Profit: {{vmDetail2.percentProfit|setDecimal:1}}%</td>
+										</tr>
+										<tr>
+											<td colspan="8" style="font-size: large; font-weight: bold; text-align: left;">Real Input: {{vmDetail2.realInput|setDecimal:2}}</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							</div>
+					</div>
+					<div class="row" style="margin-top: 0px">
+						
+                    	<div class="col-md-12 text-left">
+                        <h5 >Real input:{{vmDetail2.totalInput}}</h5>
+                    	</div>
+                		</div>
+						<div class="row" style="margin-top: 0px">
+                    	<div class="col-md-12 text-left">
+                        <h4 ng-click="vmDetail2.configShowAlert()">{{vmDetail2.alertData.label}}</h4>
+                    	</div>
+                		</div>
+					</div>
+				</div>
+				
+			</fieldset>
+        </div>
+    </div>
+</div>
