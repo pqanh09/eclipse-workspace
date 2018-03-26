@@ -16,4 +16,10 @@ public interface ApiInterface {
     @GET("getallproducts.php")
     Call<List<Products>> getAllProduct();
 
+//    @GET("api/chapter/id/5ab4d572bb9f120157fe9d4d")
+//    Call<List<Chapter>> getChapter();
+
+    @GET("api/chapter/id/5ab4d572bb9f120157fe9d4d")
+    Call<ChapterResponseObject> getChapter();
+
 }

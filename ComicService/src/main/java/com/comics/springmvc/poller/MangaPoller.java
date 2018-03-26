@@ -123,7 +123,7 @@ public class MangaPoller {
 		try {
 			double latestChapterOrdinalNumber = manga.getLatestChapterOrdinalNumber();
 			String mangaUrl = link.getMangaUrl();
-			Document chapterDoc = Jsoup.connect(mangaUrl).get();
+			Document chapterDoc = Jsoup.connect(mangaUrl).userAgent("Mozilla").get();
 			ChapterSelectorSyntax chapterSS = link.getChapterSelector();
 			Elements chapterList = chapterDoc.select(chapterSS.getCssQuery());
 			List<Chapter> chapters = new ArrayList<>();
