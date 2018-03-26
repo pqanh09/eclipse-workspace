@@ -5,19 +5,6 @@ import java.io.Serializable;
 import com.comics.springmvc.request.GenericRequestObject;
 import com.comics.springmvc.request.ObjectType;
 import com.comics.springmvc.request.RequestType;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-@JsonTypeInfo(  
-        use = JsonTypeInfo.Id.NAME,  
-        include = JsonTypeInfo.As.WRAPPER_OBJECT,  
-        property = "type")  
-@JsonSubTypes({     
-//    @Type(value=WebResponseObject.class, name="WebResponseObject")
-//    @Type(value=CPCustomizationResponseStatus.class, name="CPCustomizationResponseStatus")
-}) 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericResponseObject implements Serializable{
 	/**
 	 * 

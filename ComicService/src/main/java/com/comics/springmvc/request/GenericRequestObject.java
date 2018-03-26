@@ -3,20 +3,6 @@ package com.comics.springmvc.request;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
-@JsonTypeInfo(  
-        use = JsonTypeInfo.Id.NAME,  
-        include = JsonTypeInfo.As.WRAPPER_OBJECT,  
-        property = "type")  
-@JsonSubTypes({     
-//    @Type(value=MangaRequestObject.class, name="MangaRequestObject"),
-//    @Type(value=WebRequestObject.class, name="WebRequestObject")
-}) 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class GenericRequestObject {
 	protected RequestType operation;
 	protected ObjectType objectType;
