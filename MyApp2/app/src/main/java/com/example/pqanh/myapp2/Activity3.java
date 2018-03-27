@@ -2,12 +2,15 @@ package com.example.pqanh.myapp2;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.comics.shared.response.ChapterResponseObject;
 import com.example.pqanh.myapp2.custom.CustomListAdapter;
 import com.example.pqanh.myapp2.custom.Item;
+import com.example.pqanh.myapp2.resttest.ApiInterface;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,8 +23,14 @@ import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class Activity3 extends AppCompatActivity {
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
+public class Activity3 extends AppCompatActivity {
+    public static final String TAG = "Activity3";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,12 +42,54 @@ public class Activity3 extends AppCompatActivity {
 //
 //        // Loại bỏ tiêu đề.
 //        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        List<Item> image_details = getListData();
-        ListView listView = (ListView) findViewById(R.id.id_atv3_listView);
-        listView.setAdapter(new CustomListAdapter(getApplicationContext(), image_details, getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight()));
+
+        String URL_GET_PRODUCT = "http://35.226.84.34:8080/comic/";
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(URL_GET_PRODUCT)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiInterface apiService = retrofit.create(ApiInterface.class);
+        Call<ChapterResponseObject> call = apiService.getChapter();
+        call.enqueue(new Callback<ChapterResponseObject>() {
+            @Override
+            public void onResponse(Call<ChapterResponseObject> call, Response<ChapterResponseObject> response) {
+                ChapterResponseObject responseObj = response.body();
+                if (responseObj != null && !responseObj.getList().isEmpty() && !responseObj.getList().get(0).getImages().isEmpty()) {
+                    List<String> imgUrls = responseObj.getList().get(0).getImages();
+                    List<Item> items = new ArrayList<>();
+                    for (int i =0; i < imgUrls.size(); i ++){
+                        items.add(new Item(imgUrls.get(i), String.valueOf(i)));
+                    }
+                    if(!items.isEmpty()){
+                        ListView listView = (ListView) findViewById(R.id.id_atv3_listView);
+                        listView.setAdapter(new CustomListAdapter(getApplicationContext(), items, getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight()));
+                    } else  {
+                        Log.e(TAG, "@$@!$@!$@!$@!$@ ");
+                    }
+                } else {
+                    Log.e(TAG, "(*&&*^*(&*(&(* ");
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ChapterResponseObject> call, Throwable t) {
+                t.printStackTrace();
+                Log.e(TAG, "@@@@@@@@@@@WWWWWWWWWW: " + t.getMessage());
+            }
+        });
+
+
+
+
+//        List<Item> image_details = getListData();
+//        ListView listView = (ListView) findViewById(R.id.id_atv3_listView);
+//        listView.setAdapter(new CustomListAdapter(getApplicationContext(), image_details, getWindowManager().getDefaultDisplay().getWidth(), getWindowManager().getDefaultDisplay().getHeight()));
 
     }
     private  List<Item> getListData() {
+
         List<Item> list = new ArrayList<Item>();
         Item item1 = new Item("http://1.bp.blogspot.com/-sufWqm9brog/Wfnt4cT2RUI/AAAAAAAAXgY/3t3IG2879KcYv7tWjNcKVc0vY-CFdq_BgCHMYCw/s0/bia_fb.jpg?imgmax=0", "1");
         Item item2 = new Item("http://1.bp.blogspot.com/-4uYShhFi4mw/Wfnt6jYgBRI/AAAAAAAAXgk/PQKtKh9GdYo_5riT75M0SMVaers1BgewwCHMYCw/s0/000a.jpg?imgmax=0", "2");

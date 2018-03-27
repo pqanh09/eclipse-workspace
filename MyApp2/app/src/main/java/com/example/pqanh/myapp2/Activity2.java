@@ -1,9 +1,8 @@
 package com.example.pqanh.myapp2;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.util.SortedList;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -12,13 +11,9 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-import com.example.pqanh.myapp2.resttest.ApiClient;
+import com.comics.shared.response.ChapterResponseObject;
 import com.example.pqanh.myapp2.resttest.ApiInterface;
-import com.example.pqanh.myapp2.resttest.Chapter;
-import com.example.pqanh.myapp2.resttest.ChapterResponseObject;
 import com.example.pqanh.myapp2.resttest.Products;
-import com.example.pqanh.myapp2.resttest.Team;
-import com.example.pqanh.myapp2.resttest.TeamResponse;
 
 import java.util.List;
 
@@ -30,7 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class Activity2 extends AppCompatActivity {
-    public static final String TAG ="TestGesture";
+    public static final String TAG = "TestGesture";
 
     private TextView textEvt1;
     private TextView textEvt2;
@@ -45,11 +40,11 @@ public class Activity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_2);
-        Log.i(TAG,"onCreate");
+        Log.i(TAG, "onCreate");
 
-        this.textEvt1 = (TextView)this.findViewById(R.id.id_atv2_text1);
-        this.textEvt2 = (TextView)this.findViewById(R.id.id_atv2_text2);
-        this.tabLayout = (TabLayout)this.findViewById(R.id.id_atv2_tablayout);
+        this.textEvt1 = (TextView) this.findViewById(R.id.id_atv2_text1);
+        this.textEvt2 = (TextView) this.findViewById(R.id.id_atv2_text2);
+        this.tabLayout = (TabLayout) this.findViewById(R.id.id_atv2_tablayout);
         //tabLayout.setVisibility(View.INVISIBLE);
         animationSlideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
         animationSlideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
@@ -62,7 +57,7 @@ public class Activity2 extends AppCompatActivity {
 
 
         // GestureDetectorCompat(Context context, OnGestureListener listener)
-        this.gestureDetector= new GestureDetector(this, gestureListener);
+        this.gestureDetector = new GestureDetector(this, gestureListener);
 
         this.gestureDetector.setOnDoubleTapListener(doubleTapListener);
 
@@ -76,9 +71,11 @@ public class Activity2 extends AppCompatActivity {
                 return gestureDetector.onTouchEvent(me);
             }
         });
-
-        Log.e(TAG,"Running...");
-        String URL_GET_PRODUCT = "http://35.226.84.34:8080/ComicService/";
+        //http://www.json-generator.com/api/json/get/cfGgvRpMeq?indent=2
+        Log.e(TAG, "Running...");
+        //String URL_GET_PRODUCT = "http://localhost:8080/comic-webservice/";
+        //http://35.226.84.34:8080/comic/api/chapter/manga/5ab4dcabef0a479457b70042
+        String URL_GET_PRODUCT = "http://35.226.84.34:8080/comic/";
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(URL_GET_PRODUCT)
                 .addConverterFactory(GsonConverterFactory.create())
@@ -88,14 +85,11 @@ public class Activity2 extends AppCompatActivity {
         call.enqueue(new Callback<ChapterResponseObject>() {
             @Override
             public void onResponse(Call<ChapterResponseObject> call, Response<ChapterResponseObject> response) {
-                Log.d("@@@@@@@@@@@ R: ", response.body().toString());
                 ChapterResponseObject responseObj = response.body();
-                Log.d("@@@@@@@@@@@ C: ", responseObj.toString());
-//                List<Chapter> productsList = response.body();
-//                for (int i = 0; i<productsList.size() ; i++) {
-//                    productsList.add(productsList.get(i));
-//                    Log.d("@@@@@@@@@@@", productsList.get(i).toString());
-//                }
+                if (responseObj != null && !responseObj.getList().isEmpty() && !responseObj.getList().get(0).getImages().isEmpty()) {
+                    List<String> imgUrls = responseObj.getList().get(0).getImages();
+                }
+
             }
 
             @Override
@@ -106,12 +100,31 @@ public class Activity2 extends AppCompatActivity {
         });
 
 
-
-
+//        Log.e(TAG,"Running...");
+//        String URL_GET_PRODUCT = "http://www.json-generator.com/api/";
+//        Retrofit retrofit = new Retrofit.Builder()
+//                .baseUrl(URL_GET_PRODUCT)
+//                .addConverterFactory(GsonConverterFactory.create())
+//                .build();
+//        ApiInterface apiService = retrofit.create(ApiInterface.class);
+//        Call<Products> call = apiService.getProduct();
+//        call.enqueue(new Callback<Products>() {
+//            @Override
+//            public void onResponse(Call<Products> call, Response<Products> response) {
+//                Products productsList = response.body();
+//                Log.e(TAG, "@@@@@@@@@@@WWWWWWWWWW: " + productsList.toString());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Products> call, Throwable t) {
+//                t.printStackTrace();
+//                Log.e(TAG, "@@@@@@@@@@@WWWWWWWWWW: " + t.getMessage());
+//            }
+//        });
 
 
 //        Log.e(TAG,"Running...");
-//        String URL_GET_PRODUCT = "http://dev.androidcoban.com/blog/";
+//        String URL_GET_PRODUCT = "http://www.json-generator.com/api/";
 //        Retrofit retrofit = new Retrofit.Builder()
 //                .baseUrl(URL_GET_PRODUCT)
 //                .addConverterFactory(GsonConverterFactory.create())
@@ -136,7 +149,6 @@ public class Activity2 extends AppCompatActivity {
 //        });
 
 
-
 //        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
 //
 //        Call<TeamResponse> call = apiService.getAll();
@@ -156,15 +168,14 @@ public class Activity2 extends AppCompatActivity {
 //        });
 
 
-
     }
 
-    class MyOnGestureListener implements GestureDetector.OnGestureListener  {
+    class MyOnGestureListener implements GestureDetector.OnGestureListener {
 
         @Override
         public boolean onDown(MotionEvent e) {
             textEvt1.setText("onDown");
-            textEvt2.setText(e.getX()+":"+ e.getY());
+            textEvt2.setText(e.getX() + ":" + e.getY());
             Log.e(TAG, "onDown");
             return true;
         }
@@ -172,14 +183,14 @@ public class Activity2 extends AppCompatActivity {
         @Override
         public void onShowPress(MotionEvent e) {
             textEvt1.setText("onShowPress");
-            textEvt2.setText(e.getX()+":"+ e.getY());
+            textEvt2.setText(e.getX() + ":" + e.getY());
             Log.e(TAG, "onShowPress");
         }
 
         @Override
         public boolean onSingleTapUp(MotionEvent e) {
             textEvt1.setText("onSingleTapUp");
-            textEvt2.setText(e.getX()+":"+ e.getY());
+            textEvt2.setText(e.getX() + ":" + e.getY());
             Log.e(TAG, "onSingleTapUp");
             return true;
         }
@@ -187,7 +198,7 @@ public class Activity2 extends AppCompatActivity {
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
             textEvt1.setText("Scroll");
-            textEvt2.setText(e1.getX()+":"+ e1.getY() +"  "+ e2.getX()+":"+ e2.getY());
+            textEvt2.setText(e1.getX() + ":" + e1.getY() + "  " + e2.getX() + ":" + e2.getY());
             Log.e(TAG, "onScroll");
             return true;
         }
@@ -195,7 +206,7 @@ public class Activity2 extends AppCompatActivity {
         @Override
         public void onLongPress(MotionEvent e) {
             textEvt1.setText("onLongPress");
-            textEvt2.setText(e.getX()+":"+ e.getY());
+            textEvt2.setText(e.getX() + ":" + e.getY());
             Log.e(TAG, "onLongPress");
         }
 
@@ -215,7 +226,7 @@ public class Activity2 extends AppCompatActivity {
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e) {
             textEvt1.setText("onSingleTapConfirmed");
-            textEvt2.setText(e.getX()+":"+ e.getY());
+            textEvt2.setText(e.getX() + ":" + e.getY());
             Log.e(TAG, "onSingleTapConfirmed");
             return true;
         }
@@ -223,9 +234,9 @@ public class Activity2 extends AppCompatActivity {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             textEvt1.setText("onDoubleTap");
-            textEvt2.setText(e.getX()+":"+ e.getY());
+            textEvt2.setText(e.getX() + ":" + e.getY());
             Log.e(TAG, "onDoubleTap");
-            if(showTtbLayout){
+            if (showTtbLayout) {
                 tabLayout.startAnimation(animationSlideUp);
             } else {
                 tabLayout.startAnimation(animationSlideDown);

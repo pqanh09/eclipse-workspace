@@ -19,7 +19,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
@@ -29,11 +29,10 @@ dependencies {
     implementation 'com.android.support:design:26.1.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.2'
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
-    compile 'com.google.code.gson:gson:2.6.2'
-//    // https://mvnrepository.com/artifact/com.squareup.retrofit/retrofit
-//    compile group: 'com.squareup.retrofit', name: 'retrofit', version: '1.9.0'
-//    // https://mvnrepository.com/artifact/com.squareup.retrofit/converter-jackson
-//    runtime group: 'com.squareup.retrofit', name: 'converter-jackson', version: '1.9.0'
-
-
+    compile 'com.google.code.gson:gson:2.8.2'
+    //    // https://mvnrepository.com/artifact/com.squareup.retrofit/retrofit
+    //    compile group: 'com.squareup.retrofit', name: 'retrofit', version: '1.9.0'
+    //    // https://mvnrepository.com/artifact/com.squareup.retrofit/converter-jackson
+    //    runtime group: 'com.squareup.retrofit', name: 'converter-jackson', version: '1.9.0'
+    implementation files('libs/comic-shared-1.0.jar')
 }
